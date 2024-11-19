@@ -117,4 +117,27 @@ class PretreController extends Controller
         $randomNumber = random_int(10000, 99999);
         return "{$abbreviation}-{$firstLetterNom}{$firstLetterPrenom}-{$randomNumber}";
     }
+
+    public function listPretres()
+    {
+        $pretres = Pretre::with('diocese')->get();
+
+        return response()->json([
+            'pretres' => $pretres,
+        ]);
+    }
+
+    public function pretres($id)
+    {
+        // Récupère le diocèse avec son ID
+        $diocese = Diocese::findOrFail($id);
+
+        // Récupère les prêtres associés à ce diocèse
+        $pretres = Pretre::where('dioceses_id', $id)->with('diocese')->get();
+
+        return response()->json([
+            'diocese' => $diocese,
+            'pretres' => $pretres,
+        ]);
+    }
 }

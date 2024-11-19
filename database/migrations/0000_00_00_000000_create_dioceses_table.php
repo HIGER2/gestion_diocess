@@ -15,6 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('diocese');
             $table->string('abreviation');
+            $table->string('emplacement');
+            $table->string('url_image')->nullable();
             $table->timestamps();
         });
     }

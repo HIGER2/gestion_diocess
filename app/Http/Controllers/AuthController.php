@@ -22,9 +22,10 @@ class AuthController extends Controller
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
 
+
             return response()->json([
                 'message' => 'Connexion réussie.',
-                'user' => Auth::user(),
+                'redirect' => '/diocese-manager'  // URL vers laquelle le client doit rediriger
             ], 200);
         }
 

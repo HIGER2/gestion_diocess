@@ -48,14 +48,14 @@ return new class extends Migration
         });
 
 
-        DB::table('users')->insert([
-            'nom' => 'super',
-            'prenoms' => 'prenoms',
-            'email' => 'admin@gmail.com',
-            'password' => Hash::make('password'),
-            'created_at' => now(),
-            'updated_at' => now(),
-        ]);
+        // DB::table('users')->insert([
+        //     'nom' => 'super',
+        //     'prenoms' => 'prenoms',
+        //     'email' => 'admin@gmail.com',
+        //     'password' => Hash::make('password'),
+        //     'created_at' => now(),
+        //     'updated_at' => now(),
+        // ]);
     }
 
     /**

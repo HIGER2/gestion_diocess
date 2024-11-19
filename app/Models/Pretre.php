@@ -8,7 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class Pretre extends Model
 {
     use HasFactory;
-    protected $table = 'personnels';
 
     protected $fillable = [
         'nom',
@@ -29,4 +28,9 @@ class Pretre extends Model
         'date_naissance' => 'date',
         'date_ordination_sacerdotale' => 'date',
     ];
+
+    public function diocese()
+    {
+        return $this->belongsTo(Diocese::class, 'dioceses_id', 'id'); // Assure-toi que la clé étrangère est bien 'dioceses_id' dans la table 'pretres'
+    }
 }

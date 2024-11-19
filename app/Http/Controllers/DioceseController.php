@@ -75,15 +75,13 @@ class DioceseController extends Controller
     /**
      * Liste les prêtres associés à un diocèse.
      */
-    public function listPretres($id)
+
+
+    public function listDiocese()
     {
-        $diocese = Diocese::findOrFail($id);
-
-        $pretres = $diocese->pretres;
-
+        $diocese = Diocese::get(); // Récupère tous les enregistrements avec leurs champs
         return response()->json([
-            'diocese' => $diocese->diocese,
-            'pretres' => $pretres,
+            'data' => $diocese,
         ]);
     }
 }
