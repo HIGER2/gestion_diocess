@@ -55,7 +55,7 @@ const enregistrerDiocese = async () => {
                 </label>
                 <input
                     type="file"
-                    id="url_image"
+                    id="url_image" 
                     class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2 text-[13px] shadow-sm focus:outline-none focus:ring-1 focus:ring-blue-950 focus:border-blue-500"
                     @change="event => {
                         const image = event.target.files[0];

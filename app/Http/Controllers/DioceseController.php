@@ -11,42 +11,46 @@ class DioceseController extends Controller
     /**
      * Crée un nouveau diocèse.
      */
+
     public function store(Request $request)
     {
-        // Validation
+        // Validation des champs
         $validated = $request->validate([
             'diocese' => 'required|string|max:255',
             'abreviation' => 'required|string|max:10|unique:dioceses,abreviation',
             'emplacement' => 'required|string|max:255',
-            // 'url_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg'
+            'url_image.*' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
-        // // Gestion du fichier
-        // if ($request->hasFile('url_image')) {
-        //     // Récupérer le fichier téléchargé
-        //     $imageFile = $request->file('url_image');
-            
-        //     // Générer un nom unique pour l'image
-        //     $imageName = time() . rand(1, 50) . '.' . $imageFile->getClientOriginalExtension();
-            
-        //     // Déplacer le fichier dans le répertoire public
-        //     $imageFile->move(public_path('files'), $imageName);
-            
-        //     // Définir le chemin relatif
-        //     $filePath = 'files/' . $imageName; // Utilisez le chemin relatif
-        // } else {
-        //     return response()->json(['message' => 'Fichier non reçu'], 400);
-        // }
+        // Gestion du fichier image
+        $images = null; // Défaut si aucune image n'est fournie
+        if ($request->hasFile('url_image')) {
+            // Récupérer le fichier téléchargé
+            $imageFile = $request->file('url_image');
 
-        // Enregistrer dans la base de données
+            // Générer un nom unique pour le fichier
+            $imageName = time() . '_' . uniqid() . '.' . $imageFile->getClientOriginalExtension();
+
+            // Déplacer l'image dans le dossier 'public/images'
+            $imageFile->move(public_path('images'), $imageName);
+
+            // Chemin relatif vers le fichier
+            $images = 'images/' . $imageName;
+        }
+
+        // Enregistrer les données dans la base
         $diocese = Diocese::create([
             'diocese' => $validated['diocese'],
             'abreviation' => $validated['abreviation'],
             'emplacement' => $validated['emplacement'],
-            // 'url_image' => $filePath, 
+            'url_image' => $images, // Ajout de l'image si disponible
         ]);
 
-        return response()->json(['message' => 'Diocèse enregistré avec succès', 'diocese' => $diocese], 200);
+        // Retourner une réponse JSON
+        return response()->json([
+            'message' => 'Diocèse enregistré avec succès',
+            'diocese' => $diocese
+        ], 201);
     }
 
 
