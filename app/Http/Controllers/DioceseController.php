@@ -13,18 +13,42 @@ class DioceseController extends Controller
      */
     public function store(Request $request)
     {
+        // Validation
         $validated = $request->validate([
             'diocese' => 'required|string|max:255',
             'abreviation' => 'required|string|max:10|unique:dioceses,abreviation',
+            'emplacement' => 'required|string|max:255',
+            // 'url_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg'
         ]);
 
-        $diocese = Diocese::create($validated);
+        // // Gestion du fichier
+        // if ($request->hasFile('url_image')) {
+        //     // Récupérer le fichier téléchargé
+        //     $imageFile = $request->file('url_image');
+            
+        //     // Générer un nom unique pour l'image
+        //     $imageName = time() . rand(1, 50) . '.' . $imageFile->getClientOriginalExtension();
+            
+        //     // Déplacer le fichier dans le répertoire public
+        //     $imageFile->move(public_path('files'), $imageName);
+            
+        //     // Définir le chemin relatif
+        //     $filePath = 'files/' . $imageName; // Utilisez le chemin relatif
+        // } else {
+        //     return response()->json(['message' => 'Fichier non reçu'], 400);
+        // }
 
-        return response()->json([
-            'message' => 'Diocèse créé avec succès.',
-            'diocese' => $diocese,
-        ], 201);
+        // Enregistrer dans la base de données
+        $diocese = Diocese::create([
+            'diocese' => $validated['diocese'],
+            'abreviation' => $validated['abreviation'],
+            'emplacement' => $validated['emplacement'],
+            // 'url_image' => $filePath, 
+        ]);
+
+        return response()->json(['message' => 'Diocèse enregistré avec succès', 'diocese' => $diocese], 200);
     }
+
 
     /**
      * Modifie un diocèse existant.

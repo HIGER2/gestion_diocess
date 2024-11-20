@@ -10,6 +10,8 @@ class Diocese extends Model
     protected $fillable = [
         'diocese',
         'abreviation',
+        'emplacement',
+        'url_image',
     ];
 
     public function pretres()
