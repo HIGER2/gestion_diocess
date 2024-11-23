@@ -17,7 +17,6 @@ class PretreController extends Controller
         $validated = $request->validate([
             'nom' => 'required|string|max:255',
             'prenoms' => 'required|string|max:255',
-            'matricule' => 'required|string|max:255|unique:pretres',
             'dioceses_id' => 'nullable|exists:dioceses,id',
             'date_naissance' => 'required|date',
             'lieu_naissance' => 'required|string|max:255',
@@ -25,8 +24,25 @@ class PretreController extends Controller
             'lieu_ordination_sacerdotale' => 'required|string|max:255',
             'diplome_etude_ecclesiastique' => 'nullable|string|max:300',
             'diplome_etude_profane' => 'nullable|string|max:300',
-            'numero_telephone' => 'nullable|numeric',
-            'adresse_electronique' => 'required|string|email|max:255|unique:pretres',
+            'numero_telephone' => 'numeric',
+            'adresse_electronique' => 'nullable|string|email|max:255|unique:pretres',
+        ], [
+            'nom.required' => 'Le champ "Nom" est obligatoire.',
+            'prenoms.required' => 'Le champ "Prénoms" est obligatoire.',
+            'date_naissance.required' => 'Le champ "Date de naissance" est obligatoire.',
+            'date_naissance.date' => 'Le champ "Date de naissance" doit être une date valide.',
+            'lieu_naissance.required' => 'Le champ "Lieu de naissance" est obligatoire.',
+            'lieu_naissance.string' => 'Le champ "Lieu de naissance" doit être une chaîne de caractères.',
+            'date_ordination_sacerdotale.required' => 'Le champ "Date d’ordination sacerdotale" est obligatoire.',
+            'date_ordination_sacerdotale.date' => 'Le champ "Date d’ordination sacerdotale" doit être une date valide.',
+            'lieu_ordination_sacerdotale.required' => 'Le champ "Lieu d’ordination sacerdotale" est obligatoire.',
+            'lieu_ordination_sacerdotale.string' => 'Le champ "Lieu d’ordination sacerdotale" doit être une chaîne de caractères.',
+            'diplome_etude_ecclesiastique.string' => 'Le champ "Diplôme d’étude ecclésiastique" doit être une chaîne de caractères.',
+            'diplome_etude_profane.string' => 'Le champ "Diplôme d’étude profane" doit être une chaîne de caractères.',
+            'numero_telephone.numeric' => 'Le champ "Numéro de téléphone" doit être un nombre.',
+            'adresse_electronique.required' => 'Le champ "Adresse électronique" est obligatoire.',
+            'adresse_electronique.email' => 'Le champ "Adresse électronique" doit être une adresse email valide.',
+            'adresse_electronique.unique' => 'L’adresse électronique saisie est déjà utilisée.',
         ]);
 
         $diocese = Diocese::findOrFail($validated['dioceses_id']);
@@ -51,7 +67,7 @@ class PretreController extends Controller
      */
     public function show($id)
     {
-        $pretre = Pretre::find($id);
+        $pretre = Pretre::with('diocese')->find($id);
 
         if (!$pretre) {
             return response()->json(['message' => 'Prêtre introuvable.'], 404);
@@ -120,7 +136,7 @@ class PretreController extends Controller
 
     public function listPretres()
     {
-        $pretres = Pretre::with('diocese')->get();
+        $pretres = Pretre::with('diocese')->orderBy('created_at', 'desc')->get();
 
         return response()->json([
             'pretres' => $pretres,

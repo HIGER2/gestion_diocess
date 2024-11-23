@@ -4,7 +4,7 @@
 import { reactive } from 'vue';
 
 const login = reactive({
-    email: 'admin@gmail.com',
+    login: 'admin@gmail.com',
     password: 'password'
 });
 
@@ -33,7 +33,7 @@ const authLogin = async () => {
                         <div class="groupeForm">
                             <label for=""  class="block text-[13px] font-medium text-gray-700 mb-2">Téléphone ou Email</label>
                             <div class="forminput">
-                                <input type="text" v-model="login.email"  class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2 text-[13px] shadow-sm focus:outline-none focus:ring-1 focus:ring-blue-950 focus:border-blue-500">
+                                <input type="text" v-model="login.login"  class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2 text-[13px] shadow-sm focus:outline-none focus:ring-1 focus:ring-blue-950 focus:border-blue-500">
                             </div>
                         </div>
                         <div class="groupeForm">
@@ -43,7 +43,7 @@ const authLogin = async () => {
                             </div>
                         </div>
                         <button type="submit" class="mt-6 bg-blue-950 w-full text-white py-2 px-4 rounded-xl ">
-                            Enregistrer
+                            Connexion
                         </button>
                     </form>
                     <!-- <span class="link">
@@ -67,9 +67,9 @@ main {
         align-items: center;
         justify-content: center;
         .card{
-        width: 450px;
+        width: 400px;
         padding: 2rem;
-        border-radius: 1rem;
+        border-radius: 0.6rem;
         .content {
             .title{
             color: $accent;
@@ -106,7 +106,7 @@ main {
                 //     }
                 // }
                 }
-                
+
 
             }
         }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Diocese;
 use App\Models\Pretre;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class DioceseController extends Controller
 {
@@ -16,9 +17,30 @@ class DioceseController extends Controller
         $validated = $request->validate([
             'diocese' => 'required|string|max:255',
             'abreviation' => 'required|string|max:10|unique:dioceses,abreviation',
+            'emplacement' => 'required|string|max:255',
+            // 'file' => 'nullable|file|mimes:jpg,jpeg,png|max:2048',
+
         ]);
 
-        $diocese = Diocese::create($validated);
+        // Enregistrement du fichier s'il existe
+
+        $filePath = "";
+        if ($request->hasFile('file')) {
+            // Récupération de l'extension et génération d'un nom unique pour le fichier
+            $extension = $request->file('file')->getClientOriginalExtension();
+            $fileName = uniqid() . '_' . time() . '.' . $extension;
+
+            // Stockage du fichier dans le répertoire 'uploads/dioceses' du disque public
+            $filePath = $request->file('file')->storeAs('uploads/dioceses', $fileName, 'public');
+        }
+
+        // Traitement des autres données
+        $diocese = Diocese::create([
+            'diocese' => $request->diocese,
+            'abreviation' => $request->abreviation,
+            'emplacement' => $request->emplacement,
+            'url_image' => $filePath ? Storage::url($filePath) : null,  // Si un fichier a été téléchargé, on enregistre son URL, sinon null
+        ]);
 
         return response()->json([
             'message' => 'Diocèse créé avec succès.',
@@ -79,7 +101,7 @@ class DioceseController extends Controller
 
     public function listDiocese()
     {
-        $diocese = Diocese::get(); // Récupère tous les enregistrements avec leurs champs
+        $diocese = Diocese::orderBy('created_at', 'desc')->get(); // Récupère tous les enregistrements avec leurs champs
         return response()->json([
             'data' => $diocese,
         ]);
