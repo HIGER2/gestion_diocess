@@ -12,6 +12,7 @@ import ToastPlugin from 'vue-toast-notification';
 import 'vue-toast-notification/dist/theme-bootstrap.css';
 import 'vue-toast-notification/dist/theme-sugar.css';
 import DashboardPage from '../vue/DashboardPage.vue';
+import InscriptionPage from '../vue/InscriptionPage.vue';
 
 // Créez et montez l'application Vue
 createApp({})
@@ -22,5 +23,6 @@ createApp({})
     .component('PreteDetailPage', PreteDetailPage)
     .component('UtilisateurPage', UtilisateurPage)
     .component('DashboardPage', DashboardPage)
+    .component('InscriptionPage', InscriptionPage)
     .use(ToastPlugin)
     .mount('#app');

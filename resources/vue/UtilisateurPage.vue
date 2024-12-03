@@ -4,10 +4,13 @@ import { onMounted, ref } from 'vue';
 import AppLayout from './layouts/AppLayout.vue';
 import Modal from './components/Modal.vue';
 import AddUtilisateurComponent from './components/AddUtilisateurComponent.vue';
+import EditUtilisateurComponent from './components/utilisateur/EditUtilisateurComponent.vue';
+import DeleteUtilisateurComponent from './components/utilisateur/DeleteUtilisateurComponent.vue';
+import ContentLoading from './components/ContentLoading.vue';
+const { dioceses } = defineProps([ 'dioceses' ]);
 const user = ref()
 const isModalOpen = ref(false)
-const dioceses =ref()
-
+const isLoading=ref(false)
 const openModal = (state) => {
     isModalOpen.value = state
 };
@@ -35,7 +38,8 @@ class Pretre {
   }
 
 const hanldeliste = async () => {
-    axios.get('/user/all')
+    isLoading.value =true
+    await axios.get('/user/all')
     .then(response => {
         if (response) {
             user.value = response?.data?.user
@@ -44,6 +48,7 @@ const hanldeliste = async () => {
     .catch(error => {
         console.error('Error fetching user data:', error.response.data);
     });
+    isLoading.value =false
 };
 
 
@@ -73,9 +78,10 @@ onMounted(async() => {
             <div class="w-full">
                 <div class="flex justify-between items-center">
                     <h1 class="uppercase text-[16px] font-[800]">Listes des utilisateurs</h1>
-                    <button type="button" @click="openModal(true)" class="bg-blue-950 text-white p-2 rounded-md text-[14px] cursor-pointer">Ajouter un utilsateur</button>
+                    <button type="button" @click="openModal(true)" class="bg-primary text-white p-2 rounded-md text-[14px] cursor-pointer">Ajouter un utilsateur</button>
                 </div>
-                <div class="w-full rounded-md bg-white min-h-[100px] mt-5 p-6">
+                <ContentLoading v-if="isLoading"/>
+                <div v-else class="w-full rounded-md bg-white border min-h-[100px] mt-5 p-6">
                     <!-- <div class="w-full max-w-sm mb-2">
                             <input
                                 type="search"
@@ -104,8 +110,8 @@ onMounted(async() => {
                                     <td class="p-3 border-b">{{ item?.phone }}</td>
                                     <td class="p-3 border-b">{{ item?.email }}</td>
                                     <td class="p-3 border-b flex gap-2">
-                                        <span class="bg-gray-100 px-3 rounded-md py-2"><i class="uil uil-pen"></i></span>
-                                        <span class="bg-gray-100 px-3 rounded-md py-2"><i class="uil uil-trash-alt"></i></span>
+                                        <EditUtilisateurComponent :item="item" :dioceses="dioceses"/>
+                                        <DeleteUtilisateurComponent :item="item"/>
                                         <!-- <a :href="`/prete-manager/${item?.id}`" class="bg-gray-100 px-3 rounded-md py-2"><i class="uil uil-ellipsis-h"></i></a> -->
                                     </td>
                                 </tr>
@@ -116,7 +122,7 @@ onMounted(async() => {
             </div>
             <Modal :isActive="isModalOpen" :onClose="openModal">
                 <div class=" mb-2 p-5 max-h-full">
-                    <AddUtilisateurComponent :callback="hanldeliste" :dioceses="dioceses"/>
+                    <AddUtilisateurComponent :callback="hanldeliste" :dioceses="JSON.parse(dioceses)"/>
                 </div>
             </Modal>
         </AppLayout>

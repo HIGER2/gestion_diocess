@@ -47,7 +47,7 @@ onMounted(() => {
     <div>
         <AppLayout>
             <div class="w-full">
-                <div class="flex items-center justify-center flex-col">
+                <div class="flex items-center justify-center flex-col ">
                     <div class="w-[460px] min-h-[100px] bg-white rounded-md mb-3 p-2 flex flex-col items-center justify-center gap-3">
                         <div class="w-[120px] h-[120px]  bg-gray-100 rounded-[50%] flex items-center justify-center">
                             <i class="uil uil-user text-[50px]"></i>
@@ -92,7 +92,7 @@ onMounted(() => {
                                 <span>Diplome étude profane</span>
                                 <span class="text-zinc-600">{{ pretres?.diplome_etude_profane }}</span>
                             </li>
-                            
+
                         </ul>
                     </div>
                 </div>

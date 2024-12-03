@@ -17,7 +17,7 @@ class DiocesesAndPretresSeeder extends Seeder
         // Créer 10 diocèses
         $villes = ['Abidjan', 'Bouaké', 'Daloa', 'Man'];
 
-        for ($i = 1; $i <= 8; $i++) {
+        for ($i = 1; $i <= 6; $i++) {
 
             $emplacement = $villes[array_rand($villes)];
 
@@ -31,7 +31,7 @@ class DiocesesAndPretresSeeder extends Seeder
             ]);
 
             // Créer 20 prêtres pour chaque diocèse
-            for ($j = 1; $j <= 15; $j++) {
+            for ($j = 1; $j <= 1; $j++) {
                 DB::table('pretres')->insert([
                     'nom' => "Prêtre $j du Diocèse $i",
                     'prenoms' => "Prenom $j",

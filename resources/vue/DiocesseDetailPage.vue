@@ -4,10 +4,15 @@ import { onMounted, ref } from 'vue';
 import AppLayout from './layouts/AppLayout.vue';
 import Modal from './components/Modal.vue';
 import AddPreteComponent from './components/AddPreteComponent.vue';
+import TableComponent from './components/prete/TableComponent.vue';
+import DeleteDioceseComponent from './components/diocese/DeleteDioceseComponent.vue';
+import EditDioceseComponent from './components/diocese/EditDioceseComponent.vue';
+import ContentLoading from './components/ContentLoading.vue';
 
 const { diocese_id } = defineProps([ 'diocese_id' ]);
 const pretres = ref()
 const diocese = ref()
+const isLoading=ref(false)
 const isModalOpen = ref(false)
 
 class Pretre {
@@ -16,7 +21,7 @@ class Pretre {
     this.nom = nom;
     this.prenoms = prenoms;
     this.matricule = matricule;
-    this.diocess = diocese?.diocese; // Exemple: { diocese: 'Diocèse 1' }
+    this.diocess = diocese; // Exemple: { diocese: 'Diocèse 1' }
     this.date_naissance = date_naissance;
     this.lieu_naissance = lieu_naissance;
     this.date_ordination_sacerdotale = date_ordination_sacerdotale;
@@ -34,7 +39,8 @@ const openModal = (state) => {
 };
 
 const hanldeliste = async (diocese_id) => {
-    axios.get(`/diocesse/${diocese_id}`)
+    isLoading.value =true
+    await axios.get(`/diocesse/${diocese_id}`)
     .then(response => {
 
         pretres.value = response?.data?.diocese?.pretres.map(value => new Pretre(value))
@@ -44,6 +50,7 @@ const hanldeliste = async (diocese_id) => {
     .catch(error => {
         console.error('Error fetching user data:', error.response.data);
     });
+    isLoading.value =false
 };
 onMounted(() => {
     hanldeliste(diocese_id)
@@ -55,12 +62,20 @@ onMounted(() => {
     <div>
         <AppLayout>
             <div class="w-full">
-                <h1 class="text-[30px] font-[900] uppercase">{{diocese?.diocese}}</h1>
+                <div class="flex items-center justify-between mb-4">
+                    <h1 class="text-[30px] font-[900] uppercase">{{diocese?.diocese}}</h1>
+                    <div class="flex items-center justify-center gap-2 " v-if="diocese">
+                        <EditDioceseComponent :item="diocese"/>
+                        <DeleteDioceseComponent :item="diocese"/>
+                    </div>
+                </div>
                 <!-- {{ diocese }} -->
-                <div class="flex gap-2 items-start mt-5">
-                    <div class="w-[400px] min-h-[20px] bg-white rounded-md p-3">
+                    <ContentLoading v-if="isLoading"/>
+
+                <div v-else class="flex gap-2 items-start mt-5">
+                    <div class="w-[300px] min-h-[20px] bg-white rounded-md p-3">
                         <div class="flex gap-3  border-b py-2">
-                            <div class="w-[100px] h-[100px]">
+                            <div class="w-[60px] h-[60px]">
                                 <img class="w-full h-full object-cover rounded-md" :src="diocese?.url_image || 'https://cdn.pixabay.com/photo/2016/11/18/22/37/cathedral-1837206_1280.jpg'" alt="">
                             </div>
                             <div class="flex flex-col gap-4">
@@ -73,7 +88,7 @@ onMounted(() => {
                                 </div>
                             </div>
                         </div>
-                        <ul class="w-ful mt-3">
+                        <!-- <ul class="w-ful mt-3">
                             <li class="mb-2 flex gap-3 text-gray-600  text-[15px] leading-normal">
                                 <span><i class="uil uil-phone"></i></span>
                                 <span> +225 988 9089</span>
@@ -88,53 +103,15 @@ onMounted(() => {
                                 </span>
                                 <span>daloa</span>
                             </li>
-                        </ul>
+                        </ul> -->
                     </div>
                     <div class="w-full rounded-md bg-white min-h-[100px] p-3">
                         <div class="flex items-center justify-between">
                             <h6>Lites des prêtres de la diocèse</h6>
-                            <button type="button" @click="openModal(true)" class="bg-blue-950 text-white p-2 rounded-md text-[14px] cursor-pointer">Ajouter un prêtres</button>
-
+                            <button type="button" @click="openModal(true)" class="bg-primary text-white p-2 rounded-md text-[14px] cursor-pointer">Ajouter un prêtres</button>
                         </div>
-                        <div class="overflow-x-auto mt-4">
-                            <table class="min-w-full bg-white  rounded-lg">
-                                <thead>
-                                    <tr class="bg-gray-100 text-gray-600 capitalize text-[11px] leading-normal">
-                                        <th class="p-3 text-left">Nom</th>
-                                        <th class="p-3 text-left">Prénoms</th>
-                                        <th class="p-3 text-left">Matricule</th>
-                                        <th class="p-3 text-left">Diocèse</th>
-                                        <!-- <th class="p-3 text-left">Date de Naissance</th> -->
-                                        <!-- <th class="p-3 text-left">Lieu de Naissance</th> -->
-                                        <!-- <th class="p-3 text-left">Date Ordination Sacerdotale</th> -->
-                                        <th class="p-3 text-left">Lieu Ordination</th>
-                                        <!-- <th class="p-3 text-left">Diplôme Ecclésiastique</th> -->
-                                        <!-- <th class="p-3 text-left">Diplôme Profane</th> -->
-                                        <th class="p-3 text-left">Téléphone</th>
-                                        <th class="p-3 text-left">Email</th>
-                                        <th class="p-3 text-left">Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="text-gray-600 text-[12px] font-light ">
-                                    <tr v-for="(item,index) in pretres" :key="index" class="cursor-pointer hover:bg-slate-100">
-                                        <td class="p-3 border-b">{{ item.nom }}</td>
-                                        <td class="p-3 border-b">{{ item.prenoms }}</td>
-                                        <td class="p-3 border-b">{{ item.matricule }}</td>
-                                        <td class="p-3 border-b">{{ item.diocess }}</td>
-                                        <!-- <td class="p-3 border-b">{{ formatDate(item.date_naissance) }}</td> -->
-                                        <!-- <td class="p-3 border-b">{{ item.lieu_naissance }}</td> -->
-                                        <!-- <td class="p-3 border-b">{{ formatDate(item.date_ordination_sacerdotale) }}</td> -->
-                                        <td class="p-3 border-b">{{ item.lieu_ordination_sacerdotale }}</td>
-                                        <!-- <td class="p-3 border-b">{{ item.diplome_etude_ecclesiastique }}</td> -->
-                                        <!-- <td class="p-3 border-b">{{ item.diplome_etude_profane }}</td> -->
-                                        <td class="p-3 border-b">{{ item.numero_telephone }}</td>
-                                        <td class="p-3 border-b">{{ item.adresse_electronique }}</td>
-                                        <td class="p-3 border-b">
-                                            <a :href="`/prete-manager/${item?.id}`" class="bg-gray-100 px-3 rounded-md py-2"><i class="uil uil-ellipsis-h"></i></a>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                        <div class="overflow-x-auto mt-4 border rounded-md">
+                                <TableComponent :liste_Prete="pretres"/>
                         </div>
                     </div>
                 </div>

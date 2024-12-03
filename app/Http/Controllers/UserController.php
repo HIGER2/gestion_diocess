@@ -14,34 +14,70 @@ class UserController extends Controller
     public function store(Request $request)
     {
 
-        $validator = Validator::make($request->all(), [
+        $rule = [
             'nom' => 'required|string|max:255', // Le nom est obligatoire
             'prenoms' => 'required|string|max:255', // Le prénom est obligatoire
             'role' => 'required|string|in:super_admin,admin,user', // Vérifie que le rôle est valide
-            'phone' => 'required|string|max:15|unique:users,phone', // Vérifie que le téléphone est unique
-            // 'email' => 'required|email|max:255|unique:users,email', // Vérifie que l'email est unique
-            'password' => 'required|string|min:8', // Le mot de passe doit avoir au moins 8 caractères
-            // 'diocese_id' => 'nullable|integer|exists:dioceses,id', // Vérifie que le diocèse existe (optionnel)
-        ]);
+            'phone' => 'required|string|max:15', // Vérifie que le téléphone est unique
+        ];
 
-        if ($validator->fails()) {
-            // Retourner les erreurs de validation si elles existent
-            return response()->json([
-                'errors' => $validator->errors(),
-            ], 422);
+        if (!$request->id) {
+            $rule["phone"] = "required|string|max:15|unique:users,phone";
+            $rule["password"] = "required|string|min:8";
         }
+
+        $messages = [
+            'nom.required' => 'Le champ "Nom" est obligatoire.',
+            'nom.string' => 'Le champ "Nom" doit être une chaîne de caractères.',
+            'nom.max' => 'Le champ "Nom" ne doit pas dépasser 255 caractères.',
+            'prenoms.required' => 'Le champ "Prénoms" est obligatoire.',
+            'prenoms.string' => 'Le champ "Prénoms" doit être une chaîne de caractères.',
+            'prenoms.max' => 'Le champ "Prénoms" ne doit pas dépasser 255 caractères.',
+            'role.required' => 'Le champ "Rôle" est obligatoire.',
+            'role.string' => 'Le champ "Rôle" doit être une chaîne de caractères.',
+            'role.in' => 'Le champ "Rôle" doit être l’une des valeurs suivantes : super_admin, admin, user.',
+            'phone.required' => 'Le champ "Téléphone" est obligatoire.',
+            'phone.string' => 'Le champ "Téléphone" doit être une chaîne de caractères.',
+            'phone.max' => 'Le champ "Téléphone" ne doit pas dépasser 15 caractères.',
+            'phone.unique' => 'Le numéro de téléphone est déjà utilisé.',
+            'password.required' => 'Le champ "Mot de passe" est obligatoire.',
+            'password.string' => 'Le champ "Mot de passe" doit être une chaîne de caractères.',
+            'password.min' => 'Le champ "Mot de passe" doit contenir au moins 8 caractères.',
+        ];
+
+        $validator = $request->validate($rule, $messages);
+
 
         // Étape 2 : Créer l'utilisateur
         try {
-            $user = User::create([
-                'nom' => $request->nom,
-                'prenoms' => $request->prenoms,
-                'role' => $request->role,
-                'phone' => $request->phone,
-                'email' => $request->email,
-                'password' => Hash::make($request->password),
-                'diocese_id' => $request->diocese_id,
-            ]);
+
+            if ($request->id) {
+                $data = [
+                    'nom' => $request->nom,
+                    'prenoms' => $request->prenoms,
+                    'role' => $request->role,
+                    'phone' => $request->phone,
+                    'email' => $request->email,
+                    'diocese_id' => $request->diocese_id,
+                ];
+
+                if ($request->password) {
+                    $data['password'] = Hash::make($request->password);
+                }
+
+                $user = User::where('id', $request->id)->update($data);
+            } else {
+                $user = User::create([
+                    'nom' => $request->nom,
+                    'prenoms' => $request->prenoms,
+                    'role' => $request->role,
+                    'phone' => $request->phone,
+                    'email' => $request->email,
+                    'password' => Hash::make($request->password),
+                    'diocese_id' => $request->diocese_id,
+                ]);
+            }
+
 
 
 

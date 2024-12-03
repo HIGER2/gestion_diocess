@@ -5,6 +5,7 @@ use App\Http\Controllers\DioceseController;
 use App\Http\Controllers\homeController;
 use App\Http\Controllers\PretreController;
 use App\Http\Controllers\UserController;
+use App\Models\Diocese;
 use Illuminate\Support\Facades\Route;
 
 
@@ -17,7 +18,8 @@ Route::middleware(['web', 'auth'])->group(function () {
 
 
         Route::get('prete-manager', function () {
-            return view('prete-manager');
+            $dioceses = Diocese::orderBy('created_at', 'desc')->get();
+            return view('prete-manager', ['dioceses' => $dioceses]);
         })->name('prete');
 
         Route::get('prete-manager/{prete_id}', function ($prete_id) {
@@ -25,7 +27,8 @@ Route::middleware(['web', 'auth'])->group(function () {
         })->name('prete');
 
         Route::get('utilisateur-manager', function () {
-            return view('utilisateur');
+            $dioceses = Diocese::orderBy('created_at', 'desc')->get();
+            return view('utilisateur', ['dioceses' => $dioceses]);
         })->name('utilisateur.manager');
 
         Route::get('diocese-manager', function () {
@@ -72,7 +75,13 @@ Route::prefix('auth')->group(function () {
     Route::get('/login', function () {
         return view('login');
     });
+    Route::get('/inscription/ba5d380c-2a26-4dd0-9486-9ebfed4df817', function () {
+        $dioceses = Diocese::orderBy('created_at', 'desc')->get();
+        return view('inscription', ['dioceses' => $dioceses]);
+    })->name('login');
+
     Route::post('/login', [AuthController::class, 'login'])->name('login');
+    Route::post('/inscription', [PretreController::class, 'store']);
     Route::middleware(['web'])->group(function () {
         Route::get('/logout', [AuthController::class, 'logout'])->middleware('auth');
         Route::get('/me', [AuthController::class, 'me'])->middleware('auth');

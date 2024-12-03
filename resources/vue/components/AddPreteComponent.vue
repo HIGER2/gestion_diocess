@@ -1,35 +1,45 @@
 
 <script setup>
-import { onMounted, reactive, ref } from 'vue';
-const { dioceses, callback ,dioceseId} = defineProps([ 'dioceses', 'callback','dioceseId' ]);
-import {useToast} from 'vue-toast-notification';
+import { inject, onMounted, reactive, ref } from 'vue';
+const { dioceses, callback, dioceseId, detail } = defineProps([ 'dioceses', 'callback', 'dioceseId', 'detail' ]);
 
-const errrMessage =ref('')
+
+import {useToast} from 'vue-toast-notification';
+import ButtonLoader from './ButtonLoader.vue';
+
+const errrMessage = ref('')
+const isLoading =ref(false);
 const formData = reactive({
-    nom: "Jean",
-    prenoms: "Dupont",
-    matricule: "123456",
-    date_naissance: "1985-05-20",
+    nom: "",
+    prenoms: "",
+    matricule: "",
+    date_naissance: "",
     dioceses_id:'' ,
-    lieu_naissance: "Abidjan",
-    date_ordination_sacerdotale: "2010-06-15",
-    lieu_ordination_sacerdotale: "Yamoussoukro",
-    diplome_etude_ecclesiastique: "Théologie",
-    diplome_etude_profane: "Informatique",
-    numero_telephone: "0123456789",
-    adresse_electronique: "jean.dupont@example.com",
+    lieu_naissance: "",
+    date_ordination_sacerdotale: "",
+    lieu_ordination_sacerdotale: "",
+    diplome_etude_ecclesiastique: "",
+    diplome_etude_profane: "",
+    numero_telephone: "",
+    adresse_electronique: "",
 });
-const handleSave =async (formData) => {
+
+const listeprete = inject('listeprete')
+
+const handleSave = async (formData) => {
+    isLoading.value = true
     if (dioceseId) {
         formData.dioceses_id=dioceseId
     }
     errrMessage.value = ""
     await axios.post('/pretres',formData)
         .then(async response => {
+            if (listeprete) {
+            await listeprete()
+            }
             const $toast = useToast();
-
             $toast.success('Opération effectuée avec succès');
-            await callback()
+
 
         // if (response.data.redirect) {
         //     window.location.href = response.data.redirect;
@@ -39,7 +49,17 @@ const handleSave =async (formData) => {
         errrMessage.value =  error.response.data?.message.split('.')[0]
         console.error('Error fetching user data:', error.response.data?.message.split('.'));
     });
+
+    isLoading.value = false
 };
+
+onMounted(() => {
+
+    if (detail) {
+        Object.assign(formData, detail)
+        formData.dioceses_id = detail?.diocess?.id
+    }
+});
 </script>
 
 <template>
@@ -50,6 +70,7 @@ const handleSave =async (formData) => {
                 </div>
                 <form action="" @submit.prevent="handleSave(formData)">
                     <div class=" my-2">
+                        <!-- {{ detail }} -->
                         <div class="flex items-center justify-between gap-2">
                             <div class="w-full max-w-sm mb-2">
                                 <label for="diocese" class="block text-[13px] font-medium text-gray-700 mb-2">
@@ -60,7 +81,8 @@ const handleSave =async (formData) => {
                                     type="text"
                                     id="diocese"
                                     placeholder="Nom"
-                                    class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2 text-[13px] shadow-sm focus:outline-none focus:ring-1 focus:ring-blue-950 focus:border-blue-500"
+                                    required
+                                    class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2 text-[13px] shadow-sm focus:outline-none focus:ring-1 focus:ring-primary "
                                 />
                             </div>
                             <div class="w-full max-w-sm mb-2">
@@ -71,8 +93,9 @@ const handleSave =async (formData) => {
                                     type="text"
                                     v-model="formData.prenoms"
                                     id="diocese"
+                                    required
                                     placeholder="Prenoms"
-                                    class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2 text-[13px] shadow-sm focus:outline-none focus:ring-1 focus:ring-blue-950 focus:border-blue-500"
+                                    class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2 text-[13px] shadow-sm focus:outline-none focus:ring-1 focus:ring-primary "
                                 />
                             </div>
                         </div>
@@ -80,7 +103,8 @@ const handleSave =async (formData) => {
                             <label for="diocese" class="block text-[13px] font-medium text-gray-700 mb-2">
                                 Selectionner une diocèse
                             </label>
-                            <select v-model="formData.dioceses_id" name="" id=""  class="cursor-pointer block w-full rounded-lg border border-gray-300 bg-gray-50 p-2 text-[13px] shadow-sm focus:outline-none focus:ring-1 focus:ring-blue-950 focus:border-blue-500">
+
+                            <select required v-model="formData.dioceses_id" name="" id=""  class="cursor-pointer block w-full rounded-lg border border-gray-300 bg-gray-50 p-2 text-[13px] shadow-sm focus:outline-none focus:ring-1 focus:ring-primary ">
                                 <option value="" class="cursor-pointer" disabled>Selectionner une diocèse</option>
                                 <option :value="item?.id" v-for="(item, index) in dioceses" :key="index">{{ item?.diocese }}</option>
                             </select>
@@ -94,9 +118,10 @@ const handleSave =async (formData) => {
                                 <input
                                 v-model="formData.numero_telephone"
                                     type="text"
+                                    required
                                     id="diocese"
                                     placeholder="Téléphone"
-                                    class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2 text-[13px] shadow-sm focus:outline-none focus:ring-1 focus:ring-blue-950 focus:border-blue-500"
+                                    class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2 text-[13px] shadow-sm focus:outline-none focus:ring-1 focus:ring-primary "
                                 />
                             </div>
                             <div class="w-full max-w-sm mb-2">
@@ -108,7 +133,7 @@ const handleSave =async (formData) => {
                                     type="text"
                                     id="diocese"
                                     placeholder="Email"
-                                    class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2 text-[13px] shadow-sm focus:outline-none focus:ring-1 focus:ring-blue-950 focus:border-blue-500"
+                                    class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2 text-[13px] shadow-sm focus:outline-none focus:ring-1 focus:ring-primary "
                                 />
                             </div>
                         </div>
@@ -120,9 +145,10 @@ const handleSave =async (formData) => {
                                 <input
                                     v-model="formData.lieu_naissance"
                                     type="text"
+                                    required
                                     id="diocese"
                                     placeholder="Lieu de naissance"
-                                    class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2 text-[13px] shadow-sm focus:outline-none focus:ring-1 focus:ring-blue-950 focus:border-blue-500"
+                                    class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2 text-[13px] shadow-sm focus:outline-none focus:ring-1 focus:ring-primary "
                                 />
                             </div>
                             <div class="w-full max-w-sm mb-2">
@@ -133,8 +159,9 @@ const handleSave =async (formData) => {
                                     type="date"
                                     v-model="formData.date_naissance"
                                     id="diocese"
+                                    required
                                     placeholder=" Date de Naissance"
-                                    class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2 text-[13px] shadow-sm focus:outline-none focus:ring-1 focus:ring-blue-950 focus:border-blue-500"
+                                    class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2 text-[13px] shadow-sm focus:outline-none focus:ring-1 focus:ring-primary "
                                 />
                             </div>
                         </div>
@@ -148,8 +175,9 @@ const handleSave =async (formData) => {
                                     v-model="formData.date_ordination_sacerdotale"
                                     type="date"
                                     id="diocese"
+                                    required
                                     placeholder="Date ordination sacerdotale"
-                                    class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2 text-[13px] shadow-sm focus:outline-none focus:ring-1 focus:ring-blue-950 focus:border-blue-500"
+                                    class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2 text-[13px] shadow-sm focus:outline-none focus:ring-1 focus:ring-primary "
                                 />
                             </div>
                             <div class="w-full max-w-sm mb-2">
@@ -160,8 +188,9 @@ const handleSave =async (formData) => {
                                     v-model="formData.lieu_ordination_sacerdotale"
                                     type="text"
                                     id="diocese"
+                                    required
                                     placeholder="Lieu ordination sacerdotale"
-                                    class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2 text-[13px] shadow-sm focus:outline-none focus:ring-1 focus:ring-blue-950 focus:border-blue-500"
+                                    class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2 text-[13px] shadow-sm focus:outline-none focus:ring-1 focus:ring-primary "
                                 />
                             </div>
                         </div>
@@ -174,8 +203,9 @@ const handleSave =async (formData) => {
                                     v-model="formData.diplome_etude_ecclesiastique"
                                     type="text"
                                     id="diocese"
+                                    required
                                     placeholder="Diplome etude ecclesiastique"
-                                    class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2 text-[13px] shadow-sm focus:outline-none focus:ring-1 focus:ring-blue-950 focus:border-blue-500"
+                                    class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2 text-[13px] shadow-sm focus:outline-none focus:ring-1 focus:ring-primary "
                                 />
                             </div>
                             <div class="w-full max-w-sm mb-2">
@@ -185,14 +215,17 @@ const handleSave =async (formData) => {
                                 <input
                                     v-model="formData.diplome_etude_profane"
                                     type="text"
+                                    required
                                     id="diocese"
                                     placeholder="Diplome etude profane"
-                                    class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2 text-[13px] shadow-sm focus:outline-none focus:ring-1 focus:ring-blue-950 focus:border-blue-500"
+                                    class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2 text-[13px] shadow-sm focus:outline-none focus:ring-1 focus:ring-primary "
                                 />
                             </div>
                         </div>
                     </div>
-                    <button class="mt-6 bg-blue-950 w-full text-white py-2 px-4 rounded-md ">Enregistrer</button>
+                    <button class="mt-6 bg-primary w-full flex items-center justify-center text-white py-2 px-4 rounded-md ">
+                        <ButtonLoader title="Enregistrer" :isLoading="isLoading" />
+                    </button>
                 </form>
         </div>
 </template>

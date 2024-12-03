@@ -22,11 +22,12 @@ class Pretre extends Model
         'diplome_etude_profane',
         'numero_telephone',
         'adresse_electronique',
+        'status'
     ];
 
     protected $casts = [
-        'date_naissance' => 'date',
-        'date_ordination_sacerdotale' => 'date',
+        'date_naissance' => 'date:Y-m-d',
+        'date_ordination_sacerdotale' => 'date:Y-m-d',
     ];
 
     public function diocese()

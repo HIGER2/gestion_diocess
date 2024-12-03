@@ -14,7 +14,7 @@ class PretreController extends Controller
      */
     public function store(Request $request)
     {
-        $validated = $request->validate([
+        $rules = [
             'nom' => 'required|string|max:255',
             'prenoms' => 'required|string|max:255',
             'dioceses_id' => 'nullable|exists:dioceses,id',
@@ -24,9 +24,17 @@ class PretreController extends Controller
             'lieu_ordination_sacerdotale' => 'required|string|max:255',
             'diplome_etude_ecclesiastique' => 'nullable|string|max:300',
             'diplome_etude_profane' => 'nullable|string|max:300',
-            'numero_telephone' => 'numeric',
-            'adresse_electronique' => 'nullable|string|email|max:255|unique:pretres',
-        ], [
+            'numero_telephone' => 'nullable|numeric',
+            'adresse_electronique' => 'nullable|string|email|max:255',
+        ];
+
+        // Si c'est une création (pas d'ID), ajouter la validation unique
+        if (!$request->id) {
+            $rules['numero_telephone'] = 'nullable|numeric|unique:pretres,numero_telephone';
+            $rules['adresse_electronique'] = 'nullable|string|email|max:255|unique:pretres,adresse_electronique';
+        }
+
+        $validated = $request->validate($rules, [
             'nom.required' => 'Le champ "Nom" est obligatoire.',
             'prenoms.required' => 'Le champ "Prénoms" est obligatoire.',
             'date_naissance.required' => 'Le champ "Date de naissance" est obligatoire.',
@@ -40,27 +48,38 @@ class PretreController extends Controller
             'diplome_etude_ecclesiastique.string' => 'Le champ "Diplôme d’étude ecclésiastique" doit être une chaîne de caractères.',
             'diplome_etude_profane.string' => 'Le champ "Diplôme d’étude profane" doit être une chaîne de caractères.',
             'numero_telephone.numeric' => 'Le champ "Numéro de téléphone" doit être un nombre.',
-            'adresse_electronique.required' => 'Le champ "Adresse électronique" est obligatoire.',
+            'numero_telephone.unique' => 'Le numéro de téléphone est déjà utilisé.',
             'adresse_electronique.email' => 'Le champ "Adresse électronique" doit être une adresse email valide.',
             'adresse_electronique.unique' => 'L’adresse électronique saisie est déjà utilisée.',
         ]);
 
-        $diocese = Diocese::findOrFail($validated['dioceses_id']);
+        $diocese = Diocese::findOrFail($request['dioceses_id']);
         $abbreviation = $diocese->abreviation;
 
         // Générer le matricule
-        $validated['matricule'] = $this->generateMatricule(
+        $request['matricule'] = $this->generateMatricule(
             $abbreviation,
             $validated['nom'],
             $validated['prenoms']
         );
-        $pretre = Pretre::create($validated);
+
+        if ($request->id) {
+            // Mise à jour
+            $data = $request->except('diocess');
+
+            // Update the record using the filtered data
+            $pretre = Pretre::where('id', $request->id)->update($data);
+        } else {
+            // Création
+            $pretre = Pretre::create($request->all());
+        }
 
         return response()->json([
-            'message' => 'Prêtre créé avec succès.',
-            'pretre' => $pretre,
+            'message' => $request->id ? 'Prêtre mis à jour avec succès.' : 'Prêtre créé avec succès.',
+            'pretre' => $request->status,
         ], 201);
     }
+
 
     /**
      * Récupérer les détails d'un prêtre.
@@ -134,9 +153,26 @@ class PretreController extends Controller
         return "{$abbreviation}-{$firstLetterNom}{$firstLetterPrenom}-{$randomNumber}";
     }
 
-    public function listPretres()
+    public function listPretres(Request $request)
     {
-        $pretres = Pretre::with('diocese')->orderBy('created_at', 'desc')->get();
+
+        $query = Pretre::with('diocese')
+            ->orderBy('created_at', 'desc')
+            ->where('status', 'active');
+
+        // Recherche par nom, numéro ou email
+        if ($request->has('search')) {
+            $search = $request->input('search');
+            $query->where(function ($q) use ($search) {
+                $q->where('nom', 'like', '%' . $search . '%')
+                    ->orWhere('prenoms', 'like', '%' . $search . '%')
+                    ->orWhere('numero_telephone', 'like', '%' . $search . '%')
+                    ->orWhere('adresse_electronique', 'like', '%' . $search . '%');
+            });
+        }
+
+        // Pagination
+        $pretres = $query->paginate(25);
 
         return response()->json([
             'pretres' => $pretres,

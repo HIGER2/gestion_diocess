@@ -14,13 +14,16 @@ class DioceseController extends Controller
      */
     public function store(Request $request)
     {
-        $validated = $request->validate([
+        $rules =  [
             'diocese' => 'required|string|max:255',
-            'abreviation' => 'required|string|max:10|unique:dioceses,abreviation',
             'emplacement' => 'required|string|max:255',
-            // 'file' => 'nullable|file|mimes:jpg,jpeg,png|max:2048',
+        ];
 
-        ]);
+        if (!$request->id) {
+            $rules['abreviation'] = 'required|string|max:10|unique:dioceses,abreviation';
+        }
+
+        $validated = $request->validate($rules);
 
         // Enregistrement du fichier s'il existe
 
@@ -34,16 +37,31 @@ class DioceseController extends Controller
             $filePath = $request->file('file')->storeAs('uploads/dioceses', $fileName, 'public');
         }
 
+        $diocese  = "";
         // Traitement des autres données
-        $diocese = Diocese::create([
-            'diocese' => $request->diocese,
-            'abreviation' => $request->abreviation,
-            'emplacement' => $request->emplacement,
-            'url_image' => $filePath ? Storage::url($filePath) : null,  // Si un fichier a été téléchargé, on enregistre son URL, sinon null
-        ]);
+        if ($request->id) {
+
+            $value = [
+                'diocese' => $request->diocese,
+                'emplacement' => $request->emplacement,
+            ];
+            if ($filePath) {
+                $value['url_image'] = $filePath;
+            }
+
+            $diocese = Diocese::where('id', $request->id)->update($value);
+        } else {
+            $diocese = Diocese::create([
+                'diocese' => $request->diocese,
+                'abreviation' => $request->abreviation,
+                'emplacement' => $request->emplacement,
+                'url_image' => $filePath ? Storage::url($filePath) : null,  // Si un fichier a été téléchargé, on enregistre son URL, sinon null
+            ]);
+        }
+
 
         return response()->json([
-            'message' => 'Diocèse créé avec succès.',
+            'message' => $request->id ? 'Diocèse mise à jour avec succès.' : 'Diocèse créé avec succès.',
             'diocese' => $diocese,
         ], 201);
     }
@@ -87,7 +105,9 @@ class DioceseController extends Controller
      */
     public function show($id)
     {
-        $diocese = Diocese::with('pretres')->findOrFail($id);
+        $diocese = Diocese::with(['pretres' => function ($q) {
+            $q->with('diocese')->where('status', 'active');
+        }])->findOrFail($id);
 
         return response()->json([
             'diocese' => $diocese,
@@ -99,11 +119,30 @@ class DioceseController extends Controller
      */
 
 
-    public function listDiocese()
+    public function listDiocese(Request $request)
     {
-        $diocese = Diocese::orderBy('created_at', 'desc')->get(); // Récupère tous les enregistrements avec leurs champs
+        $query = Diocese::orderBy('created_at', 'desc');
+
+        // Recherche par nom ou d'autres champs
+        if ($request->has('search')) {
+            $search = $request->input('search');
+            $query->where('nom', 'like', '%' . $search . '%');
+        }
+
+        // Pagination
+        $dioceses = $query->paginate(25);
         return response()->json([
-            'data' => $diocese,
+            'data' => $dioceses,
+        ]);
+    }
+
+
+    public function listAll(Request $request)
+    {
+        $dioceses = Diocese::orderBy('created_at', 'desc')->get();
+
+        return response()->json([
+            'data' => $dioceses,
         ]);
     }
 }

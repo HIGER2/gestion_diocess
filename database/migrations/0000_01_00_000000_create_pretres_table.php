@@ -26,6 +26,7 @@ return new class extends Migration
 
             $table->date('date_naissance');
             $table->string('lieu_naissance');
+            $table->string('status')->default('active');
             $table->date('date_ordination_sacerdotale');
             $table->string('lieu_ordination_sacerdotale');
             $table->string('diplome_etude_ecclesiastique');

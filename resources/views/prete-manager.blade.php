@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('content')
 <div>
-<prete-manager/>
+<prete-manager dioceses='@json($dioceses)'/>
 </div>
 @endsection
