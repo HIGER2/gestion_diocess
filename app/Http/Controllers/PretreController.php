@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Diocese;
+use App\Models\DiplomeAcademique;
+use App\Models\DiplomeEcclesiastique;
 use App\Models\Pretre;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -65,13 +67,50 @@ class PretreController extends Controller
 
         if ($request->id) {
             // Mise à jour
-            $data = $request->except('diocess');
+            $data = $request->except(['diocess', 'diplome_ecclesiastique', 'diplome_academique']);
 
+            $diplome_ecclesiastique = $request->except('diplome_ecclesiastique');
+            $diplome_academique = $request->except('diplome_academique');
             // Update the record using the filtered data
             $pretre = Pretre::where('id', $request->id)->update($data);
+            if (count($request->diplome_academique) > 0) {
+                foreach ($request->diplome_academique as $key => $value) {
+                    DiplomeAcademique::where("id", $value['id'])->update([
+                        'intitule_diplome' => $value['intitule_diplome']
+                    ]);
+                }
+            }
+
+            if (count($request->diplome_ecclesiastique) > 0) {
+                foreach ($request->diplome_ecclesiastique as $key => $value) {
+                    DiplomeEcclesiastique::where("id", $value['id'])->update([
+                        'intitule_diplome' => $value['intitule_diplome']
+                    ]);
+                }
+            }
         } else {
             // Création
             $pretre = Pretre::create($request->all());
+
+            if (count($request->diplome_academique) > 0) {
+                foreach ($request->diplome_academique as $key => $value) {
+                    DiplomeAcademique::create([
+                        'pretes_id' => $pretre->id,
+                        'intitule_diplome' => $value['intitule_diplome']
+                    ]);
+                }
+            }
+
+            if (count($request->diplome_ecclesiastique) > 0) {
+                foreach ($request->diplome_ecclesiastique as $key => $value) {
+                    DiplomeEcclesiastique::create(
+                        [
+                            'pretes_id' => $pretre->id,
+                            'intitule_diplome' => $value['intitule_diplome']
+                        ]
+                    );
+                }
+            }
         }
 
         return response()->json([
@@ -157,6 +196,8 @@ class PretreController extends Controller
     {
 
         $query = Pretre::with('diocese')
+            ->with("diplome_academique")
+            ->with("diplome_ecclesiastique")
             ->orderBy('created_at', 'desc')
             ->where('status', 'active');
 

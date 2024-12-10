@@ -41,7 +41,9 @@ const handleSave =async (formData) => {
             const $toast = useToast();
 
             $toast.success('Opération effectuée avec succès');
-            await callback()
+            if (callback) {
+                await callback()
+            }
 
         // if (response.data.redirect) {
         //     window.location.href = response.data.redirect;
@@ -65,7 +67,7 @@ onMounted(() => {
 
 <template>
         <div class="bg-white p-4 rounded-lg shadow-lg max-w-lg w-[400px]" @click.stop>
-                <h2 class="text-xl font-semibold mb-3">Ajouter une diocèse</h2>
+                <h2 class="text-xl font-semibold mb-3">Ajouter un diocèse</h2>
                 <div v-if="errrMessage" class="p-4 w-full bg-red-100 text-[12px] rounded-md text-red-800">
                         {{ errrMessage }}
                 </div>
@@ -86,7 +88,7 @@ onMounted(() => {
                         </div>
                         <div class="w-full max-w-sm mb-2">
                             <label for="diocese" class="block text-[13px] font-medium text-gray-700 mb-2">
-                                Nom de la diocèse
+                                Nom du diocèse
                             </label>
                             <input
                                 v-model="formData.diocese"

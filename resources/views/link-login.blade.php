@@ -1,4 +1,4 @@
 @extends('layouts.appAuth')
 @section('content')
-<login-page/>
+<link-login-page :token='{{json_encode($token)}}'/>
 @endsection

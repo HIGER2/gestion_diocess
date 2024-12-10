@@ -13,11 +13,7 @@
 
     </head>
     <body id="app">
-
-        <app-layout :user="{{ json_encode(Auth::user()) }}">
-            @yield('content')
-        </app-layout>
-
+        @yield('content')
         <script>
 
         </script>

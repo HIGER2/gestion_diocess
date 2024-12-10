@@ -32,7 +32,7 @@ class DiocesesAndPretresSeeder extends Seeder
 
             // Créer 20 prêtres pour chaque diocèse
             for ($j = 1; $j <= 1; $j++) {
-                DB::table('pretres')->insert([
+                $preteId =  DB::table('pretres')->insertGetId([
                     'nom' => "Prêtre $j du Diocèse $i",
                     'prenoms' => "Prenom $j",
                     'matricule' => "MTR-$i-$j",
@@ -41,11 +41,22 @@ class DiocesesAndPretresSeeder extends Seeder
                     'lieu_naissance' => "Lieu de naissance $j",
                     'date_ordination_sacerdotale' => now()->subYears(rand(1, 20))->toDateString(),
                     'lieu_ordination_sacerdotale' => "Lieu d'ordination $j",
-                    'diplome_etude_ecclesiastique' => "Diplôme Ecclesiastique $j",
-                    'diplome_etude_profane' => "Diplôme Profane $j",
                     'numero_telephone' =>
                     rand(100000000, 999999999),
                     'adresse_electronique' => "pretre$j-diocese$i@example.com",
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]);
+
+                DB::table('diplome_academiques')->insert([
+                    'intitule_diplome' => "doctaorat",
+                    'pretes_id' => $preteId,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]);
+                DB::table('diplome_ecclesiastiques')->insert([
+                    'intitule_diplome' => "doctaorat",
+                    'pretes_id' => $preteId,
                     'created_at' => now(),
                     'updated_at' => now(),
                 ]);

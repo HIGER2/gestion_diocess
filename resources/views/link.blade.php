@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('content')
 <div>
-    <utilisateur-page :dioceses='{{json_encode($dioceses)}}' />
+    <link-page dioceses='@json($dioceses)'/>
 </div>
 @endsection

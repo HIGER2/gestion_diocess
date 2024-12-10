@@ -1,6 +1,6 @@
-@extends('layouts.app')
+@extends('layouts.appAuth')
 @section('content')
 <div>
-    <inscription-page dioceses='@json($dioceses)'/>
+    <inscription-page :diocese='{{json_encode($diocese)}}' />
 </div>
 @endsection

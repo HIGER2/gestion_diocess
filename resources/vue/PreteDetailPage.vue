@@ -45,7 +45,6 @@ onMounted(() => {
 
 <template>
     <div>
-        <AppLayout>
             <div class="w-full">
                 <div class="flex items-center justify-center flex-col ">
                     <div class="w-[460px] min-h-[100px] bg-white rounded-md mb-3 p-2 flex flex-col items-center justify-center gap-3">
@@ -97,7 +96,6 @@ onMounted(() => {
                     </div>
                 </div>
             </div>
-        </AppLayout>
     </div>
 </template>
 

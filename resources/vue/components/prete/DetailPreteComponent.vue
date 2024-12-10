@@ -19,6 +19,10 @@ const setData = () => {
 };
 
 onMounted(() => {
+    console.log('====================================');
+    console.log(item?.diplome_etude_ecclesiastique);
+    console.log(item?.diplomes_academique);
+    console.log('====================================');
     details.value = [
         {
             children: [ { label: 'Diocèse', value: item?.diocess?.diocese }, { label: 'Téléphone', value: item?.numero_telephone }, ]
@@ -35,12 +39,12 @@ onMounted(() => {
                 { label: 'Date ordination sacerdotale', value: formatDate(item?.date_ordination_sacerdotale) }
             ]
         },
-        {
-            children: [ { label: 'Lieu ordination sacerdotale', value: item?.lieu_ordination_sacerdotale },
-            { label: 'Diplôme étude ecclésiastique', value: item?.diplome_etude_ecclesiastique }, ]
-        },
+        // {
+        //     children: [ { label: 'Lieu ordination sacerdotale', value: item?.lieu_ordination_sacerdotale },
+        //     { label: 'Diplôme étude ecclésiastique', value: item?.diplome_etude_ecclesiastique }, ]
+        // },
 
-        {children:[  { label: 'Diplôme étude profane', value: item?.diplome_etude_profane },]}
+        // {children:[  { label: 'Diplôme étude profane', value: item?.diplome_etude_profane },]}
 ];
 });
 </script>
@@ -67,51 +71,39 @@ onMounted(() => {
                     </div>
                     <div class="w-full min-h-[100px] bg-white rounded-md mb-3">
                         <ul class="w-full">
-                            <div v-for="(items, index) in details" :key="index" class="flex justify-between ">
-                            <li v-for="(item, index) in items?.children" :key="index" class="flex flex-col w-[50%]  p-2 text-[12px] font-[500]">
-                                <span class="text-zinc-600">{{ item?.label }}</span>
-                                <span class="text-zinc-900">{{ item?.value }}</span>
-                            </li>
-                            <!-- <li class="flex flex-col justify-between items-center p-4 text-[14px] font-[500]">
-                                <span>Télephone</span>
-                                <span class="text-zinc-600">{{ item?.numero_telephone }}</span>
-                            </li> -->
-                            </div>
-                            <!-- <div class="flex justify-between items-end">
-                                <li class="flex flex-col  p-4 text-[14px] font-[500]">
-                                    <span>Email</span>
-                                    <span class="text-zinc-600">{{ item?.adresse_electronique }}</span>
-                                </li>
-                                <li class="flex flex-col justify-between items-center p-4 text-[14px] font-[500]">
-                                    <span>Date naissance</span>
-                                    <span class="text-zinc-600">{{formatDate(item?.date_naissance) }}</span>
+                            <div v-for="(items, index) in details" :key="index" class="flex justify-end ">
+                                <li v-for="(item, index) in items?.children" :key="index" class="flex flex-col w-[50%] justify-end  m-2  p-2 text-[12px] font-[500]">
+                                    <span class="text-zinc-600">{{ item?.label }}</span>
+                                    <span class="text-zinc-900">{{ item?.value }}</span>
                                 </li>
                             </div>
-                            <div class="flex justify-between items-end">
-                                <li class="flex flex-col justify-between items-center p-4 text-[14px] font-[500]">
-                                    <span>Lieu naissance</span>
-                                    <span class="text-zinc-600">{{ item?.lieu_naissance }}</span>
-                                </li>
-                                <li class="flex justify-between items-center p-4 text-[14px] font-[500]">
-                                    <span>Date ordination sacerdotale</span>
-                                    <span class="text-zinc-600">{{formatDate( item?.date_ordination_sacerdotale )}}</span>
-                                </li>
-                            </div>
-                             <li class="flex justify-between items-center p-4 text-[14px] font-[500]">
-                                <span>Lieu ordination sacerdotale</span>
-                                <span class="text-zinc-600">{{ item?.lieu_ordination_sacerdotale }}</span>
-                            </li>
-                            <li class="flex justify-between items-center p-4 text-[14px] font-[500]">
-                                <span>Diplome étude ecclesiastique</span>
-                                <span class="text-zinc-600">{{ item?.diplome_etude_ecclesiastique }}</span>
-                            </li>
-                             <li class="flex justify-between items-center p-4 text-[14px] font-[500]">
-                                <span>Diplome étude profane</span>
-                                <span class="text-zinc-600">{{ item?.diplome_etude_profane }}</span>
-                            </li> -->
+
 
                         </ul>
+                        <ul class="w-full">
+                            <div class="flex justify-between">
+                                <li class="flex flex-col  p-4 text-[14px] font-[500]">
+                                    <span>Diplôme étude ecclésiastique</span>
+                                    <!-- {{ item }} -->
+                                    <template v-if="item?.diplome_ecclesiastique">
+                                        <span v-for="(item, index) in item?.diplome_ecclesiastique" :key="index" class="text-zinc-600 text-[12px] font-[500]">
+                                            {{ item?.intitule_diplome }}
+                                        </span>
+                                    </template>
+                                </li>
+                                <li class="flex flex-col  p-4 text-[14px] font-[500]">
+                                    <span>Diplôme étude profane</span>
+                                    <!-- {{ item }} -->
+                                    <template v-if="item?.diplome_academique">
+                                        <span v-for="(item, index) in item?.diplome_academique" :key="index" class="text-zinc-600 text-[12px] font-[500]">
+                                            {{ item?.intitule_diplome }}
+                                        </span>
+                                    </template>
+                            </li>
+                            </div>
+                        </ul>
                     </div>
+
                     <!-- <button  v-if="item?.status=='inactive'" class="mt-6 bg-primary w-full text-white py-2 px-4 rounded-md ">Confirmer</button> -->
                 </div>
             </div>

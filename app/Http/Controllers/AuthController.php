@@ -36,11 +36,16 @@ class AuthController extends Controller
         // Authentifier l'utilisateur
         Auth::login($user);
         $request->session()->regenerate();
+        $path = "/";
+
+        if ($user->role == 'admin') {
+            $path = "/diocese-manager/" . $user->diocese_id;
+        }
 
         // Réponse en cas de succès
         return response()->json([
             'message' => 'Connexion réussie.',
-            'redirect' => '/', // URL vers laquelle le client doit rediriger
+            'redirect' => $path, // URL vers laquelle le client doit rediriger
         ], 200);
     }
 

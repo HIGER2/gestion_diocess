@@ -53,28 +53,28 @@ const hanldeliste = async () => {
 
 
 
-const hanldelisteDiocese = async () => {
-    axios.get('/diocesse/all')
-    .then(response => {
-        if (response) {
-            dioceses.value = response?.data?.data
-        }
-    })
-    .catch(error => {
-        console.error('Error fetching user data:', error.response.data);
-    });
-};
+// const hanldelisteDiocese = async () => {
+//     axios.get('/diocesse/all')
+//     .then(response => {
+//         if (response) {
+//             dioceses.value = response?.data?.data
+//         }
+//     })
+//     .catch(error => {
+//         console.error('Error fetching user data:', error.response.data);
+//     });
+// };
 onMounted(async() => {
   await  Promise.all([
-     hanldeliste(),
-    hanldelisteDiocese()])
+     hanldeliste()
+    //   hanldelisteDiocese()
+  ])
 });
 </script>
 
 
 <template>
     <div>
-        <AppLayout>
             <div class="w-full">
                 <div class="flex justify-between items-center">
                     <h1 class="uppercase text-[16px] font-[800]">Listes des utilisateurs</h1>
@@ -122,10 +122,9 @@ onMounted(async() => {
             </div>
             <Modal :isActive="isModalOpen" :onClose="openModal">
                 <div class=" mb-2 p-5 max-h-full">
-                    <AddUtilisateurComponent :callback="hanldeliste" :dioceses="JSON.parse(dioceses)"/>
+                    <AddUtilisateurComponent :callback="hanldeliste" :dioceses="dioceses"/>
                 </div>
             </Modal>
-        </AppLayout>
     </div>
 </template>
 

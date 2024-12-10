@@ -34,4 +34,13 @@ class Pretre extends Model
     {
         return $this->belongsTo(Diocese::class, 'dioceses_id', 'id'); // Assure-toi que la clé étrangère est bien 'dioceses_id' dans la table 'pretres'
     }
+
+    public function diplome_academique()
+    {
+        return $this->hasMany(DiplomeAcademique::class, 'pretes_id', 'id');
+    }
+    public function diplome_ecclesiastique()
+    {
+        return $this->hasMany(DiplomeEcclesiastique::class, 'pretes_id', 'id');
+    }
 }

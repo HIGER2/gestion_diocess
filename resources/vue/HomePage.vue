@@ -35,11 +35,10 @@ onMounted(() => {
 
 <template>
     <div>
-        <app-layout>
             <div class="w-full">
                     <div class="flex justify-between items-center">
                         <h1 class="uppercase text-[16px] font-[800]">Gestion des diocesses</h1>
-                        <button type="button" @click="openModal(true)" class="bg-primary text-white p-2 rounded-md text-[14px] cursor-pointer">Ajouter une diocese</button>
+                        <button type="button" @click="openModal(true)" class="bg-primary text-white p-2 rounded-md text-[14px] cursor-pointer">Ajouter un diocèse</button>
                     </div>
                     <ContentLoading v-if="isLoading"/>
 
@@ -66,7 +65,6 @@ onMounted(() => {
                         <add-diocese-component :callback="hanldeliste"/>
                     </Modal>
             </div>
-        </app-layout>
     </div>
 </template>
 

@@ -19,7 +19,7 @@ const openModal = (state) => {
 };
 
 class Pretre {
-  constructor({id,nom, prenoms,status, matricule, diocese, date_naissance, lieu_naissance, date_ordination_sacerdotale, lieu_ordination_sacerdotale, diplome_etude_ecclesiastique, diplome_etude_profane, numero_telephone, adresse_electronique}) {
+  constructor({id,nom,diplome_academique, prenoms,status, matricule, diocese, date_naissance, lieu_naissance, date_ordination_sacerdotale, lieu_ordination_sacerdotale, diplome_ecclesiastique, numero_telephone, adresse_electronique}) {
     this.id = id;
     this.nom = nom;
     this.prenoms = prenoms;
@@ -30,10 +30,10 @@ class Pretre {
     this.lieu_naissance = lieu_naissance;
     this.date_ordination_sacerdotale = date_ordination_sacerdotale;
     this.lieu_ordination_sacerdotale = lieu_ordination_sacerdotale;
-    this.diplome_etude_ecclesiastique = diplome_etude_ecclesiastique;
-    this.diplome_etude_profane = diplome_etude_profane;
     this.numero_telephone = numero_telephone;
     this.adresse_electronique = adresse_electronique;
+    this.diplome_ecclesiastique = diplome_ecclesiastique;
+    this.diplome_academique = diplome_academique;
   }
 }
 
@@ -91,7 +91,6 @@ onMounted(async () => {
 
 <template>
     <div>
-        <AppLayout>
             <div class="w-full">
                 <div class="flex-row flex justify-between items-center w-full">
                     <h1 class="uppercase text-[16px] font-[800]">Liste des prêtres</h1>
@@ -106,12 +105,12 @@ onMounted(async () => {
                         <button type="button" @click="openModal(true)" class="bg-primary text-white p-2 rounded-md text-[14px] cursor-pointer w-max">Ajouter un prêtres</button>
                     </div>
                 </div>
-                <div class="text-[12px] flex gap-2 item-center w-full bg-red ">
+                <!-- <div class="text-[12px] flex gap-2 item-center w-full bg-red ">
                     <span> Lien d' inscription</span>
                     <a class="underline cursor-pointer text-blue-500" href="http://demo.africarice.site/auth/inscription/ba5d380c-2a26-4dd0-9486-9ebfed4df817">
                         http://demo.africarice.site/auth/inscription/ba5d380c-2a26-4dd0-9486-9ebfed4df817
                     </a>
-                </div>
+                </div> -->
                 <ContentLoading v-if="isLoading"/>
                 <div v-else class="w-full rounded-md bg-white border min-h-[100px] mt-5 p-6">
                     <div class="overflow-x-auto">
@@ -127,7 +126,6 @@ onMounted(async () => {
                  <add-prete-component :callback="hanldeliste" :dioceses="JSON.parse(dioceses)"/>
                </div>
             </Modal>
-        </AppLayout>
     </div>
 </template>
 
