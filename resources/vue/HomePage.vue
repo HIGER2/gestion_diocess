@@ -7,6 +7,8 @@ import AddDioceseComponent from './components/AddDioceseComponent.vue';
 import { onMounted, ref } from 'vue';
 import Empty from './components/Empty.vue';
 import ContentLoading from './components/ContentLoading.vue';
+import TableComponent from './components/diocese/TableComponent.vue';
+
 const isModalOpen = ref(false)
 const dioceses = ref()
 const isLoading=ref(true)
@@ -36,7 +38,7 @@ onMounted(() => {
 <template>
     <div>
             <div class="w-full">
-                    <div class="flex justify-between items-center">
+                    <div class="flex justify-between items-center mb-16">
                         <h1 class="uppercase text-[16px] font-[800]">Gestion des diocesses</h1>
                         <button type="button" @click="openModal(true)" class="bg-primary text-white p-2 rounded-md text-[14px] cursor-pointer">Ajouter un diocèse</button>
                     </div>
@@ -45,7 +47,8 @@ onMounted(() => {
                     <div v-else class="w-full flex flex-wrap mt-5 ">
                         <!-- {{ dioceses }} -->
                         <template v-if="dioceses?.data?.length > 0">
-                            <div  style="width: calc(100% / 4 - 10px);" class=" border flex gap-3 p-2 cursor-pointer min-h-[100px] bg-white rounded-md m-[5px]"
+                            <table-component :dioceses="dioceses"/>
+                            <!-- <div  style="width: calc(100% / 4 - 10px);" class=" border flex gap-3 p-2 cursor-pointer min-h-[100px] bg-white rounded-md m-[5px]"
                                 v-for="(item, index) in dioceses?.data" :key="index"
                                 >
                                 <div class="w-[100px] h-[100px]">
@@ -56,7 +59,7 @@ onMounted(() => {
                                     <div class="text-zinc-500"><i class="uil uil-map-marker-alt"></i> {{ item?.emplacement }}</div>
                                     <a :href="`/diocese-manager/${item?.id}`" class="max-w-max bg-zinc-200 text-center text-blue-950 p-1 px-2 rounded-md fw-medium text-[16px]">voir plus <i class="uil uil-angle-right"></i></a>
                                 </div>
-                                </div>
+                            </div> -->
                           </template>
 
                             <Empty v-else/>

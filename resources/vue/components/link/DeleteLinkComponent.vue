@@ -1,6 +1,6 @@
 
 <script setup>
-import { onMounted, ref } from 'vue';
+import { inject, onMounted, ref } from 'vue';
 import AlertModal from '../AlertModal.vue';
 import {useToast} from 'vue-toast-notification';
 
@@ -11,23 +11,21 @@ const errrMessage = ref("")
 const setOpen = (state) =>{
     isOpen.value = state
 }
-
-const handleDelete =async (formData) => {
-    //   let response = confirm('Voulez effctuer cette opération ?')
-    // if (!response) return
+const liste_link = inject('liste_link');
+const handleDelete = async (formData) => {
+    // let response = confirm('Voulez effctuer cette opération ?')
+    //     if (!response) return
     errrMessage.value = ""
-    await axios.delete(`/diocesse/${formData?.id}`)
+    await axios.delete(`register-links/delete/${formData?.id}`)
         .then(async response => {
             const $toast = useToast();
             $toast.success('Opération effectuée avec succès');
-            window.location.href = "/diocese-manager"
-            // if (callback) {
-            // // await callback()
-            // }
+            if (liste_link) {
+                await liste_link()
+            }
     })
     .catch(error => {
         errrMessage.value =  error.response.data?.message.split('.')[0]
-        console.error('Error fetching user data:', error.response.data?.message.split('.'));
     });
 };
 
@@ -35,9 +33,7 @@ const handleDelete =async (formData) => {
 
 <template>
     <div>
-       <span @click="setOpen(true)"  class="cursor-pointer bg-red-500 text-white px-3 rounded-md py-2 hover:bg-red-600 ">
-            <i class="uil uil-trash-alt"></i>
-            </span>
+        <span @click="setOpen(true)" class="bg-gray-100 px-2 rounded-md py-2 hover:bg-zinc-200"><i class="uil uil-trash-alt"></i></span>
         <AlertModal :isOpen="isOpen" :onClose="()=>setOpen(false)" :callback="()=>handleDelete(item)"/>
     </div>
 </template>

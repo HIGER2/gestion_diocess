@@ -51,7 +51,7 @@ const onSelect = (event) => {
 }
 onMounted(() => {
     if (detail) {
-        Object.assign(user,detail)
+        Object.assign(link, detail)
     }
 });
 
@@ -65,7 +65,7 @@ onMounted(() => {
                 </div>
                 <form action="" @submit.prevent="createLink(link)">
                 <div class=" my-2">
-                    <div class="w-full  mb-3" >
+                    <div class="w-full  mb-3" v-if="!link?.id" >
                         <label for="diocese" class="block text-[13px] font-medium text-gray-700 mb-2">
                             Assingner à une diocèse
                         </label>
@@ -94,7 +94,7 @@ onMounted(() => {
                             id="diocese"
                             required
                             disabled
-                            placeholder="mot de passe temporaire"
+                            placeholder="Nom utilisateur"
                             class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2 text-[13px] shadow-sm focus:outline-none focus:ring-1 focus:ring-primary "
                         />
                     </div>
@@ -107,7 +107,7 @@ onMounted(() => {
                             v-model="link.password"
                             type="password"
                             id="diocese"
-                            required
+                            :required="link?.id ? false : true"
                             placeholder="mot de passe temporaire"
                             class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2 text-[13px] shadow-sm focus:outline-none focus:ring-1 focus:ring-primary "
                         />

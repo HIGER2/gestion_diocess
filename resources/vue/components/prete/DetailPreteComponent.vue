@@ -52,7 +52,7 @@ onMounted(() => {
 
 <template>
     <div>
-        <span  class="bg-gray-100 px-2 hover:bg-zinc-200 rounded-md py-2"  @click="openModal(true)">
+        <span  class="bg-custom px-2 hover:bg-zinc-200 rounded-md py-2"  @click="openModal(true)">
             <i class="uil uil-ellipsis-h"></i>
         </span>
 

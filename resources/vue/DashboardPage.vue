@@ -61,46 +61,48 @@ onMounted(() => {
             <!-- {{ analytic_data?.prete_inactive }} -->
             <div class="w-full items-center justify-center flex">
                 <div class="w-full">
-                    <h1 v-if="user?.role  != 'admin'" class="uppercase text-[16px] font-[800]  mb-2 mt-2">Tableau de bord</h1>
-                    <div v-if="user?.role  != 'admin'" class="  flex items-center justify-center bg-white rounded-md my-auto ">
-                        <div style="width: calc(100% / 4 - 10px);" href="/diocese-manager" class="border shadow-slate-900 h-auto flex flex-row items-center  gap-3 p-2 cursor-pointer min-h-[50px] rounded-md m-[5px]">
-                            <div class=" w-[70px] h-[70px] bg-yellow-100 items-center justify-center flex rounded-[50%]">
+                    <h1 v-if="user?.role  != 'admin'" class="uppercase text-[16px] font-[800]  mb-2 ">Tableau de bord</h1>
+                    <div v-if="user?.role  != 'admin'" class="p-4 flex-wrap  flex items-center justify-center bg-custom rounded-md my-auto ">
+                        <div style="width: calc(100% / 4 - 10px);" href="/diocese-manager" class=" shadow-slate-900 h-auto flex flex-row items-center  gap-3 p-2 cursor-pointer min-h-[115px] justify-center rounded-md m-[5px]">
+                            <!-- <div class=" w-[70px] h-[70px] bg-yellow-100 items-center justify-center flex rounded-[50%]">
                                 <i class="fi fi-bs-church text-[20px] text-yellow-600"></i>
-                            </div>
+                            </div> -->
                             <div class="flex flex-col items-center justify-center">
-                                <h2>Total diocèse</h2>
-                                <h1 class="text-[30px] font-[600]">{{ analytic_data?.diocese_count }}</h1>
+                                <h2 class="text-[12px]  font-[600]">Total diocèse</h2>
+                                <h1 class="text-[20px] font-[600]">{{ analytic_data?.diocese_count }}</h1>
                             </div>
                         </div>
-                        <div style="width: calc(100% / 4 - 10px);" href="/prete-manager" class="border h-auto flex flex-row items-center  gap-3 p-1 cursor-pointer min-h-[50px] rounded-md m-[5px]">
-                            <div class="w-[70px] h-[70px] bg-green-100 rounded-[50%] items-center justify-center flex">
+                        <div style="width: calc(100% / 4 - 10px);" href="/prete-manager" class=" h-auto flex flex-row items-center  gap-3 p-1 cursor-pointer min-h-[115px] justify-center rounded-md m-[5px]">
+                            <!-- <div class="w-[70px] h-[70px] bg-green-100 rounded-[50%] items-center justify-center flex">
                                 <i class="fi fi-rr-users-alt text-[20px] text-green-600"></i>
-                            </div>
+                            </div> -->
                             <div class="flex flex-col items-center justify-center">
-                                <h2>Total prêtres</h2>
-                                <h1 class="text-[30px] font-[600]">{{ analytic_data?.prete_count }}</h1>
+                                <h2 class="text-[12px]  font-[600]">Total prêtres</h2>
+                                <h1 class="text-[20px] font-[600]">{{ analytic_data?.prete_count }}</h1>
                             </div>
                         </div>
-                        <div style="width: calc(100% / 4 - 10px);" href="/utilisateur-manager" class="border h-auto flex flex-row items-center  gap-3 p-1 cursor-pointer min-h-[50px] rounded-md m-[5px]">
-                            <div class="w-[70px] h-[70px] bg-blue-100 rounded-[50%] items-center justify-center  flex">
+                        <div style="width: calc(100% / 4 - 10px);" href="/utilisateur-manager" class=" h-auto flex flex-row items-center  gap-3 p-1 cursor-pointer min-h-[115px] justify-center rounded-md m-[5px]">
+                            <!-- <div class="w-[70px] h-[70px] bg-blue-100 rounded-[50%] items-center justify-center  flex">
                                 <i class="fi fi-rr-users-alt text-[20px] text-blue-600"></i>
-                            </div>
+                            </div> -->
                             <div class="flex flex-col items-center justify-center">
-                                <h2>Total utilisateur</h2>
-                                <h1 class="text-[30px] font-[600]">{{ analytic_data?.user_count }}</h1>
+                                <h2 class="text-[12px]  font-[600]">Total utilisateur</h2>
+                                <h1 class="text-[20px] font-[600]">{{ analytic_data?.user_count }}</h1>
                             </div>
                         </div>
-                        <div style="width: calc(100% / 4 - 10px);" href="/utilisateur-manager" class="border h-auto flex flex-row items-center  gap-3 p-1 cursor-pointer min-h-[50px] rounded-md m-[5px]">
-                            <div class="w-[70px] h-[70px] bg-blue-100 rounded-[50%] items-center justify-center  flex">
+                        <div style="width: calc(100% / 4 - 10px);" href="/utilisateur-manager" class=" h-auto flex flex-row items-center  gap-3 p-1 cursor-pointer min-h-[115px] justify-center rounded-md m-[5px]">
+                            <!-- <div class="w-[70px] h-[70px] bg-blue-100 rounded-[50%] items-center justify-center  flex">
                                 <i class="fi fi-rr-users-alt text-[20px] text-blue-600"></i>
-                            </div>
+                            </div> -->
                             <div class="flex flex-col items-center justify-center">
-                                <h2>Inscrit récemment</h2>
-                                <h1 class="text-[30px] font-[600]">{{ analytic_data?.prete_count_inactive }}</h1>
+                                <h2 class="text-[12px]  font-[600]">En attentes d'approbations</h2>
+                                <h1 class="text-[20px] font-[600]">{{ analytic_data?.prete_count_inactive }}</h1>
                             </div>
                         </div>
                     </div>
-                    <h1 class="uppercase text-[16px] font-[800] mb-3 mt-6">Inscrit récemment</h1>
+
+
+                    <h1 class="uppercase text-[16px] font-[800] mb-3 mt-8">En attentes d'approbations</h1>
 
                     <ContentLoading v-if="isLoading"/>
                     <div v-else class="w-full rounded-md bg-white border min-h-[100px] p-6">

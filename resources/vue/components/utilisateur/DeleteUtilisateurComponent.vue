@@ -12,7 +12,9 @@ const setOpen = (state) =>{
     isOpen.value = state
 }
 
-const handleDelete =async (formData) => {
+const handleDelete = async (formData) => {
+    //   let response = confirm('Voulez effctuer cette opération ?')
+    //     if (!response) return
     errrMessage.value = ""
     await axios.delete(`/user/${formData?.id}`)
         .then(async response => {

@@ -72,20 +72,56 @@ class PretreController extends Controller
             $diplome_ecclesiastique = $request->except('diplome_ecclesiastique');
             $diplome_academique = $request->except('diplome_academique');
             // Update the record using the filtered data
-            $pretre = Pretre::where('id', $request->id)->update($data);
-            if (count($request->diplome_academique) > 0) {
+            $pretre = Pretre::findOrFail($request->id);
+            $pretre->update($data);
+
+            if (isset($request->diplome_academique) && count($request->diplome_academique) > 0) {
                 foreach ($request->diplome_academique as $key => $value) {
-                    DiplomeAcademique::where("id", $value['id'])->update([
-                        'intitule_diplome' => $value['intitule_diplome']
-                    ]);
+                    if (isset($value['id']) && !empty($value['id'])) {
+                        // Mise à jour si l'ID existe
+                        DiplomeAcademique::where("id", $value['id'])->update([
+                            'intitule_diplome' => $value['intitule_diplome']
+                        ]);
+                    } else {
+                        // Création si l'ID n'existe pas
+                        DiplomeAcademique::create([
+                            'intitule_diplome' => $value['intitule_diplome'],
+                            'pretes_id' => $pretre->id,
+                        ]);
+                    }
+
+                    // DiplomeAcademique::where("id", $value['id'])->update([
+                    //     'intitule_diplome' => $value['intitule_diplome']
+                    // // ]);
+                    // DiplomeAcademique::updateOrCreate(
+                    //     ['id' => $value['id'] ?? null], // Condition pour trouver l'enregistrement
+                    //     [
+                    //         'intitule_diplome' => $value['intitule_diplome'],
+                    //         'pretes_id' => $pretre->id,
+                    //     ] // Données à mettre à jour ou à créer
+                    // );
                 }
             }
 
-            if (count($request->diplome_ecclesiastique) > 0) {
+            if (isset($request->diplome_academique) && count($request->diplome_ecclesiastique) > 0) {
                 foreach ($request->diplome_ecclesiastique as $key => $value) {
-                    DiplomeEcclesiastique::where("id", $value['id'])->update([
-                        'intitule_diplome' => $value['intitule_diplome']
-                    ]);
+
+                    if (isset($value['id']) && !empty($value['id'])) {
+                        // Mise à jour si l'ID existe
+                        DiplomeEcclesiastique::where("id", $value['id'])->update([
+                            'intitule_diplome' => $value['intitule_diplome']
+                        ]);
+                    } else {
+                        // Création si l'ID n'existe pas
+                        DiplomeEcclesiastique::create([
+                            'intitule_diplome' => $value['intitule_diplome'],
+                            'pretes_id' => $pretre->id,
+                        ]);
+                    }
+
+                    // DiplomeEcclesiastique::where("id", $value['id'])->update([
+                    //     'intitule_diplome' => $value['intitule_diplome']
+                    // ]);
                 }
             }
         } else {

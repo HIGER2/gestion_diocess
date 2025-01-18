@@ -15,30 +15,26 @@ const errrMessage=ref('')
 const analytic=inject('analytic')
 const vaidate = async (formData) => {
 
-    errrMessage.value = ""
-    await axios.post('/pretres', {
-        ...formData,
-        dioceses_id:formData?.diocess?.id,
-        status: 'active'
-    })
-        .then(async response => {
-            if (analytic) {
-            await analytic()
-            }
+        let response = confirm('Voulez effctuer cette opération ?')
+        if (!response) return
+        errrMessage.value = ""
+        await axios.post('/pretres', {
+            ...formData,
+            dioceses_id:formData?.diocess?.id,
+            status: 'active'
+        })
+            .then(async response => {
+
+            if (analytic) await analytic()
+
             const $toast = useToast();
             $toast.success('Opération effectuée avec succès');
-
-
-        // if (response.data.redirect) {
-        //     window.location.href = response.data.redirect;
-        // }
     })
     .catch(error => {
         errrMessage.value =  error.response.data?.message.split('.')[0]
         console.error('Error fetching user data:', error.response.data?.message.split('.'));
     })
         ;
-    openModal()
 };
 
 

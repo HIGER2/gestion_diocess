@@ -12,24 +12,56 @@ class RegisterLinkController extends Controller
 {
     public function create(Request $request)
     {
-        $request->validate([
+        $rules = [
             'dioceses_id' => 'required|exists:dioceses,id',
-            'username' => 'required|string|unique:regsiter_links,username',
-            'password' => 'required|string|min:8',
-        ]);
+            'username' => 'required|string',
+            'password' => 'nullable|string|min:8'
+        ];
+        $messages = [
+            'dioceses_id.required' => 'Le champ diocèse est obligatoire.',
+            'dioceses_id.exists' => 'Le diocèse sélectionné est invalide.',
+            'username.required' => 'Le nom d’utilisateur est obligatoire.',
+            'username.string' => 'Le nom d’utilisateur doit être une chaîne de caractères.',
+            'password.string' => 'Le mot de passe doit être une chaîne de caractères.',
+            'password.min' => 'Le mot de passe doit contenir au moins :min caractères.'
+        ];
 
-        $token = bin2hex(random_bytes(16));
+        if (!$request->id) {
+            $rules['password'] = 'required|string|min:8';
+        }
 
-        $link = RegsiterLink::create([
-            'username' => $request->username,
-            'password' => Hash::make($request->password),
-            'token' => $token,
-            'link' => env('APP_URL') . '/register-links/access/' . $token,
-            'dioceses_id' => $request->dioceses_id,
-            'expires_at' => now()->addDays(7),
-        ]);
+        $request->validate($rules, $messages);
 
-        return response()->json(['message' => 'Link created successfully', 'link' => $link], 201);
+        if ($request->id) {
+            $link = RegsiterLink::findOrFail($request->id);
+
+            $data = [
+                'status' => $request->status,
+                'username' => $request->username,
+                'expires_at' => $request->expires_at ?? $link->expires_at,
+            ];
+
+            if ($request->password) {
+                $data['password'] =  Hash::make($request->password);
+            }
+
+            $link->update($data);
+
+            return response()->json(['message' => 'Lien modifié', 'link' => $link], 201);
+        } else {
+            $token = bin2hex(random_bytes(16));
+
+            $link = RegsiterLink::create([
+                'username' => $request->username,
+                'password' => Hash::make($request->password),
+                'token' => $token,
+                'link' => env('APP_URL') . '/register-links/access/' . $token,
+                'dioceses_id' => $request->dioceses_id,
+                'expires_at' => now()->addDays(7),
+            ]);
+
+            return response()->json(['message' => 'Lien creé avec succès', 'link' => $link], 201);
+        }
     }
 
     /**

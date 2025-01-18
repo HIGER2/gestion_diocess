@@ -18,8 +18,6 @@ Route::middleware(['web', 'auth'])->group(function () {
     Route::prefix('/')->group(function () {
 
         Route::middleware(['role:super_admin'])->group(function () {
-
-
             Route::get('prete-manager', function () {
                 $dioceses = Diocese::orderBy('created_at', 'desc')->get();
                 return view('prete-manager', ['dioceses' => $dioceses]);

@@ -23,6 +23,7 @@ export default {
                     light: '#ffc947',
                 },
                 customGray: '#f6f6f6',
+                custom: '#16330014',
             },
             fontFamily: {
                 sans: ['Figtree', ...defaultTheme.fontFamily.sans],

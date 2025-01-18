@@ -8,7 +8,7 @@ const { liste_Prete,dioceses } = defineProps([ 'liste_Prete','dioceses' ]);
 <template>
     <table class="min-w-full bg-white  rounded-lg">
         <thead>
-            <tr class="bg-gray-100 text-gray-600 capitalize text-[11px] leading-normal">
+            <tr class="bg-custom text-gray-600 capitalize text-[11px] leading-normal">
                 <th class="p-3 py-4 text-left">Nom</th>
                 <th class="p-3 py-4 text-left">Prénoms</th>
                 <th class="p-3 text-left">Matricule</th>

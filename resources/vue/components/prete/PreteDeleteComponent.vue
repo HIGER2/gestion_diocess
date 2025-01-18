@@ -13,7 +13,9 @@ const setOpen = (state) =>{
 }
 const listeprete = inject('listeprete')
 
-const handleDelete =async (formData) => {
+const handleDelete = async (formData) => {
+    //   let response = confirm('Voulez effctuer cette opération ?')
+    //     if (!response) return
     errrMessage.value = ""
     await axios.delete(`/pretres/${formData?.id}`)
         .then(async response => {
@@ -33,7 +35,7 @@ const handleDelete =async (formData) => {
 
 <template>
     <div>
-        <span @click="setOpen(true)" class="bg-gray-100 px-2 rounded-md py-2 hover:bg-zinc-200"><i class="uil uil-trash-alt"></i></span>
+        <span @click="setOpen(true)" class="bg-custom px-2 rounded-md py-2 hover:bg-zinc-200"><i class="uil uil-trash-alt"></i></span>
         <AlertModal :isOpen="isOpen" :onClose="()=>setOpen(false)" :callback="()=>handleDelete(item)"/>
     </div>
 </template>

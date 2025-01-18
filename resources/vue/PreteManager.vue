@@ -112,7 +112,7 @@ onMounted(async () => {
                     </a>
                 </div> -->
                 <ContentLoading v-if="isLoading"/>
-                <div v-else class="w-full rounded-md bg-white border min-h-[100px] mt-5 p-6">
+                <div v-else class="w-full rounded-md bg-white border min-h-[100px] mt-8 p-6">
                     <div class="overflow-x-auto">
                         <template v-if="pretes?.length > 0">
                             <table-component :liste_Prete="pretes" :dioceses="JSON.parse(dioceses)"/>
