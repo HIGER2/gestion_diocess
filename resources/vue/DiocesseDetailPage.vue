@@ -8,6 +8,8 @@ import TableComponent from './components/prete/TableComponent.vue';
 import DeleteDioceseComponent from './components/diocese/DeleteDioceseComponent.vue';
 import EditDioceseComponent from './components/diocese/EditDioceseComponent.vue';
 import ContentLoading from './components/ContentLoading.vue';
+import Empty from './components/Empty.vue';
+
 import { provide } from 'vue';
 
 const { diocese_id } = defineProps([ 'diocese_id' ]);
@@ -116,7 +118,13 @@ onMounted(() => {
                         <button type="button" @click="openModal(true)" class="bg-primary text-white p-2 rounded-md text-[14px] cursor-pointer">Ajouter un prêtres</button>
                     </div>
                     <div class="overflow-x-auto mt-4 border rounded-md">
-                            <TableComponent :liste_Prete="pretres"/>
+                     <template v-if="pretres?.length > 0">
+                           <TableComponent :liste_Prete="pretres"/>
+                     </template>
+
+                    <template v-else>
+                        <Empty />
+                    </template>
                     </div>
                 </div>
             </div>
