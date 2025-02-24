@@ -113,9 +113,6 @@ Route::get('/authenticate/{token}', function ($token) {
 })->name('login.link.authenticate');
 Route::post('/authenticate/auth/{token}', [RegisterLinkController::class, 'authenticate'])->name('register.link.authenticate');
 
-
-
-
 Route::prefix('auth')->group(function () {
     Route::get('/login', function () {
         return view('login');

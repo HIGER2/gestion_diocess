@@ -1,6 +1,6 @@
 
 <script setup>
-import { onMounted, provide, ref } from 'vue';
+import { inject, onMounted, provide, ref } from 'vue';
 import AppLayout from './layouts/AppLayout.vue';
 import Modal from './components/Modal.vue';
 import AddLinkComponent from './components/link/AddLinkComponent.vue';
@@ -33,6 +33,7 @@ const hanldeliste = async () => {
 
 provide('liste_link',hanldeliste)
 
+const user = inject('user',ref())
 onMounted(async () => {
     hanldeliste()
 });
@@ -44,11 +45,11 @@ onMounted(async () => {
         <div class="w-full">
             <div class="flex justify-between items-center">
                 <h1 class="uppercase text-[16px] font-[800]">Liens d'inscription</h1>
-                <button type="button" @click="openModal(true)" class="bg-primary text-white p-2 rounded-md text-[14px] cursor-pointer">Créer un lien</button>
+                <button type="button" v-if=" user?.role !=='admin'" @click="openModal(true)" class="bg-primary text-white p-2 rounded-md text-[14px] cursor-pointer">Créer un lien</button>
             </div>
             <ContentLoading v-if="isLoading"/>
-            <div v-else class="w-full rounded-md bg-white border min-h-[100px] mt-5 p-6">
-                <div class="overflow-x-auto">
+            <div v-else class="w-full">
+                <div class="rounded-md bg-white border min-h-[100px] mt-5">
                     <table class="min-w-full bg-white  rounded-lg">
                         <thead>
                             <tr class="bg-custom text-gray-600 capitalize text-[11px] leading-normal">
@@ -74,7 +75,9 @@ onMounted(async () => {
                                 <td class="p-3 ">{{ item?.email }}</td> -->
                                 <td class="p-3  flex gap-2">
                                     <EditLinkComponent  :item="item" :dioceses="JSON.parse(dioceses)"/>
-                                    <DeleteLinkComponent :item="item"/>
+                                    <template v-if=" user?.role !=='admin'" >
+                                        <DeleteLinkComponent :item="item"/>
+                                    </template>
                                     <!-- <a :href="`/prete-manager/${item?.id}`" class="bg-gray-100 px-3 rounded-md py-2"><i class="uil uil-ellipsis-h"></i></a> -->
                                 </td>
                             </tr>

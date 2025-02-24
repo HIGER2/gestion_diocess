@@ -81,7 +81,7 @@ onMounted(async() => {
                     <button type="button" @click="openModal(true)" class="bg-primary text-white p-2 rounded-md text-[14px] cursor-pointer">Ajouter un utilsateur</button>
                 </div>
                 <ContentLoading v-if="isLoading"/>
-                <div v-else class="w-full rounded-md bg-white border min-h-[100px] mt-5 p-6">
+                <div v-else class="w-full ">
                     <!-- <div class="w-full max-w-sm mb-2">
                             <input
                                 type="search"
@@ -90,7 +90,7 @@ onMounted(async() => {
                                 class="block w-full rounded-lg mb-5 border border-gray-300 bg-gray-50 p-2 text-[13px] shadow-sm focus:outline-none focus:ring-1 focus:ring-blue-950 focus:border-blue-500"
                             />
                         </div> -->
-                    <div class="overflow-x-auto">
+                    <div class="rounded-md bg-white border min-h-[100px] mt-5">
                         <table class="min-w-full bg-white  rounded-lg">
                             <thead>
                                 <tr class="bg-custom text-gray-600 capitalize text-[11px] leading-normal">

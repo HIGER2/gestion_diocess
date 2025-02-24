@@ -71,15 +71,23 @@ const routes = {
         }
     ],
     "admin": [
-            {
+          {
                 name: "Tableau de bord",
                 path: "/",
                 pathActive: " ",
+                icon:'uil-create-dashboard'
         },
         {
-            name: "Gestion des Diocèses",
+            name: "Ma Diocèse",
             path: "/diocese-manager",
             pathActive: "diocese-manager",
+            icon:"uil-home"
+        },
+        {
+            name: "Gestion des liens",
+            path: "/link-manager",
+            pathActive: "link-manager",
+            icon:'uil-link-alt'
         },
     ]
 }

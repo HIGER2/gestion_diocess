@@ -39,7 +39,38 @@ function verifierRetraite(dateNaissance) {
 }
 
 // Exemple d'utilisation
+const commandes = [
+  { id: 2123213, client: "douma douma", montant: "F135432.00" },
+  { id: 2123214, client: "Jean Dupont", montant: "F123232.00" }
+];
 
+const imprimerLigne = (commande) => {
+  const content = `
+    <html>
+      <head>
+        <title>Impression Commande</title>
+        <style>
+          body { font-family: Arial, sans-serif; padding: 20px; }
+          h2 { text-align: center; }
+          .print-section { width: 100%; max-width: 400px; margin: auto; }
+          p { font-size: 14px; line-height: 1.5; }
+        </style>
+      </head>
+      <body>
+        <div class="print-section">
+          <h2>Commande #${commande.id}</h2>
+          <p><strong>Client :</strong> ${commande.client}</p>
+          <p><strong>Montant :</strong> ${commande.montant}</p>
+        </div>
+
+      </body>
+    </html>
+  `;
+
+  const printWindow = window.open('', '', 'width=600,height=400');
+  printWindow.document.write(content);
+  printWindow.document.close();
+};
 </script>
 
 <template>
@@ -79,6 +110,7 @@ function verifierRetraite(dateNaissance) {
                 <td class="p-3 py-4 ">{{verifierRetraite(item.date_naissance)  }}
                 </td>
                 <td class="p-3 py-4  flex gap-2 text-zinc-900">
+                    <!-- <button @click="imprimerLigne(commande)">🖨 Imprimer</button> -->
                     <EditPreteComponent :item="item" :dioceses="dioceses"/>
                     <DetailPreteComponent :item="item" />
                     <PreteDeleteComponent :item="item"/>

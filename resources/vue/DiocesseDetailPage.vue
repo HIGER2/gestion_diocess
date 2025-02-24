@@ -13,6 +13,7 @@ import { provide } from 'vue';
 const { diocese_id } = defineProps([ 'diocese_id' ]);
 const pretres = ref()
 const diocese = ref()
+const count = ref()
 const isLoading=ref(false)
 const isModalOpen = ref(false)
 
@@ -45,8 +46,9 @@ const hanldeliste = async (diocese_id) => {
     .then(response => {
 
         pretres.value = response?.data?.diocese?.pretres.map(value => new Pretre(value))
-        delete response?.data?.diocese?.pretres
+        // delete response?.data?.diocese?.pretres
         diocese.value = response?.data?.diocese
+        count.value = response?.data?.count_pretes
     })
     .catch(error => {
         console.error('Error fetching user data:', error.response.data);
@@ -108,8 +110,9 @@ onMounted(() => {
                     </ul>
                 </div> -->
                 <div class="w-full rounded-md bg-white min-h-[100px]">
+                    <!-- {{ pretres }} -->
                     <div class="flex items-center justify-between">
-                        <h6>Liste des prêtres du diocèse</h6>
+                        <h6>Liste des prêtres du diocèse ({{ count }})</h6>
                         <button type="button" @click="openModal(true)" class="bg-primary text-white p-2 rounded-md text-[14px] cursor-pointer">Ajouter un prêtres</button>
                     </div>
                     <div class="overflow-x-auto mt-4 border rounded-md">

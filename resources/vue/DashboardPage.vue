@@ -105,8 +105,8 @@ onMounted(() => {
                     <h1 class="uppercase text-[16px] font-[800] mb-3 mt-8">En attentes d'approbations</h1>
 
                     <ContentLoading v-if="isLoading"/>
-                    <div v-else class="w-full rounded-md bg-white border min-h-[100px] p-6">
-                        <div class="overflow-x-auto">
+                    <div v-else class="">
+                        <div class="overflow-x-auto mt-4 border rounded-md w-full">
                             <template v-if="pretes?.length> 0">
                                 <table-component :liste_Prete="pretes" :dioceses="dioceses"/>
                             </template>

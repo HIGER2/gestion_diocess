@@ -29,7 +29,7 @@ return new class extends Migration
             $table->string('status')->default('active');
             $table->date('date_ordination_sacerdotale');
             $table->string('lieu_ordination_sacerdotale');
-            $table->bigInteger('numero_telephone')->nullable();
+            $table->string('numero_telephone')->nullable();
             $table->string('adresse_electronique');
             $table->timestamps();
         });

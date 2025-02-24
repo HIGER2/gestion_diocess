@@ -38,16 +38,17 @@ onMounted(() => {
 <template>
     <div>
             <div class="w-full">
-                    <div class="flex justify-between items-center mb-16">
-                        <h1 class="uppercase text-[16px] font-[800]">Gestion des diocesses</h1>
+                    <div class="flex justify-between items-center mb-5">
+                        <h1 class="uppercase text-[16px] font-[800]">Gestion des diocesses ({{ dioceses?.total }})</h1>
                         <button type="button" @click="openModal(true)" class="bg-primary text-white p-2 rounded-md text-[14px] cursor-pointer">Ajouter un diocèse</button>
                     </div>
                     <ContentLoading v-if="isLoading"/>
-
                     <div v-else class="w-full flex flex-wrap mt-5 ">
                         <!-- {{ dioceses }} -->
                         <template v-if="dioceses?.data?.length > 0">
-                            <table-component :dioceses="dioceses"/>
+                            <div class="overflow-x-auto mt-4 border rounded-md w-full">
+                                <table-component :dioceses="dioceses"/>
+                            </div>
                             <!-- <div  style="width: calc(100% / 4 - 10px);" class=" border flex gap-3 p-2 cursor-pointer min-h-[100px] bg-white rounded-md m-[5px]"
                                 v-for="(item, index) in dioceses?.data" :key="index"
                                 >

@@ -13,7 +13,7 @@ const isModalOpen = ref(false)
 // const dioceses =ref()
 const searchQuery =ref("")
 const isLoading=ref(true)
-
+const count = ref()
 const openModal = (state) => {
     isModalOpen.value = state
 };
@@ -50,7 +50,8 @@ const hanldeliste = async (url='/pretres/all?page=1') => {
     )
     .then(response => {
         if (response) {
-            pretes.value = response?.data?.pretres?.data?.map(value =>new Pretre(value) )
+            pretes.value = response?.data?.pretres?.data?.map(value => new Pretre(value))
+            count.value = response?.data?.pretres?.total
         }
     })
     .catch(error => {
@@ -83,7 +84,6 @@ onMounted(async () => {
         hanldeliste()
 
     // await Promise.all([
-        hanldeliste()
     // hanldelisteDiocese()])
 });
 </script>
@@ -93,7 +93,7 @@ onMounted(async () => {
     <div>
             <div class="w-full">
                 <div class="flex-row flex justify-between items-center w-full">
-                    <h1 class="uppercase text-[16px] font-[800]">Liste des prêtres</h1>
+                    <h1 class="uppercase text-[16px] font-[800]">Liste des prêtres ({{ count }})</h1>
                     <div class=" flex-row flex gap-3  items-center ">
                        <input
                                 type="search"
@@ -112,8 +112,8 @@ onMounted(async () => {
                     </a>
                 </div> -->
                 <ContentLoading v-if="isLoading"/>
-                <div v-else class="w-full rounded-md bg-white border min-h-[100px] mt-8 p-6">
-                    <div class="overflow-x-auto">
+                <div v-else class="w-full">
+                    <div class="overflow-x-auto mt-4 border rounded-md w-full">
                         <template v-if="pretes?.length > 0">
                             <table-component :liste_Prete="pretes" :dioceses="JSON.parse(dioceses)"/>
                         </template>

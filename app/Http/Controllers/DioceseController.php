@@ -111,6 +111,7 @@ class DioceseController extends Controller
 
         return response()->json([
             'diocese' => $diocese,
+            'count_pretes' => $diocese->pretres->count()
         ]);
     }
 
@@ -129,6 +130,7 @@ class DioceseController extends Controller
             $query->where('nom', 'like', '%' . $search . '%');
         }
 
+        $count =  $query->count();
         // Pagination
         $dioceses = $query->paginate(25);
         return response()->json([
