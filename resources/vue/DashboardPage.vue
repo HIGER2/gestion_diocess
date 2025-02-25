@@ -15,7 +15,7 @@ const analytic_data = ref("")
 const pretes = ref([])
 const user = computed(()=>inject('user'))
 class Pretre {
-  constructor({id,nom, prenoms,status, matricule, diocese, date_naissance, lieu_naissance, date_ordination_sacerdotale, lieu_ordination_sacerdotale, diplome_etude_ecclesiastique, diplome_etude_profane, numero_telephone, adresse_electronique}) {
+  constructor({id,nom, prenoms,status,diplome_ecclesiastique,diplome_academique, matricule, diocese, date_naissance, lieu_naissance, date_ordination_sacerdotale, lieu_ordination_sacerdotale, diplome_etude_ecclesiastique, diplome_etude_profane, numero_telephone, adresse_electronique}) {
     this.id = id;
     this.nom = nom;
     this.prenoms = prenoms;
@@ -30,6 +30,8 @@ class Pretre {
     this.diplome_etude_profane = diplome_etude_profane;
     this.numero_telephone = numero_telephone;
     this.adresse_electronique = adresse_electronique;
+    this.diplome_academique = diplome_academique;
+    this.diplome_ecclesiastique = diplome_ecclesiastique;
   }
 }
 const analytic = async () => {
@@ -41,7 +43,6 @@ const analytic = async () => {
         pretes.value = analytic_data.value?.prete_inactive.map(value =>new Pretre(value))
     })
     .catch(error => {
-        console.error('Error fetching user data:', error.response.data);
     });
 
     isLoading.value = false;
@@ -63,7 +64,7 @@ onMounted(() => {
                 <div class="w-full">
                     <h1 v-if="user?.role  != 'admin'" class="uppercase text-[16px] font-[800]  mb-2 ">Tableau de bord</h1>
                     <div v-if="user?.role  != 'admin'" class="p-4 flex-wrap  flex items-center justify-center bg-custom rounded-md my-auto ">
-                        <div style="width: calc(100% / 4 - 10px);" href="/diocese-manager" class=" shadow-slate-900 h-auto flex flex-row items-center  gap-3 p-2 cursor-pointer min-h-[115px] justify-center rounded-md m-[5px]">
+                        <div style="width: calc(100% / 5 - 10px);" href="/diocese-manager" class=" shadow-slate-900 h-auto flex flex-row items-center  gap-3 p-2 cursor-pointer min-h-[115px] justify-center rounded-md m-[5px]">
                             <!-- <div class=" w-[70px] h-[70px] bg-yellow-100 items-center justify-center flex rounded-[50%]">
                                 <i class="fi fi-bs-church text-[20px] text-yellow-600"></i>
                             </div> -->
@@ -72,7 +73,7 @@ onMounted(() => {
                                 <h1 class="text-[20px] font-[600]">{{ analytic_data?.diocese_count }}</h1>
                             </div>
                         </div>
-                        <div style="width: calc(100% / 4 - 10px);" href="/prete-manager" class=" h-auto flex flex-row items-center  gap-3 p-1 cursor-pointer min-h-[115px] justify-center rounded-md m-[5px]">
+                        <div style="width: calc(100% / 5 - 10px);" href="/prete-manager" class=" h-auto flex flex-row items-center  gap-3 p-1 cursor-pointer min-h-[115px] justify-center rounded-md m-[5px]">
                             <!-- <div class="w-[70px] h-[70px] bg-green-100 rounded-[50%] items-center justify-center flex">
                                 <i class="fi fi-rr-users-alt text-[20px] text-green-600"></i>
                             </div> -->
@@ -81,7 +82,16 @@ onMounted(() => {
                                 <h1 class="text-[20px] font-[600]">{{ analytic_data?.prete_count }}</h1>
                             </div>
                         </div>
-                        <div style="width: calc(100% / 4 - 10px);" href="/utilisateur-manager" class=" h-auto flex flex-row items-center  gap-3 p-1 cursor-pointer min-h-[115px] justify-center rounded-md m-[5px]">
+                         <div style="width: calc(100% / 5 - 10px);" href="/prete-manager" class=" h-auto flex flex-row items-center  gap-3 p-1 cursor-pointer min-h-[115px] justify-center rounded-md m-[5px]">
+                            <!-- <div class="w-[70px] h-[70px] bg-green-100 rounded-[50%] items-center justify-center flex">
+                                <i class="fi fi-rr-users-alt text-[20px] text-green-600"></i>
+                            </div> -->
+                            <div class="flex flex-col items-center justify-center">
+                                <h2 class="text-[12px]  font-[600]">Retraite dans 5 ans</h2>
+                                <h1 class="text-[20px] font-[600]">{{ analytic_data?.prete_count_retraite }}</h1>
+                            </div>
+                        </div>
+                        <div style="width: calc(100% / 5 - 10px);" href="/utilisateur-manager" class=" h-auto flex flex-row items-center  gap-3 p-1 cursor-pointer min-h-[115px] justify-center rounded-md m-[5px]">
                             <!-- <div class="w-[70px] h-[70px] bg-blue-100 rounded-[50%] items-center justify-center  flex">
                                 <i class="fi fi-rr-users-alt text-[20px] text-blue-600"></i>
                             </div> -->
@@ -90,7 +100,8 @@ onMounted(() => {
                                 <h1 class="text-[20px] font-[600]">{{ analytic_data?.user_count }}</h1>
                             </div>
                         </div>
-                        <div style="width: calc(100% / 4 - 10px);" href="/utilisateur-manager" class=" h-auto flex flex-row items-center  gap-3 p-1 cursor-pointer min-h-[115px] justify-center rounded-md m-[5px]">
+
+                        <div style="width: calc(100% / 5 - 10px);" href="/utilisateur-manager" class=" h-auto flex flex-row items-center  gap-3 p-1 cursor-pointer min-h-[115px] justify-center rounded-md m-[5px]">
                             <!-- <div class="w-[70px] h-[70px] bg-blue-100 rounded-[50%] items-center justify-center  flex">
                                 <i class="fi fi-rr-users-alt text-[20px] text-blue-600"></i>
                             </div> -->

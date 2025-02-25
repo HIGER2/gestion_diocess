@@ -1,6 +1,6 @@
 
 <script setup>
-import { inject, onMounted, ref } from 'vue';
+import { inject, onMounted, onUnmounted, ref } from 'vue';
 import AlertModal from '../AlertModal.vue';
 import {useToast} from 'vue-toast-notification';
 
@@ -20,9 +20,10 @@ const handleDelete = async (formData) => {
     await axios.delete(`/pretres/${formData?.id}`)
         .then(async response => {
             const $toast = useToast();
+            setOpen(false)
             $toast.success('Opération effectuée avec succès');
             if (listeprete) {
-            await listeprete()
+                await listeprete()
             }
     })
     .catch(error => {
@@ -31,6 +32,8 @@ const handleDelete = async (formData) => {
     });
 };
 
+onUnmounted(() => {
+});
 </script>
 
 <template>

@@ -19,10 +19,6 @@ const setData = () => {
 };
 
 onMounted(() => {
-    console.log('====================================');
-    console.log(item?.diplome_etude_ecclesiastique);
-    console.log(item?.diplomes_academique);
-    console.log('====================================');
     details.value = [
         {
             children: [ { label: 'Diocèse', value: item?.diocess?.diocese }, { label: 'Téléphone', value: item?.numero_telephone }, ]

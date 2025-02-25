@@ -78,7 +78,7 @@ const routes = {
                 icon:'uil-create-dashboard'
         },
         {
-            name: "Ma Diocèse",
+            name: "Mon Diocèse",
             path: "/diocese-manager",
             pathActive: "diocese-manager",
             icon:"uil-home"

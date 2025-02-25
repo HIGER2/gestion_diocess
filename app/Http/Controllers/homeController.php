@@ -23,9 +23,11 @@ class homeController extends Controller
         $dioceses = Diocese::orderBy('created_at', 'desc')->get();
         $prete_count = Pretre::where('status', 'active')->count();
         $prete_count_inactive = Pretre::where('status', 'inactive')->count();
-
+        $preteRetraite = Pretre::whereRaw('(YEAR(CURDATE()) - YEAR(date_naissance)) = 55')->count();
         // Récupération des prêtres inactifs
         $prete_inactive_query = Pretre::with('diocese')
+            ->with("diplome_academique")
+            ->with("diplome_ecclesiastique")
             ->where('status', 'inactive');
 
         // Filtrage spécifique pour les admins
@@ -44,6 +46,7 @@ class homeController extends Controller
             'message' => 'analytic',
             'data' => (object)[
                 "user_count" => $user_count,
+                "prete_count_retraite" => $preteRetraite,
                 "prete_count" => $prete_count,
                 "diocese_count" => $diocese_count, // Correction de la clé pour correspondre au nom
                 "prete_count_inactive" => $prete_count_inactive,

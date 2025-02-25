@@ -1,6 +1,6 @@
 
 <script setup>
-import { watch } from 'vue';
+import { onUnmounted, watch } from 'vue';
 
 const {isActive ,onClose} = defineProps([ 'isActive', 'onClose' ]);
 
@@ -10,6 +10,11 @@ watch(() => isActive, () => {
     } else {
         document.querySelector('body').style.overflow = 'auto';
     }
+});
+
+onUnmounted(() => {
+document.querySelector('body').style.overflow = 'auto';
+
 });
 </script>
 
