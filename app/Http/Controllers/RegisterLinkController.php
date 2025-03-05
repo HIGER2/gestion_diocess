@@ -22,23 +22,23 @@ class RegisterLinkController extends Controller
         if (!$request->id) {
             $rules['password'] =  [
                 "required",
-                // "string",
-                // "min:8",
-                // "regex:/[A-Z]/",
-                // "regex:/[a-z]/",
-                // "regex:/[0-9]/",
-                // "regex:/[@$!%*?&]/",
+                "string",
+                "min:8",
+                "regex:/[A-Z]/",
+                "regex:/[a-z]/",
+                "regex:/[0-9]/",
+                "regex:/[@$!%*?&]/",
                 // "confirmed",
             ];
         } else if ($request->id && $request->password) {
             $rules['password'] =  [
-                // "required",
-                // "string",
-                // "min:8",
-                // "regex:/[A-Z]/",
-                // "regex:/[a-z]/",
-                // "regex:/[0-9]/",
-                // "regex:/[@$!%*?&]/",
+                "required",
+                "string",
+                "min:8",
+                "regex:/[A-Z]/",
+                "regex:/[a-z]/",
+                "regex:/[0-9]/",
+                "regex:/[@$!%*?&]/",
                 // "confirmed",
             ];
         }
