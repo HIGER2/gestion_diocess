@@ -6,6 +6,7 @@ use App\Http\Controllers\homeController;
 use App\Http\Controllers\PretreController;
 use App\Http\Controllers\RegisterLinkController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\ViewController;
 use App\Models\Diocese;
 use Illuminate\Support\Facades\Route;
 
@@ -23,9 +24,6 @@ Route::middleware(['web', 'auth'])->group(function () {
                 return view('prete-manager', ['dioceses' => $dioceses]);
             })->name('prete');
 
-            Route::get('prete-manager/{prete_id}', function ($prete_id) {
-                return view('prete-detail', ['prete_id' => $prete_id]);
-            })->name('prete');
 
             Route::get('utilisateur-manager', function () {
                 $dioceses = Diocese::orderBy('created_at', 'desc')->get();
@@ -38,12 +36,22 @@ Route::middleware(['web', 'auth'])->group(function () {
         });
 
         Route::middleware(['role:super_admin,admin'])->group(function () {
+            Route::get('prete-manager/{prete_id}', [ViewController::class, 'findprete'])->name('prete');
+            Route::get('user', [ViewController::class, 'userAuth'])->name('user.auth');
+
             Route::get('', function () {
                 return view('dashboard');
             })->name('dashboard');
+
             Route::get('diocese-manager/{diocese_id}', function ($diocese_id) {
                 return view('diocese-detail', ['diocese_id' => $diocese_id]);
             })->name('diocese-detail');
+
+            Route::get('link-manager', function () {
+                $dioceses = Diocese::orderBy('created_at', 'desc')->get();
+                return view('link', ['dioceses' => $dioceses]);
+            })->name('link');
+
             Route::get('link-manager', function () {
                 $dioceses = Diocese::orderBy('created_at', 'desc')->get();
                 return view('link', ['dioceses' => $dioceses]);
@@ -53,7 +61,6 @@ Route::middleware(['web', 'auth'])->group(function () {
 
     Route::middleware(['role:super_admin,admin'])->group(function () {
         Route::get('/analytic', [homeController::class, 'analytic']);
-
         Route::prefix('user')->group(function () {
             Route::post('/', [UserController::class, 'store']);
             Route::get('/all', [UserController::class, 'listUser']);
@@ -67,6 +74,7 @@ Route::middleware(['web', 'auth'])->group(function () {
     Route::prefix('pretres')->group(function () {
         Route::middleware(['role:super_admin'])->group(function () {
             Route::get('/all', [PretreController::class, 'listPretres']);
+            Route::post('/parcourt', [PretreController::class, 'parcourt']);
             Route::get('/{id}', [PretreController::class, 'show']);
             Route::delete('/{id}', [PretreController::class, 'destroy']);
         });
@@ -111,6 +119,7 @@ Route::middleware('isAuth')->group(function () {
 Route::get('/authenticate/{token}', function ($token) {
     return view('link-login', ['token' => $token]);
 })->name('login.link.authenticate');
+
 Route::post('/authenticate/auth/{token}', [RegisterLinkController::class, 'authenticate'])->name('register.link.authenticate');
 
 Route::prefix('auth')->group(function () {

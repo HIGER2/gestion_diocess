@@ -40,7 +40,8 @@ const analytic = async () => {
     .then(response => {
 
         analytic_data.value = response?.data?.data
-        pretes.value = analytic_data.value?.prete_inactive.map(value =>new Pretre(value))
+        pretes.value = analytic_data.value?.prete_inactive
+        // .map(value =>new Pretre(value))
     })
     .catch(error => {
     });

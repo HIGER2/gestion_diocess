@@ -32,9 +32,9 @@ const authLogin = async () => {
 <template>
     <main>
         <div class="container min-h-screen bg-zinc-50">
-            <div class="card  shadow-md bg-white">
+            <div class="card  ">
                 <div class="content">
-                    <h4 class="font-[900] text-[18px]">Se connecter</h4>
+                    <h4 class="font-[900] text-4xl mb-6">Se connecter</h4>
                     <div v-if="errrMessage" class="p-4 w-full text-center bg-red-100 text-[12px] rounded-md text-red-800">
                         {{ errrMessage }}
                 </div>
@@ -48,7 +48,7 @@ const authLogin = async () => {
                         <div class="groupeForm">
                             <label for=""  class="block text-[13px] font-medium text-gray-700 mb-2">Mot de passe</label>
                             <div class="forminput">
-                                <input type="password" v-model="login.password" cl class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-3 text-[13px] shadow-sm focus:outline-none focus:ring-1 focus:ring-primary " required>
+                                <input type="text" v-model="login.password" cl class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-3 text-[13px] shadow-sm focus:outline-none focus:ring-1 focus:ring-primary " required>
                             </div>
                         </div>
                         <button type="submit" class="mt-6 bg-primary flex items-center justify-center w-full text-white py-2 px-4 rounded-xl ">

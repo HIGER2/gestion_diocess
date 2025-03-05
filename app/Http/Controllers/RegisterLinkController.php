@@ -17,18 +17,41 @@ class RegisterLinkController extends Controller
             'username' => 'required|string',
             'password' => 'nullable|string|min:8'
         ];
+
+
+        if (!$request->id) {
+            $rules['password'] =  [
+                "required",
+                // "string",
+                // "min:8",
+                // "regex:/[A-Z]/",
+                // "regex:/[a-z]/",
+                // "regex:/[0-9]/",
+                // "regex:/[@$!%*?&]/",
+                // "confirmed",
+            ];
+        } else if ($request->id && $request->password) {
+            $rules['password'] =  [
+                // "required",
+                // "string",
+                // "min:8",
+                // "regex:/[A-Z]/",
+                // "regex:/[a-z]/",
+                // "regex:/[0-9]/",
+                // "regex:/[@$!%*?&]/",
+                // "confirmed",
+            ];
+        }
+
         $messages = [
             'dioceses_id.required' => 'Le champ diocèse est obligatoire.',
             'dioceses_id.exists' => 'Le diocèse sélectionné est invalide.',
             'username.required' => 'Le nom d’utilisateur est obligatoire.',
             'username.string' => 'Le nom d’utilisateur doit être une chaîne de caractères.',
             'password.string' => 'Le mot de passe doit être une chaîne de caractères.',
-            'password.min' => 'Le mot de passe doit contenir au moins :min caractères.'
+            'password.min' => 'Le mot de passe doit contenir au moins :min caractères.',
+            'password.regex' => 'Le champ "Mot de passe" doit contenir au moins une majuscule, une minuscule, un chiffre et un caractère spécial (@$!%*?&).'
         ];
-
-        if (!$request->id) {
-            $rules['password'] = 'required|string|min:8';
-        }
 
         $request->validate($rules, $messages);
 
@@ -150,8 +173,8 @@ class RegisterLinkController extends Controller
             'password.required' => 'Le mot de passe est obligatoire.',
         ]);
 
-        if ($link->username !== $request->username || !Hash::check($request->password, $link->password)) {
-            return response()->json(['message' => 'Identifiant de connexion invalide'], 403);
+        if (strtolower($link->username) !== strtolower($request->username) || !Hash::check($request->password, $link->password)) {
+            return response()->json(['message' => 'Identifiant de connexion invalide', 'data' => $link], 403);
         }
 
         // Authentifier via le guard personnalisé

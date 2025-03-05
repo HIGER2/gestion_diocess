@@ -15,12 +15,14 @@ const errrMessage=ref('')
 const analytic=inject('analytic')
 const vaidate = async (formData) => {
 
+    console.log(formData);
+
         let response = confirm('Voulez effctuer cette opération ?')
         if (!response) return
         errrMessage.value = ""
         await axios.post('/pretres', {
             ...formData,
-            dioceses_id:formData?.diocess?.id,
+            dioceses_id:formData?.diocese?.id,
             status: 'active'
         })
             .then(async response => {
@@ -68,9 +70,12 @@ const setData = () => {
 };
 
 onMounted(() => {
+
+    console.log(item);
+
     details.value = [
         {
-            children: [ { label: 'Diocèse', value: item?.diocess?.diocese }, { label: 'Téléphone', value: item?.numero_telephone }, ]
+            children: [ { label: 'Diocèse', value: item?.diocese?.diocese }, { label: 'Téléphone', value: item?.numero_telephone }, ]
         },
 
         {
@@ -86,11 +91,11 @@ onMounted(() => {
         },
         {
             children: [ { label: 'Lieu ordination sacerdotale', value: item?.lieu_ordination_sacerdotale },
-                // { label: 'Diplôme étude ecclésiastique', value: item?.diplome_ecclesiastique },
+                { label: 'Spécialité', value: item?.specialite },
             ]
         },
 
-        // {children:[  { label: 'Diplôme étude profane', value: item?.diplome_academique },]}
+        {children:[  { label: 'Qualité Diocésain ou communautaire', value: item?.communautaire },]}
 ];
 });
 </script>
@@ -106,9 +111,12 @@ onMounted(() => {
             <div class="w-[700px] bg-white  rounded-md">
                 <!-- {{ item }} -->
                 <div class=" w-full flex  justify-center  p-4">
+                    <!-- {{ details }} -->
                     <div class="w-[40%] min-h-[100px]  bg-white rounded-md mb-3 p-2 flex flex-col items-center justify-start gap-3">
-                        <div class="w-[90px] h-[90px]  bg-primary rounded-[50%] flex items-center justify-center">
-                            <i class="uil uil-user text-[50px] text-white"></i>
+                        <div class="w-[100px] h-[100px] aspect-[1/1] overflow-hidden  bg-primary rounded-[50%] flex items-center justify-center">
+                            <!-- {{ item?.profile_path }} -->
+                            <img v-if="item?.profile_path" :src="'/storage/'+item?.profile_path" class="     w-full h-full" alt="">
+                            <i v-else class="uil uil-user text-[50px] text-white"></i>
                         </div>
                         <div class="flex flex-col items-center text-center">
                             <h1 class="text-[13px] font-[600]">{{ item?.nom+ " "+ item?.prenoms }}</h1>
@@ -124,13 +132,15 @@ onMounted(() => {
                                 </li>
                             </div>
                         </ul>
-                         <ul class="w-full">
+                        <ul class="w-full">
                             <div class="flex justify-between">
                                 <li class="flex flex-col  p-4 text-[14px] font-[500]">
                                     <span>Diplôme étude ecclésiastique</span>
                                     <!-- {{ item }} -->
                                     <template v-if="item?.diplome_ecclesiastique">
                                         <span v-for="(item, index) in item?.diplome_ecclesiastique" :key="index" class="text-zinc-600 text-[12px] font-[500]">
+                                            {{ item?.date }}
+                                            :
                                             {{ item?.intitule_diplome }}
                                         </span>
                                     </template>
@@ -140,6 +150,7 @@ onMounted(() => {
                                     <!-- {{ item }} -->
                                     <template v-if="item?.diplome_academique">
                                         <span v-for="(item, index) in item?.diplome_academique" :key="index" class="text-zinc-600 text-[12px] font-[500]">
+                                            {{ item?.date }} :
                                             {{ item?.intitule_diplome }}
                                         </span>
                                     </template>

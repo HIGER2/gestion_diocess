@@ -11,12 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('diplome_ecclesiastiques', function (Blueprint $table) {
+        Schema::create('parcours_pastorals', function (Blueprint $table) {
             $table->id();
-            $table->string('intitule_diplome');
-            $table->date('date')->nullable();
-            $table->bigInteger('pretes_id')->unsigned()->index();
-            $table->foreign('pretes_id')->references('id')->on('pretres')->onDelete('cascade');
+            $table->text('description')->nullable();
+            $table->date('date_debut')->nullable();
+            $table->date('date_fin')->nullable();
+            $table->foreignId('pretre_id')->constrained('pretres')->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -26,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('diplome_ecclesiastiques');
+        Schema::dropIfExists('parcours_pastorals');
     }
 };

@@ -8,6 +8,7 @@ class DiplomeAcademique extends Model
 {
     protected $fillable = [
         'intitule_diplome',
+        'date',
         'pretes_id',
     ];
 }

@@ -106,7 +106,9 @@ class DioceseController extends Controller
     public function show($id)
     {
         $diocese = Diocese::with(['pretres' => function ($q) {
-            $q->with('diocese')->where('status', 'active');
+            $q->with(['diocese', 'diplome_academique', 'diplome_ecclesiastique'])
+                ->where('status', 'active')
+                ->orderBy('created_at', 'desc');
         }])->findOrFail($id);
 
         return response()->json([

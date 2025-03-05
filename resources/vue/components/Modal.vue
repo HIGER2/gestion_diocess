@@ -26,6 +26,7 @@ document.querySelector('body').style.overflow = 'auto';
         <div   class=" w-full h-full ">
            <div class=" mb-2 p-5 max-h-full overflow-y-auto items-center justify-center  h-screen" >
              <div class=" items-center justify-center flex min-h-screen" @click.self="onClose(false)" >
+
                 <slot/>
              </div>
            </div>

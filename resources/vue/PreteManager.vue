@@ -19,7 +19,7 @@ const openModal = (state) => {
 };
 
 class Pretre {
-  constructor({id,nom,diplome_academique, prenoms,status, matricule, diocese, date_naissance, lieu_naissance, date_ordination_sacerdotale, lieu_ordination_sacerdotale, diplome_ecclesiastique, numero_telephone, adresse_electronique}) {
+    constructor({ id, nom, diplome_academique, lieu_affectation,communautaire,specialite,profile_path, prenoms,status, matricule, diocese, date_naissance, lieu_naissance, date_ordination_sacerdotale, lieu_ordination_sacerdotale, diplome_ecclesiastique, numero_telephone, adresse_electronique}) {
     this.id = id;
     this.nom = nom;
     this.prenoms = prenoms;
@@ -34,6 +34,14 @@ class Pretre {
     this.adresse_electronique = adresse_electronique;
     this.diplome_ecclesiastique = diplome_ecclesiastique;
     this.diplome_academique = diplome_academique;
+    this.profile_path =profile_path
+    this.communautaire =communautaire
+    this.specialite =specialite
+    this.lieu_affectation = lieu_affectation ?  lieu_affectation :  {
+        nom: '',
+        adresse:'',
+        date:''
+    }
   }
 }
 
@@ -90,42 +98,38 @@ onMounted(async () => {
 
 
 <template>
-    <div>
-            <div class="w-full">
-                <div class="flex-row flex justify-between items-center w-full">
-                    <h1 class="uppercase text-[16px] font-[800]">Liste des prêtres ({{ count }})</h1>
-                    <div class=" flex-row flex gap-3  items-center ">
-                       <input
-                                type="search"
-                                id="diocese"
-                                v-model="searchQuery"
-                                placeholder="Rechercher ici par nom ,numéro ,email"
-                                class="w-[300px] rounded-lg  border border-gray-300 bg-gray-50 p-2 text-[13px] shadow-sm focus:outline-none "
-                            />
-                        <button type="button" @click="openModal(true)" class="bg-primary text-white p-2 rounded-md text-[14px] cursor-pointer w-max">Ajouter un prêtres</button>
-                    </div>
-                </div>
-                <!-- <div class="text-[12px] flex gap-2 item-center w-full bg-red ">
-                    <span> Lien d' inscription</span>
-                    <a class="underline cursor-pointer text-blue-500" href="http://demo.africarice.site/auth/inscription/ba5d380c-2a26-4dd0-9486-9ebfed4df817">
-                        http://demo.africarice.site/auth/inscription/ba5d380c-2a26-4dd0-9486-9ebfed4df817
-                    </a>
-                </div> -->
-                <ContentLoading v-if="isLoading"/>
-                <div v-else class="w-full">
-                    <div class="overflow-x-auto mt-4 border rounded-md w-full">
-                        <template v-if="pretes?.length > 0">
-                            <table-component :liste_Prete="pretes" :dioceses="JSON.parse(dioceses)"/>
-                        </template>
-                        <Empty v-else/>
-                    </div>
+    <div class="w-full">
+        <div class="w-full">
+            <div class="flex-row flex justify-between items-center w-full">
+                <h1 class="uppercase text-[16px] font-[800]">Liste des prêtres ({{ count }})</h1>
+                <div class=" flex-row flex gap-3  items-center ">
+                    <input
+                            type="search"
+                            id="diocese"
+                            v-model="searchQuery"
+                            placeholder="Rechercher ici par nom ,numéro ,email"
+                            class="w-[300px] rounded-lg  border border-gray-300 bg-gray-50 p-2 text-[13px] shadow-sm focus:outline-none "
+                        />
+                    <button type="button" @click="openModal(true)" class="bg-primary text-white p-2 rounded-md text-[14px] cursor-pointer w-max">Ajouter un prêtres</button>
                 </div>
             </div>
-             <Modal :isActive="isModalOpen" :onClose="openModal">
-               <div class=" mb-2 p-5 max-h-full">
-                 <add-prete-component :callback="hanldeliste" :dioceses="JSON.parse(dioceses)"/>
-               </div>
-            </Modal>
+            <ContentLoading v-if="isLoading"/>
+            <div v-else class="w-full">
+                <div class="overflow-x-auto mt-4 border rounded-md w-full">
+                    <template v-if="pretes?.length > 0">
+                        <table-component :liste_Prete="pretes" :dioceses="JSON.parse(dioceses)"/>
+                    </template>
+                    <Empty v-else/>
+                </div>
+            </div>
+            <Modal :isActive="isModalOpen" :onClose="openModal">
+            <div class=" mb-2 p-5 max-h-full">
+            <!-- {{ lieuAffectation }} -->
+                <add-prete-component :callback="hanldeliste" :dioceses="JSON.parse(dioceses)"/>
+            </div>
+        </Modal>
+        </div>
+
     </div>
 </template>
 

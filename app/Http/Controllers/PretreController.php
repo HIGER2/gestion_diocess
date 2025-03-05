@@ -5,7 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Diocese;
 use App\Models\DiplomeAcademique;
 use App\Models\DiplomeEcclesiastique;
+use App\Models\ParcoursPastoral;
 use App\Models\Pretre;
+use Carbon\Carbon;
+use GuzzleHttp\Promise\Create;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -20,6 +23,7 @@ class PretreController extends Controller
             'nom' => 'required|string|max:255',
             'prenoms' => 'required|string|max:255',
             'dioceses_id' => 'nullable|exists:dioceses,id',
+            'lieu_affectation' => 'nullable',
             'date_naissance' => 'required|date',
             'lieu_naissance' => 'required|string|max:255',
             'date_ordination_sacerdotale' => 'required|date',
@@ -58,12 +62,25 @@ class PretreController extends Controller
         $diocese = Diocese::findOrFail($request['dioceses_id']);
         $abbreviation = $diocese->abreviation;
 
+        // load image
+        $filePath = "";
+        if ($request->hasFile('selectedFile')) {
+            // Récupération de l'extension et génération d'un nom unique pour le fichier
+            $extension = $request->file('selectedFile')->getClientOriginalExtension();
+            $fileName = uniqid() . '_' . time() . '.' . $extension;
+
+            // Stockage du fichier dans le répertoire 'uploads/dioceses' du disque public
+            $filePath = $request->file('selectedFile')->storeAs('uploads/prete', $fileName, 'public');
+        }
+
         // Générer le matricule
         $request['matricule'] = $this->generateMatricule(
             $abbreviation,
             $validated['nom'],
             $validated['prenoms']
         );
+
+
 
         if ($request->id) {
             // Mise à jour
@@ -72,86 +89,108 @@ class PretreController extends Controller
             $diplome_ecclesiastique = $request->except('diplome_ecclesiastique');
             $diplome_academique = $request->except('diplome_academique');
             // Update the record using the filtered data
+            if ($filePath) {
+                $data['profile_path'] = $filePath;
+            }
             $pretre = Pretre::findOrFail($request->id);
             $pretre->update($data);
 
-            if (isset($request->diplome_academique) && count($request->diplome_academique) > 0) {
-                foreach ($request->diplome_academique as $key => $value) {
-                    if (isset($value['id']) && !empty($value['id'])) {
-                        // Mise à jour si l'ID existe
-                        DiplomeAcademique::where("id", $value['id'])->update([
-                            'intitule_diplome' => $value['intitule_diplome']
-                        ]);
-                    } else {
-                        // Création si l'ID n'existe pas
-                        DiplomeAcademique::create([
-                            'intitule_diplome' => $value['intitule_diplome'],
-                            'pretes_id' => $pretre->id,
-                        ]);
-                    }
+            if (
+                $request->has('lieu_affectation')
+            ) {
+                if (is_string($request->lieu_affectation)) {
+                    $request->lieu_affectation = json_decode($request->lieu_affectation);
+                }
+                $pretre->lieuAffectation()->updateOrCreate(
+                    ['pretre_id' => $pretre->id],
+                    [
+                        'nom' => $request->lieu_affectation->nom,
+                        'date' => $request->lieu_affectation->date
+                    ]
+                );
+            }
 
-                    // DiplomeAcademique::where("id", $value['id'])->update([
-                    //     'intitule_diplome' => $value['intitule_diplome']
-                    // // ]);
-                    // DiplomeAcademique::updateOrCreate(
-                    //     ['id' => $value['id'] ?? null], // Condition pour trouver l'enregistrement
-                    //     [
-                    //         'intitule_diplome' => $value['intitule_diplome'],
-                    //         'pretes_id' => $pretre->id,
-                    //     ] // Données à mettre à jour ou à créer
-                    // );
+            if ($request->has('diplome_academique') && is_array($request->diplome_academique) &&  count($request->diplome_academique) > 0) {
+                foreach ($request->diplome_academique as $key => $value) {
+                    if (is_string($value)) {
+                        $value = json_decode($value, true);
+                    }
+                    $pretre->diplome_academique()->updateOrCreate(
+                        ['pretes_id' => $pretre->id, 'id' => $value['id'] ?? null],
+                        [
+                            'intitule_diplome' => $value['intitule_diplome'],
+                            'date' => $value['date']
+                        ]
+                    );
                 }
             }
 
-            if (isset($request->diplome_academique) && count($request->diplome_ecclesiastique) > 0) {
+            if ($request->has('diplome_ecclesiastique') && is_array($request->diplome_ecclesiastique) && count($request->diplome_ecclesiastique) > 0) {
                 foreach ($request->diplome_ecclesiastique as $key => $value) {
-
-                    if (isset($value['id']) && !empty($value['id'])) {
-                        // Mise à jour si l'ID existe
-                        DiplomeEcclesiastique::where("id", $value['id'])->update([
-                            'intitule_diplome' => $value['intitule_diplome']
-                        ]);
-                    } else {
-                        // Création si l'ID n'existe pas
-                        DiplomeEcclesiastique::create([
-                            'intitule_diplome' => $value['intitule_diplome'],
-                            'pretes_id' => $pretre->id,
-                        ]);
+                    if (is_string($value)) {
+                        $value = json_decode($value, true);
                     }
-
-                    // DiplomeEcclesiastique::where("id", $value['id'])->update([
-                    //     'intitule_diplome' => $value['intitule_diplome']
-                    // ]);
+                    $pretre->diplome_ecclesiastique()->updateOrCreate(
+                        ['pretes_id' => $pretre->id, 'id' => $value['id'] ?? null],
+                        [
+                            'intitule_diplome' => $value['intitule_diplome'],
+                            'date' => $value['date']
+                        ]
+                    );
                 }
             }
         } else {
             // Création
-            $pretre = Pretre::create($request->all());
+            $request['profile_path'] = $filePath;
+            $pretre = Pretre::create($request->except('lieuAffectation'));
 
-            if (count($request->diplome_academique) > 0) {
+            if (
+                $request->has('lieu_affectation')
+            ) {
+                if (is_string($request->lieu_affectation)) {
+                    $request->lieu_affectation = json_decode($request->lieu_affectation);
+                }
+                $request->lieu_affectation->pretre_id = $pretre->id;
+                $pretre->lieuAffectation()->create([
+                    'nom' => $request->lieu_affectation->nom,
+                    'date' => $request->lieu_affectation->date
+                ]);  // Créer la relation 'lieuAffectation' avec les données
+            }
+
+            if ($request->has('diplome_academique') && count($request->diplome_academique) > 0) {
                 foreach ($request->diplome_academique as $key => $value) {
+                    if (is_string($value)) {
+                        $value = json_decode($value, true);
+                    }
                     DiplomeAcademique::create([
                         'pretes_id' => $pretre->id,
-                        'intitule_diplome' => $value['intitule_diplome']
+                        'intitule_diplome' => $value['intitule_diplome'],
+                        'date' => $value['date']
                     ]);
                 }
             }
 
-            if (count($request->diplome_ecclesiastique) > 0) {
+            if ($request->has('diplome_ecclesiastique')  && count($request->diplome_ecclesiastique) > 0) {
                 foreach ($request->diplome_ecclesiastique as $key => $value) {
+                    if (is_string($value)) {
+                        $value = json_decode($value, true);
+                    }
                     DiplomeEcclesiastique::create(
                         [
                             'pretes_id' => $pretre->id,
-                            'intitule_diplome' => $value['intitule_diplome']
+                            'intitule_diplome' => $value['intitule_diplome'],
+                            'date' => $value['date'],
                         ]
                     );
                 }
             }
         }
 
+
         return response()->json([
             'message' => $request->id ? 'Prêtre mis à jour avec succès.' : 'Prêtre créé avec succès.',
             'pretre' => $request->status,
+            "path" => $filePath
         ], 201);
     }
 
@@ -231,7 +270,7 @@ class PretreController extends Controller
     public function listPretres(Request $request)
     {
 
-        $query = Pretre::with('diocese')
+        $query = Pretre::with(['diocese', 'lieuAffectation'])
             ->with("diplome_academique")
             ->with("diplome_ecclesiastique")
             ->orderBy('created_at', 'desc')
@@ -244,8 +283,27 @@ class PretreController extends Controller
                 $q->where('nom', 'like', '%' . $search . '%')
                     ->orWhere('prenoms', 'like', '%' . $search . '%')
                     ->orWhere('numero_telephone', 'like', '%' . $search . '%')
-                    ->orWhere('adresse_electronique', 'like', '%' . $search . '%');
+                    ->orWhere('adresse_electronique', 'like', '%' . $search . '%')
+                    ->orWhere('specialite', 'like', '%' . $search . '%');
             });
+
+            $query->orWhereHas('diplome_academique', function ($q) use ($search) {
+                $q->where('intitule_diplome', 'like', '%' . $search . '%'); // Champ du diplôme à modifier selon ta base
+            });
+            $query->orWhereHas('diplome_ecclesiastique', function ($q) use ($search) {
+                $q->where('intitule_diplome', 'like', '%' . $search . '%'); // Champ du diplôme à modifier selon ta base
+            });
+
+            if (is_numeric($search)) {
+                $age = (int) $search; // Convertir en entier
+
+                // Calculer les bornes de la date de naissance pour cet âge
+                $dateDebut = Carbon::now()->subYears($age + 1)->addDay(); // Date de naissance max (âge révolu)
+                $dateFin = Carbon::now()->subYears($age); // Date de naissance min
+
+                // Filtrer par âge
+                $query->orWhereBetween('date_naissance', [$dateDebut, $dateFin]);
+            }
         }
 
         // Pagination
@@ -267,6 +325,29 @@ class PretreController extends Controller
         return response()->json([
             'diocese' => $diocese,
             'pretres' => $pretres,
+        ]);
+    }
+
+    public function parcourt(Request $request)
+    {
+        $rules = [
+            'date_debut' => 'required', // Le nom est obligatoire
+            'date_fin' => 'required', // Le prénom est obligatoire
+            'description' => 'required', // Vérifie que le rôle est valide
+        ];
+        $messages = [
+            'date_debut.required' => 'Le champ "date_debut" est obligatoire.',
+            'date_fin.required' => 'Le champ "date_fin" est obligatoire.',
+            'description.required' => 'Le champ "description" est obligatoire.',
+        ];
+
+        $validator = $request->validate($rules, $messages);
+
+        // Récupère le diocèse avec son ID
+        $parcourt = ParcoursPastoral::Create($request->all());
+
+        return response()->json([
+            'parcourt' => $parcourt,
         ]);
     }
 }

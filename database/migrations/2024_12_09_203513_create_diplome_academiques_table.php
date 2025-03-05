@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('diplome_academiques', function (Blueprint $table) {
             $table->id();
             $table->string('intitule_diplome');
+            $table->date('date')->nullable();
             $table->bigInteger('pretes_id')->unsigned()->index();
             $table->foreign('pretes_id')->references('id')->on('pretres')->onDelete('cascade');
             $table->timestamps();

@@ -14,16 +14,40 @@ class UserController extends Controller
     public function store(Request $request)
     {
 
-        $rule = [
+        $rules = [
             'nom' => 'required|string|max:255', // Le nom est obligatoire
             'prenoms' => 'required|string|max:255', // Le prénom est obligatoire
             'role' => 'required|string|in:super_admin,admin,user', // Vérifie que le rôle est valide
-            'phone' => 'required|string|max:15', // Vérifie que le téléphone est unique
+            'phone' => 'required|string|max:15',
         ];
 
-        if (!$request->id) {
-            $rule["phone"] = "required|string|max:15|unique:users,phone";
-            $rule["password"] = "required|string|min:8";
+        if (!$request->has('id')) {
+            $rules["phone"] = "required|string|max:15|unique:users,phone";
+            $rules['email'] = 'required|string|email|max:255|unique:users,email';
+            $rule["password"] = [
+                "required",
+                "string",
+                "min:8",
+                "regex:/[A-Z]/",
+                "regex:/[a-z]/",
+                "regex:/[0-9]/",
+                "regex:/[@$!%*?&]/",
+                // "confirmed",
+            ];
+        } else if ($request->id && $request->password) {
+            $rules["phone"] = "required|string|max:15|unique:users,phone";
+            $rules['email'] = 'nullable|string|email|max:255|unique:users,email';
+
+            $rules['password'] =  [
+                "required",
+                "string",
+                "min:8",
+                "regex:/[A-Z]/",
+                "regex:/[a-z]/",
+                "regex:/[0-9]/",
+                "regex:/[@$!%*?&]/",
+                // "confirmed",
+            ];
         }
 
         $messages = [
@@ -40,14 +64,15 @@ class UserController extends Controller
             'phone.string' => 'Le champ "Téléphone" doit être une chaîne de caractères.',
             'phone.max' => 'Le champ "Téléphone" ne doit pas dépasser 15 caractères.',
             'phone.unique' => 'Le numéro de téléphone est déjà utilisé.',
+            'email.unique' => 'L\'email est déjà utilisé.',
             'password.required' => 'Le champ "Mot de passe" est obligatoire.',
             'password.string' => 'Le champ "Mot de passe" doit être une chaîne de caractères.',
             'password.min' => 'Le champ "Mot de passe" doit contenir au moins 8 caractères.',
+            'password.regex' => 'Le champ "Mot de passe" doit contenir au moins une majuscule, une minuscule, un chiffre et un caractère spécial (@$!%*?&).',
+            // 'password.confirmed' => 'Les mots de passe ne correspondent pas.',
         ];
 
-        $validator = $request->validate($rule, $messages);
-
-
+        $validator = $request->validate($rules, $messages);
         // Étape 2 : Créer l'utilisateur
         try {
 
@@ -94,7 +119,6 @@ class UserController extends Controller
             ], 500);
         }
     }
-
     /**
      * Récupérer les détails d'un prêtre.
      */
@@ -142,7 +166,6 @@ class UserController extends Controller
             'pretre' => $pretre,
         ]);
     }
-
     public function listUser()
     {
         $user = User::get();

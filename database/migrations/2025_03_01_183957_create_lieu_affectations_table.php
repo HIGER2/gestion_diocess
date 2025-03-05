@@ -11,12 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('diplome_ecclesiastiques', function (Blueprint $table) {
+        Schema::create('lieu_affectations', function (Blueprint $table) {
             $table->id();
-            $table->string('intitule_diplome');
+            $table->string('nom');
+            $table->string('adresse')->nullable();
             $table->date('date')->nullable();
-            $table->bigInteger('pretes_id')->unsigned()->index();
-            $table->foreign('pretes_id')->references('id')->on('pretres')->onDelete('cascade');
+            $table->foreignId('pretre_id')->constrained('pretres')->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -26,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('diplome_ecclesiastiques');
+        Schema::dropIfExists('lieu_affectations');
     }
 };

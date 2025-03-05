@@ -20,23 +20,24 @@ const isLoading=ref(false)
 const isModalOpen = ref(false)
 
 class Pretre {
-  constructor({id,nom, prenoms, matricule, diocese, date_naissance, lieu_naissance, date_ordination_sacerdotale, lieu_ordination_sacerdotale, diplome_etude_ecclesiastique, diplome_etude_profane, numero_telephone, adresse_electronique}) {
+  constructor({id,nom,diplome_academique,profile_path, prenoms,status, matricule, diocese, date_naissance, lieu_naissance, date_ordination_sacerdotale, lieu_ordination_sacerdotale, diplome_ecclesiastique, numero_telephone, adresse_electronique}) {
     this.id = id;
     this.nom = nom;
     this.prenoms = prenoms;
+    this.status = status;
     this.matricule = matricule;
     this.diocess = diocese; // Exemple: { diocese: 'Diocèse 1' }
     this.date_naissance = date_naissance;
     this.lieu_naissance = lieu_naissance;
     this.date_ordination_sacerdotale = date_ordination_sacerdotale;
     this.lieu_ordination_sacerdotale = lieu_ordination_sacerdotale;
-    this.diplome_etude_ecclesiastique = diplome_etude_ecclesiastique;
-    this.diplome_etude_profane = diplome_etude_profane;
     this.numero_telephone = numero_telephone;
     this.adresse_electronique = adresse_electronique;
+    this.diplome_ecclesiastique = diplome_ecclesiastique;
+    this.diplome_academique = diplome_academique;
+    this.profile_path =profile_path
   }
 }
-
 
 const openModal = (state) => {
     isModalOpen.value = state
@@ -111,7 +112,7 @@ onMounted(() => {
                         </li>
                     </ul>
                 </div> -->
-                <div class="w-full rounded-md bg-white min-h-[100px]">
+                <div class="w-full rounded-md  min-h-[100px]">
                     <!-- {{ pretres }} -->
                     <div class="flex items-center justify-between">
                         <h6>Liste des prêtres du diocèse ({{ count }})</h6>

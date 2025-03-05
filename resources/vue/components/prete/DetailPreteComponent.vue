@@ -48,16 +48,18 @@ onMounted(() => {
 
 <template>
     <div>
-        <span  class="bg-custom px-2 hover:bg-zinc-200 rounded-md py-2"  @click="openModal(true)">
+        <a  :href="`/prete-manager/${item?.id}`" class="bg-custom px-2 hover:bg-zinc-200 rounded-md py-2"  >
             <i class="uil uil-ellipsis-h"></i>
-        </span>
+        </a>
 
         <Modal :isActive="isModalOpen" :onClose="openModal">
             <div class="w-[700px] bg-white  rounded-md">
                 <div class=" w-full flex  justify-center my p-4">
                     <div class="w-[40%] min-h-[100px]  bg-white rounded-md mb-3 p-2 flex flex-col items-center justify-start gap-3">
-                        <div class="w-[90px] h-[90px]  bg-primary rounded-[50%] flex items-center justify-center">
-                            <i class="uil uil-user text-[50px] text-white"></i>
+                        <div class="w-[100px] h-[100px] aspect-[1/1] overflow-hidden  bg-primary rounded-[50%] flex items-center justify-center">
+                            <!-- {{ item?.profile_path }} -->
+                            <img v-if="item?.profile_path" :src="'/storage/'+item?.profile_path" class="     w-full h-full" alt="">
+                            <i v-else class="uil uil-user text-[50px] text-white"></i>
                         </div>
 
                         <div class="flex flex-col items-center text-center">
@@ -92,6 +94,7 @@ onMounted(() => {
                                     <!-- {{ item }} -->
                                     <template v-if="item?.diplome_academique">
                                         <span v-for="(item, index) in item?.diplome_academique" :key="index" class="text-zinc-600 text-[12px] font-[500]">
+                                            {{ item?.date }}
                                             {{ item?.intitule_diplome }}
                                         </span>
                                     </template>

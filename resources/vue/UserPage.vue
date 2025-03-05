@@ -1,41 +1,34 @@
 
-<script setup>
-import { onMounted, reactive, ref } from 'vue';
-const { dioceses, callback, detail } = defineProps([ 'dioceses', 'callback', 'detail' ]);
+<script setup lang="ts">
+import { reactive, ref } from 'vue';
+import ButtonLoader from '@/components/ButtonLoader.vue';
 import {useToast} from 'vue-toast-notification';
-import ButtonLoader from './ButtonLoader.vue';
 
-const user = reactive({
-    nom:"",
-    prenoms:"",
-    role:"super_admin",
-    phone:"",
-    email:"",
-    password:"",
-    diocese_id:"",
-});
+
+const props = defineProps(['user'])
+
+// const user = reactive({
+//     nom:"",
+//     prenoms:"",
+//     role:"super_admin",
+//     phone:"",
+//     email:"",
+//     password:"",
+//     diocese_id:"",
+// });
+
 
 const isLoading =ref(false);
 
 const errrMessage =ref('')
 
 const createUser =async (data) => {
-
     errrMessage.value = ""
     isLoading.value = true
-
     await axios.post('/user',data)
         .then(async response => {
-
-            if (callback) {
-                await callback()
-            }
-            const $toast = useToast();
-
-            $toast.success('Opération effectuée avec succès');
-        // if (response.data.redirect) {
-        //     window.location.href = response.data.redirect;
-        // }
+        const $toast = useToast();
+        $toast.success('Opération effectuée avec succès');
     })
         .catch(error => {
             if (error.response.data?.errors) {
@@ -45,36 +38,32 @@ const createUser =async (data) => {
             errrMessage.value = error.response.data?.message.split('.')[ 0 ]
         }
 
-        console.error('Error fetching user data:', error.response.data?.errors);
         });
 
     isLoading.value = false
 
 };
 
-onMounted(() => {
-    if (detail) {
-        Object.assign(user,detail)
-    }
-});
-
 </script>
 
+
 <template>
-        <div class="bg-white p-6 rounded-lg shadow-lg max-w-lg w-[400px]" @click.stop>
-            <h2 class="text-xl font-semibold text-zinc-900 mb-3">{{user?.id ? 'Modifier un utilisateur' : 'Ajouter un utilisateur'}}</h2>
+    <div class="w-full">
+        <!-- {{ props }} -->
+        <div class="  max-w-lg w-[450px] m-auto" @click.stop>
+            <h2 class="text-xl font-semibold text-zinc-900 mb-3">Mon compte</h2>
                 <div v-if="errrMessage" class="p-4 w-full bg-red-100 text-[12px] rounded-md text-red-800">
                     {{ errrMessage }}
             </div>
-            <form action="" @submit.prevent="createUser(user)">
-            <div class=" my-2">
-                <div class="flex items-center justify-between gap-2">
+            <form action="" @submit.prevent="createUser(props.user)">
+            <div class=" my-2 w-full bg-white p-6 rounded-lg">
+                <div class=" items-center justify-between gap-2">
                     <div class="w-full max-w-sm mb-3">
                         <label for="diocese" class="block text-[13px] font-medium text-gray-700 mb-2">
                             Nom
                         </label>
                         <input
-                            v-model="user.nom"
+                            v-model="props.user.nom"
                             type="text"
                             required
                             id="diocese"
@@ -87,7 +76,7 @@ onMounted(() => {
                             Prenoms
                         </label>
                         <input
-                            v-model="user.prenoms"
+                            v-model="props.user.prenoms"
                             type="text"
                             required
                             id="diocese"
@@ -96,13 +85,13 @@ onMounted(() => {
                         />
                     </div>
                 </div>
-                <div class="flex items-center justify-between gap-2">
+                <div class=" items-center justify-between gap-2">
                     <div class="w-full max-w-sm mb-3">
                         <label for="diocese" class="block text-[13px] font-medium text-gray-700 mb-2">
                             Téléphone
                         </label>
                         <input
-                            v-model="user.phone"
+                            v-model="props.user.phone"
                             type="text"
                             required
                             id="diocese"
@@ -115,7 +104,7 @@ onMounted(() => {
                             email
                         </label>
                         <input
-                            v-model="user.email"
+                            v-model="props.user.email"
                             type="text"
 
                             id="diocese"
@@ -128,7 +117,7 @@ onMounted(() => {
                     <label for="diocese" class="block text-[13px] font-medium text-gray-700 mb-2">
                         Selectionner le role
                     </label>
-                    <select required v-model="user.role" name="" id=""  class="cursor-pointer block w-full rounded-lg border border-gray-300 bg-gray-50 p-2 text-[13px] shadow-sm focus:outline-none focus:ring-1 focus:ring-primary ">
+                    <select required disabled v-model="props.user.role" name="" id=""  class="cursor-pointer block w-full rounded-lg border border-gray-300 bg-gray-50 p-2 text-[13px] shadow-sm focus:outline-none focus:ring-1 focus:ring-primary ">
                         <option value="super_admin" class="cursor-pointer">Super administratreur</option>
                         <option value="admin" class="cursor-pointer"> Administratreur</option>
                     </select>
@@ -144,13 +133,12 @@ onMounted(() => {
                 </div>
                     <div class="w-full  mb-3">
                         <label for="diocese" class="block text-[13px] font-medium text-gray-700 mb-2">
-                        {{ user?.id ? 'Modifier le mot de passe temporaire (falcutatif)' : 'Définir un mot de passe temporaire' }}
+                            Modifier le mot de passe temporaire (falcutatif)
                         </label>
                         <input
-                            v-model="user.password"
-                            type="text"
+                            v-model="props.user.password"
+                            type="password"
                             id="diocese"
-                            :required="!user?.id"
                             placeholder="mot de passe temporaire"
                             class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2 text-[13px] shadow-sm focus:outline-none focus:ring-1 focus:ring-primary "
                         />
@@ -161,9 +149,9 @@ onMounted(() => {
             </button>
             </form>
         </div>
+    </div>
 </template>
 
-
-<style lang="scss" scoped>
+<style scoped>
 
 </style>

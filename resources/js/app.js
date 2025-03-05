@@ -16,6 +16,7 @@ import InscriptionPage from '../vue/InscriptionPage.vue';
 import LinkPage from '../vue/LinkPage.vue';
 import AppLayout from '../vue/layouts/AppLayout.vue';
 import LinkLoginPage from '../vue/LinkLoginPage.vue';
+import UserPage from '../vue/UserPage.vue';
 // Créez et montez l'application Vue
 createApp({})
     .component('HomePage', HomePage)
@@ -29,5 +30,6 @@ createApp({})
     .component('LinkPage', LinkPage)
     .component('AppLayout', AppLayout)
     .component('LinkLoginPage', LinkLoginPage)
+    .component('UserPage', UserPage)
     .use(ToastPlugin)
     .mount('#app');

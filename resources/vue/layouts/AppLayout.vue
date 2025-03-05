@@ -101,14 +101,14 @@ onMounted(() => {
 </script>
 
 <template>
-    <div class="bg-white min-h-screen">
-        <div class="w-[250px] h-screen bg-custom fixed top-0 ">
-            <div class="flex w-full items-center gap-1 py-4 px-4 border-b border-b-gray-100 cursor-pointer relative " @click="setOpen(isOpen)">
-            <div  class="w-[50px] h-[50px] cursor-pointer rounded-[50%] bg-primary flex align-middleflex items-center justify-center">
-                <i class="uil uil-user text-[20px] text-white"></i>
-            </div>
-                <div class="capitalize text-primary font-[600]">{{ user?.role }}</div>
-            </div>
+    <div class=" min-h-screen  bg-gray-50">
+        <div class="w-[250px] h-screen bg-secondary fixed top-0  ">
+            <a href="/user" class="flex w-full items-center gap-1 h-[60px] px-4 border-b border-b-gray-100 cursor-pointer relative " @click="setOpen(isOpen)">
+                <div  class="w-[50px] h-[50px] cursor-pointer rounded-[50%] bg-primary flex align-middleflex items-center justify-center">
+                    <i class="uil uil-user text-[20px] text-white"></i>
+                </div>
+                <div class="capitalize text-primary font-[600]">{{ user?.nom }}</div>
+            </a>
             <ul class="w-full px-4">
             <li v-for="(item, index) in routes[user?.role]" :key="index" class="mb-0  ">
                 <!-- Your HTML file -->
@@ -149,7 +149,7 @@ onMounted(() => {
         </div> -->
         <section class="w-[calc(100%-250px)] relative left-[250px]">
             <div class="w-full  h-[60px]  bg-primary p-1 px-6 flex items-center justify-between sticky top-0 shadow-sm">
-                <button type="button" class="w-[45px] text-[25px] h-[45px] bg-custom rounded-[50%]" @click="goBack()">
+                <button type="button" class="w-[45px] text-[25px] h-[45px] bg-gray-50 rounded-[50%]" @click="goBack()">
                     <i class="uil uil-arrow-left"></i>
                 </button>
                 <!-- <div class="flex items-center gap-3 bg-zinc-200 p-2 rounded-md">

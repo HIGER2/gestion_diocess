@@ -14,6 +14,7 @@ class Pretre extends Model
         'prenoms',
         'matricule',
         'date_naissance',
+        'profile_path',
         'dioceses_id',
         'lieu_naissance',
         'date_ordination_sacerdotale',
@@ -22,6 +23,8 @@ class Pretre extends Model
         'diplome_etude_profane',
         'numero_telephone',
         'adresse_electronique',
+        'communautaire',
+        'specialite',
         'status'
     ];
 
@@ -35,9 +38,19 @@ class Pretre extends Model
         return $this->belongsTo(Diocese::class, 'dioceses_id', 'id'); // Assure-toi que la clé étrangère est bien 'dioceses_id' dans la table 'pretres'
     }
 
+    public function lieuAffectation()
+    {
+        return $this->hasOne(LieuAffectation::class, 'pretre_id', 'id'); // Assure-toi que la clé étrangère est bien 'dioceses_id' dans la table 'pretres'
+    }
+
     public function diplome_academique()
     {
         return $this->hasMany(DiplomeAcademique::class, 'pretes_id', 'id');
+    }
+
+    public function parcourt()
+    {
+        return $this->hasMany(ParcoursPastoral::class, 'pretre_id', 'id');
     }
     public function diplome_ecclesiastique()
     {
