@@ -105,7 +105,7 @@ onMounted(() => {
                         </label>
                         <input
                             v-model="link.password"
-                            type="password"
+                            type="text"
                             id="diocese"
                             :required="link?.id ? false : true"
                             placeholder="mot de passe temporaire"
