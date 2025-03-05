@@ -17,6 +17,10 @@ return new class extends Migration
             $table->string('prenoms');
             $table->string('matricule')->index();
 
+            $table->string('communautaire')->nullable();
+            $table->string('specialite')->nullable();
+
+            $table->string('profile_path')->nullable();
             $table->bigInteger('dioceses_id')->unsigned()->index()->nullable();
             $table->foreign("dioceses_id")
                 ->references('id')
@@ -26,11 +30,10 @@ return new class extends Migration
 
             $table->date('date_naissance');
             $table->string('lieu_naissance');
+            $table->string('status')->default('active');
             $table->date('date_ordination_sacerdotale');
             $table->string('lieu_ordination_sacerdotale');
-            $table->string('diplome_etude_ecclesiastique');
-            $table->string('diplome_etude_profane');
-            $table->bigInteger('numero_telephone')->nullable();
+            $table->string('numero_telephone')->nullable();
             $table->string('adresse_electronique');
             $table->timestamps();
         });

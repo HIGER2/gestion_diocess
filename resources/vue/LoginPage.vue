@@ -1,49 +1,58 @@
 
 
 <script setup>
-import { reactive } from 'vue';
+import { reactive, ref } from 'vue';
+import ButtonLoader from './components/ButtonLoader.vue';
 
 const login = reactive({
-    email: 'admin@gmail.com',
+    login: 'admin@gmail.com',
     password: 'password'
 });
+const isLoading=ref(false)
+const errrMessage =ref('')
 
 const authLogin = async () => {
-
-    axios.post('/auth/login',login)
+    isLoading.value=true
+    errrMessage.value = ""
+   await axios.post('/auth/login',login)
     .then(response => {
         if (response.data.redirect) {
             window.location.href = response.data.redirect;
         }
     })
-    .catch(error => {
-        console.error('Error fetching user data:', error.response.data);
-    });
+        .catch(error => {
+            errrMessage.value= error.response?.data?.message+ ""
+        // console.error('Error fetching user data:', error.response?.data?.message);
+        });
+    isLoading.value= false
 };
 
 </script>
 
 <template>
     <main>
-        <div class="container bg-zinc-100 min-h-screen">
-            <div class="card bg-white">
+        <div class="container min-h-screen bg-zinc-50">
+            <div class="card  ">
                 <div class="content">
-                    <h4 class="font-[900] text-[18px]">Se connecter</h4>
+                    <h4 class="font-[900] text-4xl mb-6">Se connecter</h4>
+                    <div v-if="errrMessage" class="p-4 w-full text-center bg-red-100 text-[12px] rounded-md text-red-800">
+                        {{ errrMessage }}
+                </div>
                     <form action="" @submit.prevent="authLogin">
                         <div class="groupeForm">
                             <label for=""  class="block text-[13px] font-medium text-gray-700 mb-2">Téléphone ou Email</label>
                             <div class="forminput">
-                                <input type="text" v-model="login.email"  class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2 text-[13px] shadow-sm focus:outline-none focus:ring-1 focus:ring-blue-950 focus:border-blue-500">
+                                <input type="text" v-model="login.login"  class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-3 text-[13px] shadow-sm focus:outline-none focus:ring-1 focus:ring-primary " required>
                             </div>
                         </div>
                         <div class="groupeForm">
                             <label for=""  class="block text-[13px] font-medium text-gray-700 mb-2">Mot de passe</label>
                             <div class="forminput">
-                                <input type="text" v-model="login.password" cl class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2 text-[13px] shadow-sm focus:outline-none focus:ring-1 focus:ring-blue-950 focus:border-blue-500">
+                                <input type="text" v-model="login.password" cl class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-3 text-[13px] shadow-sm focus:outline-none focus:ring-1 focus:ring-primary " required>
                             </div>
                         </div>
-                        <button type="submit" class="mt-6 bg-blue-950 w-full text-white py-2 px-4 rounded-xl ">
-                            Enregistrer
+                        <button type="submit" class="mt-6 bg-primary flex items-center justify-center w-full text-white py-2 px-4 rounded-xl ">
+                            <ButtonLoader title="Connexion" :isLoading="isLoading" />
                         </button>
                     </form>
                     <!-- <span class="link">
@@ -67,9 +76,9 @@ main {
         align-items: center;
         justify-content: center;
         .card{
-        width: 450px;
+        width: 400px;
         padding: 2rem;
-        border-radius: 1rem;
+        border-radius: 0.6rem;
         .content {
             .title{
             color: $accent;
@@ -106,7 +115,7 @@ main {
                 //     }
                 // }
                 }
-                
+
 
             }
         }

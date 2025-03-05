@@ -18,13 +18,14 @@ return new class extends Migration
             $table->string('nom');
             $table->string('prenoms');
             $table->string('email')->unique()->index();
+            $table->string('phone')->unique()->index();
             $table->string('password');
             $table->string('role')->default("super_admin");
 
-            $table->bigInteger('pretres_id')->unsigned()->index()->nullable();
-            $table->foreign("pretres_id")
+            $table->bigInteger('diocese_id')->unsigned()->index()->nullable();
+            $table->foreign("diocese_id")
                 ->references('id')
-                ->on('pretres')
+                ->on('dioceses')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
 
