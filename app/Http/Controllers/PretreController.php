@@ -284,6 +284,8 @@ class PretreController extends Controller
                     ->orWhere('prenoms', 'like', '%' . $search . '%')
                     ->orWhere('numero_telephone', 'like', '%' . $search . '%')
                     ->orWhere('adresse_electronique', 'like', '%' . $search . '%')
+                    ->orWhere('matricule', 'like', '%' . $search . '%')
+                    ->orWhere('date_naissance', 'like', '%' . $search . '%')
                     ->orWhere('specialite', 'like', '%' . $search . '%');
             });
 
