@@ -20,7 +20,7 @@ const isLoading=ref(false)
 const isModalOpen = ref(false)
 
 class Pretre {
-  constructor({id,nom,diplome_academique,profile_path, prenoms,status, matricule, diocese, date_naissance, lieu_naissance, date_ordination_sacerdotale, lieu_ordination_sacerdotale, diplome_ecclesiastique, numero_telephone, adresse_electronique}) {
+  constructor({id,nom,diplome_academique,profile_path,communautaire,specialite,lieu_affectation, prenoms,status, matricule, diocese, date_naissance, lieu_naissance, date_ordination_sacerdotale, lieu_ordination_sacerdotale, diplome_ecclesiastique, numero_telephone, adresse_electronique}) {
     this.id = id;
     this.nom = nom;
     this.prenoms = prenoms;
@@ -35,7 +35,14 @@ class Pretre {
     this.adresse_electronique = adresse_electronique;
     this.diplome_ecclesiastique = diplome_ecclesiastique;
     this.diplome_academique = diplome_academique;
-    this.profile_path =profile_path
+    this.profile_path = profile_path,
+    this.communautaire =communautaire,
+    this.specialite =specialite,
+    this.lieu_affectation = lieu_affectation ?  lieu_affectation :  {
+        nom: '',
+        adresse:'',
+        date:''
+    }
   }
 }
 
