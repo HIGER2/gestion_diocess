@@ -155,7 +155,9 @@ onMounted(() => {
                         <img v-if="previewUrl" :src="previewUrl" alt="Preview" class=" object-cover h-full w-full" />
                         <i v-else class="uil uil-user text-[50px] text-primary"></i>
                     </div>
-                    <button type="button" @click="openFileDialog" class="shadow-sm flex text-[12px] mb-2 p-3 rounded-md border mx-auto">Choisir une image</button>
+                    <button type="button" @click="openFileDialog" class="shadow-sm flex text-[12px] mb-2 p-3 rounded-md border mx-auto">
+                        Choisir une photo de profile
+                    </button>
                     <div class=" my-2 w-full">
                         <!-- {{ detail }} -->
                         <div class="flex items-center justify-between gap-2">

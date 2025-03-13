@@ -143,7 +143,9 @@ onMounted(() => {
     <div class="w-full min-h-screen bg-primary p-2 cursor-pointer flex flex-row items-center justify-center">
         <div class="md:w-[420px] bg-white min-h-[100px] rounded-lg">
                 <div class="bg-white p-6 rounded-lg shadow-lg max-w-lg w-full" @click.stop>
-                <h2 class="text-xl font-semibold mb-3 text-center">Ajouter un prêtre</h2>
+                <h2 class="text-xl font-semibold mb-3 text-center">
+                    Fiche d'inscription
+                </h2>
                 <div v-if="errrMessage" class="p-4 w-full bg-red-100 text-[12px] rounded-md text-red-800">
                         {{ errrMessage }}
                 </div>
@@ -160,7 +162,7 @@ onMounted(() => {
                         <img v-if="previewUrl" :src="previewUrl" alt="Preview" class=" object-cover h-full w-full" />
                         <i v-else class="uil uil-user text-[50px] text-primary"></i>
                     </div>
-                    <button type="button" @click="openFileDialog" class="shadow-sm flex mb-2 p-3 rounded-md text-[12px] border mx-auto">Choisir une image</button>
+                    <button type="button" @click="openFileDialog" class="shadow-sm flex mb-2 p-3 rounded-md text-[12px] border mx-auto">Choisir une photo de profile</button>
                     <div class=" my-2 w-full">
                         <!-- {{ detail }} -->
                         <div class="flex items-center justify-between gap-2">
