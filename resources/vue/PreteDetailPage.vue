@@ -33,12 +33,12 @@ onMounted(() => {
         <div class="w-full">
             <div class="w-[500px] m-auto">
                 <div class="flex  w-full m-auto items-center mb-5 justify-between">
-                <h1 class="uppercase text-[16px] font-[800]">Information prete</h1>
+                <h1 class="uppercase text-[16px] font-[800]">Information prête</h1>
                 <button type="button" @click="openModal(true)" class="bg-primary text-white p-2 rounded-md text-[14px] cursor-pointer">
                     Ajouter un Parcours
                 </button>
                 </div>
-                <di class="flex w-full gap-3 w-full m-auto ">
+                <di class="flex gap-3 w-full m-auto ">
                     <div class="flex w-full items-center justify-center m-auto flex-col">
                         <div class="bg-secondary w-full min-h-[100px]  rounded-md mb-3 p-2 flex flex-col items-center justify-center gap-3">
                             <div class="w-[100px] h-[100px] aspect-[1/1] overflow-hidden  bg-primary rounded-[50%] flex items-center justify-center">
@@ -49,7 +49,9 @@ onMounted(() => {
                                 <h1 class="text-[20px] font-[600]">{{ prete?.nom+ " "+ prete?.prenoms }}</h1>
                                 <h2 class="text-zinc-600 font-[600] text-[15px]">{{ prete?.matricule }}</h2>
                             </div>
-                            <button type="button" @click="openIsModal(true)" class="shadow-sm flex mb-2 px-6 p-1 rounded-md border mx-auto">Parcourt</button>
+                            <button type="button" @click="openIsModal(true)" class="shadow-sm flex mb-2 px-6 p-1 rounded-md border mx-auto">
+                                Parcours pastoral
+                            </button>
                         </div>
                         <div class="w-full min-h-[100px] bg-secondary rounded-md mb-3">
                             <ul class="w-full">

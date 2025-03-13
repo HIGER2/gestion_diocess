@@ -70,7 +70,7 @@ onMounted(() => {
                                 <i class="fi fi-bs-church text-[20px] text-yellow-600"></i>
                             </div> -->
                             <div class="flex flex-col items-center justify-center">
-                                <h2 class="text-[12px]  font-[600]">Total diocèse</h2>
+                                <h2 class="text-[12px]  font-[600]">Total des diocèses</h2>
                                 <h1 class="text-[20px] font-[600]">{{ analytic_data?.diocese_count }}</h1>
                             </div>
                         </div>
@@ -97,7 +97,7 @@ onMounted(() => {
                                 <i class="fi fi-rr-users-alt text-[20px] text-blue-600"></i>
                             </div> -->
                             <div class="flex flex-col items-center justify-center">
-                                <h2 class="text-[12px]  font-[600]">Total utilisateur</h2>
+                                <h2 class="text-[12px]  font-[600]">Total utilisateurs</h2>
                                 <h1 class="text-[20px] font-[600]">{{ analytic_data?.user_count }}</h1>
                             </div>
                         </div>

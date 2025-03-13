@@ -45,7 +45,7 @@ onMounted(async () => {
     <div>
         <div class="w-full">
             <div class="flex justify-between items-center">
-                <h1 class="uppercase text-[16px] font-[800]">Liens d'inscription</h1>
+                <h1 class="uppercase text-[16px] font-[800]">Lien(s) d'inscription</h1>
                 <button type="button" v-if=" user?.role !=='admin'" @click="openModal(true)" class="bg-primary text-white p-2 rounded-md text-[14px] cursor-pointer">Créer un lien</button>
             </div>
             <ContentLoading v-if="isLoading"/>
@@ -57,7 +57,7 @@ onMounted(async () => {
                                 <tr class="bg-custom text-gray-600 capitalize text-[11px] leading-normal">
                                     <th class="p-3 text-left">Lien</th>
                                     <th class="p-3 text-left">Utilisateur</th>
-                                    <th class="p-3 text-left">diocesse</th>
+                                    <th class="p-3 text-left">diocèse</th>
                                     <th class="p-3 text-left">Statut</th>
                                     <th class="p-3 text-left">Action</th>
                                 </tr>

@@ -94,6 +94,12 @@ onMounted(() => {
                 { label: 'Spécialité', value: item?.specialite },
             ]
         },
+        {
+            children: [
+                { label: "Lieu d'affectetion", value: item?.lieu_affectation?.nom },
+                { label: "Date d'affectetion", value: item?.lieu_affectation?.date }
+            ]
+        },
 
         {children:[  { label: 'Qualité Diocésain ou communautaire', value: item?.communautaire },]}
 ];

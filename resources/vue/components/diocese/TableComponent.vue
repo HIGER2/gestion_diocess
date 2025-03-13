@@ -19,7 +19,7 @@ const {dioceses } = defineProps(['dioceses' ]);
             <tr v-for="(item,index) in dioceses?.data" :key="index" class=" border-b cursor-pointer hover:bg-zinc-50 ">
                 <td class="p-3 py-4 ">
                     <div class="w-[60px] h-[60px] rounded overflow-hidden">
-                        <img class="w-full h-full object-cover" :src="item?.url_image ||  'https://cdn.pixabay.com/photo/2016/11/18/22/37/cathedral-1837206_1280.jpg'" alt="">
+                        <img class="w-full h-full object-cover" :src="`${item?.url_image ?  '/storage/'+item?.url_image :  'https://cdn.pixabay.com/photo/2016/11/18/22/37/cathedral-1837206_1280.jpg'} `" alt="">
                     </div>
                 </td>
                 <td class="p-3 py-4 ">{{ item?.diocese }}</td>

@@ -133,7 +133,7 @@ const createUser =async (data) => {
                 </div>
                     <div class="w-full  mb-3">
                         <label for="diocese" class="block text-[13px] font-medium text-gray-700 mb-2">
-                            Modifier le mot de passe temporaire (falcutatif)
+                            Modifier mon mot de passe (falcutatif)
                         </label>
                         <input
                             v-model="props.user.password"
