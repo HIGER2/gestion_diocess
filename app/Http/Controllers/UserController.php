@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
 class UserController extends Controller
 {
@@ -35,8 +36,22 @@ class UserController extends Controller
                 // "confirmed",
             ];
         } else if ($request->id && $request->password) {
-            $rules["phone"] = "required|string|max:15|unique:users,phone";
-            $rules['email'] = 'nullable|string|email|max:255|unique:users,email';
+            $user = User::findOrFail($request->id);
+
+            $rules["phone"] = [
+                "required",
+                "string",
+                "max:15",
+                Rule::unique('users', 'phone')->ignore($user->id), // Ignore l'ancien numéro
+            ];;
+            $rules['email'] = [
+                "nullable",
+                "string",
+                "email",
+                "max:255",
+                // "unique:users"
+                Rule::unique('users', 'email')->ignore($user->id),
+            ];
 
             $rules['password'] =  [
                 "required",
@@ -141,7 +156,7 @@ class UserController extends Controller
         $user = User::find($id);
 
         if (!$user) {
-            return response()->json(['message' => 'Prêtre introuvable.'], 404);
+            return response()->json(['message' => 'utilisateur introuvable.'], 404);
         }
 
         $validated = $request->validate([
