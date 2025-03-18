@@ -1,9 +1,10 @@
 
 <script setup>
-import { onMounted, reactive, ref } from 'vue';
+import { computed, inject, onMounted, reactive, ref } from 'vue';
 const { dioceses, callback, detail } = defineProps([ 'dioceses', 'callback', 'detail' ]);
 import {useToast} from 'vue-toast-notification';
 import ButtonLoader from './ButtonLoader.vue';
+const auth = computed(()=>inject('user'))
 
 const user = reactive({
     nom:"",
@@ -14,7 +15,7 @@ const user = reactive({
     password:"",
     diocese_id:"",
 });
-
+const pass = ref(false);
 const isLoading =ref(false);
 
 const errrMessage =ref('')
@@ -70,27 +71,25 @@ onMounted(() => {
             <div class=" my-2">
                 <div class="flex items-center justify-between gap-2">
                     <div class="w-full max-w-sm mb-3">
-                        <label for="diocese" class="block text-[13px] font-medium text-gray-700 mb-2">
+                        <label for="" class="block text-[13px] font-medium text-gray-700 mb-2">
                             Nom
                         </label>
                         <input
                             v-model="user.nom"
                             type="text"
                             required
-                            id="diocese"
                             placeholder="Nom"
                             class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2 text-[13px] shadow-sm focus:outline-none focus:ring-1 focus:ring-primary "
                         />
                     </div>
                     <div class="w-full max-w-sm mb-3">
-                        <label for="diocese" class="block text-[13px] font-medium text-gray-700 mb-2">
+                        <label for="" class="block text-[13px] font-medium text-gray-700 mb-2">
                             Prenoms
                         </label>
                         <input
                             v-model="user.prenoms"
                             type="text"
                             required
-                            id="diocese"
                             placeholder="Prenoms"
                             class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2 text-[13px] shadow-sm focus:outline-none focus:ring-1 focus:ring-primary "
                         />
@@ -98,34 +97,31 @@ onMounted(() => {
                 </div>
                 <div class="flex items-center justify-between gap-2">
                     <div class="w-full max-w-sm mb-3">
-                        <label for="diocese" class="block text-[13px] font-medium text-gray-700 mb-2">
+                        <label for="" class="block text-[13px] font-medium text-gray-700 mb-2">
                             Téléphone
                         </label>
                         <input
                             v-model="user.phone"
                             type="text"
                             required
-                            id="diocese"
                             placeholder="Téléphone"
                             class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2 text-[13px] shadow-sm focus:outline-none focus:ring-1 focus:ring-primary "
                         />
                     </div>
                     <div class="w-full max-w-sm mb-3">
-                        <label for="diocese" class="block text-[13px] font-medium text-gray-700 mb-2">
+                        <label for="" class="block text-[13px] font-medium text-gray-700 mb-2">
                             email
                         </label>
                         <input
                             v-model="user.email"
                             type="text"
-
-                            id="diocese"
                             placeholder="email"
                             class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2 text-[13px] shadow-sm focus:outline-none focus:ring-1 focus:ring-primary "
                         />
                     </div>
                 </div>
-                <div class="w-full  mb-3">
-                    <label for="diocese" class="block text-[13px] font-medium text-gray-700 mb-2">
+                <div class="w-full  mb-3"  v-if="auth.role =='super_admin'">
+                    <label for="" class="block text-[13px] font-medium text-gray-700 mb-2">
                         Selectionner le role
                     </label>
                     <select required v-model="user.role" name="" id=""  class="cursor-pointer block w-full rounded-lg border border-gray-300 bg-gray-50 p-2 text-[13px] shadow-sm focus:outline-none focus:ring-1 focus:ring-primary ">
@@ -134,7 +130,7 @@ onMounted(() => {
                     </select>
                 </div>
                 <div class="w-full  mb-3" v-if="user.role =='admin'">
-                    <label for="diocese" class="block text-[13px] font-medium text-gray-700 mb-2">
+                    <label for="" class="block text-[13px] font-medium text-gray-700 mb-2">
                         Assingner à une diocèse
                     </label>
                     <select required v-model="user.diocese_id" name="" id=""  class="cursor-pointer block w-full rounded-lg border border-gray-300 bg-gray-50 p-2 text-[13px] shadow-sm focus:outline-none focus:ring-1 focus:ring-primary  ">
@@ -142,19 +138,22 @@ onMounted(() => {
                         <option :value="item?.id" v-for="(item, index) in dioceses" :key="index">{{ item?.diocese }}</option>
                     </select>
                 </div>
-                    <div class="w-full  mb-3">
-                        <label for="diocese" class="block text-[13px] font-medium text-gray-700 mb-2">
-                        {{ user?.id ? 'Modifier le mot de passe temporaire (falcutatif)' : 'Définir un mot de passe temporaire' }}
-                        </label>
-                        <input
-                            v-model="user.password"
-                            type="text"
-                            id="diocese"
-                            :required="!user?.id"
-                            placeholder="mot de passe temporaire"
-                            class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2 text-[13px] shadow-sm focus:outline-none focus:ring-1 focus:ring-primary "
-                        />
-                    </div>
+                <div class="w-full  mb-3">
+                    <label for="" class="block text-[13px] font-medium text-gray-700 mb-2">
+                    {{ user?.id ? 'Modifier le mot de passe temporaire (falcutatif)' : 'Définir un mot de passe temporaire' }}
+                    </label>
+                    <input
+                        v-model="user.password"
+                        :type="pass ? 'text': 'password'"
+                        :required="!user?.id"
+                        placeholder="mot de passe temporaire"
+                        class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2 text-[13px] shadow-sm focus:outline-none focus:ring-1 focus:ring-primary "
+                    />
+                </div>
+                <div class="flex items-center gap-1">
+                    <input type="checkbox" v-model="pass"  id="show">
+                    <label for="show"> afficher le mot de passe</label>
+                </div>
             </div>
             <button class="mt-6 bg-primary w-full flex items-center justify-center text-white py-2 px-4 rounded-md ">
                 <ButtonLoader title="Enregistrer" :isLoading="isLoading" />

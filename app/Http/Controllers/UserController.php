@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
 class UserController extends Controller
 {
@@ -21,10 +22,10 @@ class UserController extends Controller
             'phone' => 'required|string|max:15',
         ];
 
-        if (!$request->has('id')) {
+        if (!$request->id) {
             $rules["phone"] = "required|string|max:15|unique:users,phone";
             $rules['email'] = 'required|string|email|max:255|unique:users,email';
-            $rule["password"] = [
+            $rules['password'] =  [
                 "required",
                 "string",
                 "min:8",
@@ -34,10 +35,36 @@ class UserController extends Controller
                 "regex:/[@$!%*?&]/",
                 // "confirmed",
             ];
+        } else if ($request->id && !$request->password) {
+            $user = User::findOrFail($request->id);
+            $rules["phone"] = [
+                "required",
+                "string",
+                "max:15",
+                Rule::unique('users', 'phone')->ignore($user->id), // Ignore l'ancien numéro
+            ];;
+            $rules['email'] = [
+                "nullable",
+                "string",
+                "email",
+                "max:255",
+                Rule::unique('users', 'email')->ignore($user->id),
+            ];
         } else if ($request->id && $request->password) {
-            $rules["phone"] = "required|string|max:15|unique:users,phone";
-            $rules['email'] = 'nullable|string|email|max:255|unique:users,email';
-
+            $user = User::findOrFail($request->id);
+            $rules["phone"] = [
+                "required",
+                "string",
+                "max:15",
+                Rule::unique('users', 'phone')->ignore($user->id), // Ignore l'ancien numéro
+            ];;
+            $rules['email'] = [
+                "nullable",
+                "string",
+                "email",
+                "max:255",
+                Rule::unique('users', 'email')->ignore($user->id),
+            ];
             $rules['password'] =  [
                 "required",
                 "string",
@@ -141,7 +168,7 @@ class UserController extends Controller
         $user = User::find($id);
 
         if (!$user) {
-            return response()->json(['message' => 'Prêtre introuvable.'], 404);
+            return response()->json(['message' => 'utilisateur introuvable.'], 404);
         }
 
         $validated = $request->validate([
@@ -168,7 +195,7 @@ class UserController extends Controller
     }
     public function listUser()
     {
-        $user = User::get();
+        $user = User::loadForDiocese()->with('diocese')->get();
         return response()->json([
             'user' => $user,
         ]);

@@ -140,9 +140,9 @@ onMounted(() => {
 </script>
 
 <template>
-    <div class="w-full min-h-screen bg-primary p-2 cursor-pointer flex flex-row items-center justify-center">
-        <div class="md:w-[420px] bg-white min-h-[100px] rounded-lg">
-                <div class="bg-white p-6 rounded-lg shadow-lg max-w-lg w-full" @click.stop>
+    <div class="w-full min-h-screen bg-white p-2 cursor-pointer flex flex-row items-center justify-center">
+        <div class="md:w-[520px] bg-white min-h-[100px] rounded-lg">
+                <div class="bg-white p-6 rounded-lg shadow-sm max-w-lg w-full" @click.stop>
                 <h2 class="text-xl font-semibold mb-3 text-center">
                     Fiche d'inscription
                 </h2>

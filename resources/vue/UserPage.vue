@@ -113,7 +113,7 @@ const createUser =async (data) => {
                         />
                     </div>
                 </div>
-                <div class="w-full  mb-3">
+                <!-- <div class="w-full  mb-3">
                     <label for="diocese" class="block text-[13px] font-medium text-gray-700 mb-2">
                         Selectionner le role
                     </label>
@@ -121,16 +121,16 @@ const createUser =async (data) => {
                         <option value="super_admin" class="cursor-pointer">Super administratreur</option>
                         <option value="admin" class="cursor-pointer"> Administratreur</option>
                     </select>
-                </div>
-                <div class="w-full  mb-3" v-if="user.role =='admin'">
-                    <label for="diocese" class="block text-[13px] font-medium text-gray-700 mb-2">
-                        Assingner à une diocèse
-                    </label>
-                    <select required v-model="user.diocese_id" name="" id=""  class="cursor-pointer block w-full rounded-lg border border-gray-300 bg-gray-50 p-2 text-[13px] shadow-sm focus:outline-none focus:ring-1 focus:ring-primary  ">
-                        <option value="" class="cursor-pointer" disabled>Selectionner une diocèse</option>
-                        <option :value="item?.id" v-for="(item, index) in dioceses" :key="index">{{ item?.diocese }}</option>
-                    </select>
-                </div>
+                </div> -->
+                    <!-- <div class="w-full  mb-3" v-if="user.role =='admin'">
+                        <label for="diocese" class="block text-[13px] font-medium text-gray-700 mb-2">
+                            Assingner à une diocèse
+                        </label>
+                        <select required v-model="user.diocese_id" name="" id=""  class="cursor-pointer block w-full rounded-lg border border-gray-300 bg-gray-50 p-2 text-[13px] shadow-sm focus:outline-none focus:ring-1 focus:ring-primary  ">
+                            <option value="" class="cursor-pointer" disabled>Selectionner une diocèse</option>
+                            <option :value="item?.id" v-for="(item, index) in dioceses" :key="index">{{ item?.diocese }}</option>
+                        </select>
+                    </div> -->
                     <div class="w-full  mb-3">
                         <label for="diocese" class="block text-[13px] font-medium text-gray-700 mb-2">
                             Modifier mon mot de passe (falcutatif)

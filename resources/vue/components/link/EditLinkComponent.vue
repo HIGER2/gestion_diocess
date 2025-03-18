@@ -3,7 +3,7 @@
 import Modal from '../Modal.vue';
 import { ref } from 'vue';
 import AddLinkComponent from './AddLinkComponent.vue';
-const { item ,dioceses} = defineProps([ 'item','dioceses' ]);
+const { item ,dioceses,hanldeliste} = defineProps([ 'item','dioceses','hanldeliste' ]);
 
 const isModalOpen = ref(false)
 const openModal = (state) => {

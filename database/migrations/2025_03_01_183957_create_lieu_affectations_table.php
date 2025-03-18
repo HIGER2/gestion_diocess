@@ -14,9 +14,12 @@ return new class extends Migration
         Schema::create('lieu_affectations', function (Blueprint $table) {
             $table->id();
             $table->string('nom');
+            $table->date('date_fin')->nullable();
+            $table->string('fonction')->nullable();
             $table->string('adresse')->nullable();
             $table->date('date')->nullable();
             $table->foreignId('pretre_id')->constrained('pretres')->onDelete('cascade');
+            $table->foreignId('dioceses_id')->nullable()->constrained('dioceses')->onDelete('set null');
             $table->timestamps();
         });
     }

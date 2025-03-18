@@ -96,7 +96,8 @@ onMounted(async() => {
                                 <tr class="bg-custom text-gray-600 capitalize text-[11px] leading-normal">
                                     <th class="p-3 text-left">Nom</th>
                                     <th class="p-3 text-left">Prénoms</th>
-                                    <th class="p-3 text-left">role</th>
+                                    <th class="p-3 text-left">Role</th>
+                                    <th class="p-3 text-left">Diocese</th>
                                     <th class="p-3 text-left">Téléphone</th>
                                     <th class="p-3 text-left">Email</th>
                                     <th class="p-3 text-left">Action</th>
@@ -107,10 +108,11 @@ onMounted(async() => {
                                     <td class="p-3 border-b">{{ item?.nom }}</td>
                                     <td class="p-3 border-b">{{ item?.prenoms }}</td>
                                     <td class="p-3 border-b">{{ item?.role }}</td>
+                                    <td class="p-3 border-b">{{ item?.diocese?.diocese || 'N/A' }}</td>
                                     <td class="p-3 border-b">{{ item?.phone }}</td>
                                     <td class="p-3 border-b">{{ item?.email }}</td>
                                     <td class="p-3 border-b flex gap-2">
-                                        <EditUtilisateurComponent :item="item" :dioceses="dioceses"/>
+                                        <EditUtilisateurComponent :hanldeliste="hanldeliste" :item="item" :dioceses="dioceses"/>
                                         <DeleteUtilisateurComponent :item="item"/>
                                         <!-- <a :href="`/prete-manager/${item?.id}`" class="bg-gray-100 px-3 rounded-md py-2"><i class="uil uil-ellipsis-h"></i></a> -->
                                     </td>

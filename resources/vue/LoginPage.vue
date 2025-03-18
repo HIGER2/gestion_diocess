@@ -5,9 +5,14 @@ import { reactive, ref } from 'vue';
 import ButtonLoader from './components/ButtonLoader.vue';
 
 const login = reactive({
-    login: 'admin@gmail.com',
-    password: 'password'
+    login: 'doumaarmand@gmail.com',
+    // login: 'admin@gmail.com',
+    password: 'Douma@123'
 });
+
+const pass = ref(false);
+
+
 const isLoading=ref(false)
 const errrMessage =ref('')
 
@@ -40,16 +45,20 @@ const authLogin = async () => {
                 </div>
                     <form action="" @submit.prevent="authLogin">
                         <div class="groupeForm">
-                            <label for=""  class="block text-[13px] font-medium text-gray-700 mb-2">Téléphone ou Email</label>
+                            <label for=""  class="block text-[13px] font-medium text-gray-700">Téléphone ou Email</label>
                             <div class="forminput">
                                 <input type="text" v-model="login.login"  class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-3 text-[13px] shadow-sm focus:outline-none focus:ring-1 focus:ring-primary " required>
                             </div>
                         </div>
                         <div class="groupeForm">
-                            <label for=""  class="block text-[13px] font-medium text-gray-700 mb-2">Mot de passe</label>
+                            <label for=""  class="block text-[13px] font-medium text-gray-700 ">Mot de passe</label>
                             <div class="forminput">
-                                <input type="text" v-model="login.password" cl class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-3 text-[13px] shadow-sm focus:outline-none focus:ring-1 focus:ring-primary " required>
+                                <input :type="pass ? 'text': 'password'" v-model="login.password" cl class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-3 text-[13px] shadow-sm focus:outline-none focus:ring-1 focus:ring-primary " required>
                             </div>
+                        </div>
+                        <div class="flex items-center gap-1">
+                            <input type="checkbox" v-model="pass" name="pass" id="pass">
+                            <label for="pass" class="cursor-pointer"> afficher le mot de passe</label>
                         </div>
                         <button type="submit" class="mt-6 bg-primary flex items-center justify-center w-full text-white py-2 px-4 rounded-xl ">
                             <ButtonLoader title="Connexion" :isLoading="isLoading" />
