@@ -13,8 +13,8 @@ class RegisterLinkController extends Controller
     public function create(Request $request)
     {
         $rules = [
-            'dioceses_id' => 'required|exists:dioceses,id',
-            'username' => 'required|string',
+            // 'dioceses_id' => 'required|exists:dioceses,id',
+            // 'username' => 'required|string',
             'password' => 'nullable|string|min:8'
         ];
 
@@ -61,6 +61,7 @@ class RegisterLinkController extends Controller
             $data = [
                 'status' => $request->status,
                 'username' => $request->username,
+                'dioceses_id' => $request->dioceses_id,
                 'expires_at' => $request->expires_at ?? $link->expires_at,
             ];
 
@@ -80,7 +81,7 @@ class RegisterLinkController extends Controller
                 'token' => $token,
                 'link' => env('APP_URL') . '/register-links/access/' . $token,
                 'dioceses_id' => $request->dioceses_id,
-                'expires_at' => now()->addDays(7),
+                // 'expires_at' => now()->addDays(7),
             ]);
 
             return response()->json(['message' => 'Lien creé avec succès', 'link' => $link], 201);
@@ -129,11 +130,7 @@ class RegisterLinkController extends Controller
     {
         $user = Auth::user();
 
-        $query = RegsiterLink::with('diocese');
-
-        if ($user->role === 'admin') {
-            $query->where('dioceses_id', $user->diocese_id); // Correction de `$user->diocese` en `$user->diocese_id`
-        }
+        $query = RegsiterLink::loadForDiocese()->with('diocese');
 
         return response()->json([
             'data' => $query->orderBy('created_at', 'desc')->get(),

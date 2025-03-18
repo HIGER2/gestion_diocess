@@ -22,10 +22,10 @@ class UserController extends Controller
             'phone' => 'required|string|max:15',
         ];
 
-        if (!$request->has('id')) {
+        if (!$request->id) {
             $rules["phone"] = "required|string|max:15|unique:users,phone";
             $rules['email'] = 'required|string|email|max:255|unique:users,email';
-            $rule["password"] = [
+            $rules['password'] =  [
                 "required",
                 "string",
                 "min:8",
@@ -35,9 +35,8 @@ class UserController extends Controller
                 "regex:/[@$!%*?&]/",
                 // "confirmed",
             ];
-        } else if ($request->id && $request->password) {
+        } else if ($request->id && !$request->password) {
             $user = User::findOrFail($request->id);
-
             $rules["phone"] = [
                 "required",
                 "string",
@@ -49,10 +48,23 @@ class UserController extends Controller
                 "string",
                 "email",
                 "max:255",
-                // "unique:users"
                 Rule::unique('users', 'email')->ignore($user->id),
             ];
-
+        } else if ($request->id && $request->password) {
+            $user = User::findOrFail($request->id);
+            $rules["phone"] = [
+                "required",
+                "string",
+                "max:15",
+                Rule::unique('users', 'phone')->ignore($user->id), // Ignore l'ancien numéro
+            ];;
+            $rules['email'] = [
+                "nullable",
+                "string",
+                "email",
+                "max:255",
+                Rule::unique('users', 'email')->ignore($user->id),
+            ];
             $rules['password'] =  [
                 "required",
                 "string",
@@ -183,7 +195,7 @@ class UserController extends Controller
     }
     public function listUser()
     {
-        $user = User::get();
+        $user = User::loadForDiocese()->with('diocese')->get();
         return response()->json([
             'user' => $user,
         ]);

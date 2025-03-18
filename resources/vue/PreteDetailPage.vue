@@ -88,12 +88,16 @@ onMounted(() => {
                                     <span class="text-zinc-600">{{ prete?.lieu_ordination_sacerdotale }}</span>
                                 </li>
                                 <li class="flex justify-between items-center p-4 text-[14px] font-[500]">
-                                    <span>Lieu d'affectetion</span>
+                                    <span>Lieu d'affectation</span>
                                     <span class="text-zinc-600">{{ prete?.lieu_affectation?.nom }}</span>
                                 </li>
+                                 <li class="flex justify-between items-center p-4 text-[14px] font-[500]">
+                                    <span>Fonction</span>
+                                    <span class="text-zinc-600">{{ prete?.lieu_affectation?.fonction }}</span>
+                                </li>
                                 <li class="flex justify-between items-center p-4 text-[14px] font-[500]">
-                                    <span>Date d'affectetion</span>
-                                    <span class="text-zinc-600">{{ prete?.lieu_affectation?.date }}</span>
+                                    <span>Date d'affectation</span>
+                                    <span class="text-zinc-600">{{ prete?.lieu_affectation?.date +' - '+ prete?.lieu_affectation?.date_fin }}</span>
                                 </li>
                             </ul>
                         </div>

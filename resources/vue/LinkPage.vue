@@ -46,7 +46,7 @@ onMounted(async () => {
         <div class="w-full">
             <div class="flex justify-between items-center">
                 <h1 class="uppercase text-[16px] font-[800]">Lien(s) d'inscription</h1>
-                <button type="button" v-if=" user?.role !=='admin'" @click="openModal(true)" class="bg-primary text-white p-2 rounded-md text-[14px] cursor-pointer">Créer un lien</button>
+                <button type="button"  @click="openModal(true)" class="bg-primary text-white p-2 rounded-md text-[14px] cursor-pointer">Créer un lien</button>
             </div>
             <ContentLoading v-if="isLoading"/>
             <div v-else class="w-full">
@@ -76,10 +76,8 @@ onMounted(async () => {
                                     <td class="p-3 ">{{ item?.phone }}</td>
                                     <td class="p-3 ">{{ item?.email }}</td> -->
                                     <td class="p-3  flex gap-2">
-                                        <EditLinkComponent  :item="item" :dioceses="JSON.parse(dioceses)"/>
-                                        <template v-if=" user?.role !=='admin'" >
-                                            <DeleteLinkComponent :item="item"/>
-                                        </template>
+                                        <EditLinkComponent :hanldeliste="hanldeliste"  :item="item" :dioceses="JSON.parse(dioceses)"/>
+                                        <DeleteLinkComponent :item="item"/>
                                         <!-- <a :href="`/prete-manager/${item?.id}`" class="bg-gray-100 px-3 rounded-md py-2"><i class="uil uil-ellipsis-h"></i></a> -->
                                     </td>
                                 </tr>

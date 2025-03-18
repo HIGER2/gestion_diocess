@@ -6,7 +6,15 @@ use Illuminate\Database\Eloquent\Model;
 
 class LieuAffectation extends Model
 {
-    protected $fillable = ['nom', 'adresse', 'date', 'pretre_id'];
+    protected $fillable = [
+        'nom',
+        'adresse',
+        'date',
+        'fonction',
+        'date_fin',
+        'dioceses_id',
+        'pretre_id'
+    ];
 
     public function pretre()
     {

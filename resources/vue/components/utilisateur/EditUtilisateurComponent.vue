@@ -5,7 +5,7 @@ import AddPreteComponent from '../AddPreteComponent.vue';
 import { ref } from 'vue';
 import AddDioceseComponent from '../AddDioceseComponent.vue';
 import AddUtilisateurComponent from '../AddUtilisateurComponent.vue';
-const { item ,dioceses} = defineProps([ 'item','dioceses' ]);
+const { item ,dioceses,hanldeliste} = defineProps([ 'item','dioceses','hanldeliste' ]);
 
 const isModalOpen = ref(false)
 const openModal = (state) => {
@@ -24,7 +24,7 @@ const openModal = (state) => {
 
         <Modal :isActive="isModalOpen" :onClose="openModal">
             <div class=" mb-2 p-5 max-h-full">
-                <AddUtilisateurComponent :detail="item" :dioceses="dioceses"/>
+                <AddUtilisateurComponent :callback="hanldeliste" :detail="item" :dioceses="dioceses"/>
                 <!-- <AddDioceseComponent :detail="item"/> -->
                 <!-- <add-prete-component :callback="hanldeliste" :detail="item" :dioceses="dioceses"/> -->
             </div>

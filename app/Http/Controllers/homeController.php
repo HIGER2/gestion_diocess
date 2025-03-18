@@ -21,26 +21,27 @@ class homeController extends Controller
         // Compteurs globaux
         $diocese_count = Diocese::count();
         $dioceses = Diocese::orderBy('created_at', 'desc')->get();
-        $prete_count = Pretre::where('status', 'active')->count();
-        $prete_count_inactive = Pretre::where('status', 'inactive')->count();
-        $preteRetraite = Pretre::whereRaw('(YEAR(CURDATE()) - YEAR(date_naissance)) = 55')->count();
+
+        $prete_count = Pretre::loadForDiocese()->where('status', 'active')->count();
+        $prete_count_inactive = Pretre::loadForDiocese()->where('status', 'inactive')->count();
+        $preteRetraite = Pretre::loadForDiocese()->whereRaw('(YEAR(CURDATE()) - YEAR(date_naissance)) = 55')->count();
         // Récupération des prêtres inactifs
-        $prete_inactive_query = Pretre::with('diocese')
+        $prete_inactive_query = Pretre::loadForDiocese()->with('diocese')
             ->with("diplome_academique")
             ->with("diplome_ecclesiastique")
             ->with("lieuAffectation")
             ->where('status', 'inactive');
 
-        // Filtrage spécifique pour les admins
-        if ($user->role === 'admin') {
-            $prete_inactive_query->where('dioceses_id', $user->diocese_id); // Correction de `$user->diocese` en `$user->diocese_id`
-        }
+        // // Filtrage spécifique pour les admins
+        // if ($user->role === 'admin') {
+        //     $prete_inactive_query->where('dioceses_id', $user->diocese_id); // Correction de `$user->diocese` en `$user->diocese_id`
+        // }
 
         // Récupération des données des prêtres inactifs après filtrage
         $prete_inactive = $prete_inactive_query->orderBy('created_at', 'desc')->get();
 
         // Compteur des utilisateurs
-        $user_count = User::count();
+        $user_count = User::loadForDiocese()->count();
 
         // Retour de la réponse JSON
         return response()->json([

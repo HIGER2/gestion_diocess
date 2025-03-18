@@ -38,9 +38,9 @@ class AuthController extends Controller
         $request->session()->regenerate();
         $path = "/";
 
-        if ($user->role == 'admin') {
-            $path = "/diocese-manager/" . $user->diocese_id;
-        }
+        // if ($user->role == 'admin') {
+        //     $path = "/diocese-manager/" . $user->diocese_id;
+        // }
 
         // Réponse en cas de succès
         return response()->json([

@@ -71,17 +71,23 @@ const routes = {
         }
     ],
     "admin": [
-          {
+       {
                 name: "Tableau de bord",
                 path: "/",
                 pathActive: " ",
                 icon:'uil-create-dashboard'
         },
+        // {
+        //     name: "Gestion des Diocèses",
+        //     path: "/diocese-manager",
+        //     pathActive: "diocese-manager",
+        //     icon:"uil-home"
+        // },
         {
-            name: "Mon Diocèse",
-            path: "/diocese-manager",
-            pathActive: "diocese-manager",
-            icon:"uil-home"
+            name: "Gestion des Prêtres",
+            path: "/prete-manager",
+            pathActive: "prete-manager",
+            icon: "uil-users-alt",
         },
         {
             name: "Gestion des liens",
@@ -89,6 +95,12 @@ const routes = {
             pathActive: "link-manager",
             icon:'uil-link-alt'
         },
+        {
+            name: "Utilisateurs",
+            path: "/utilisateur-manager",
+            icon: "uil-users-alt",
+            pathActive: "utilisateur-manager",
+        }
     ]
 }
 

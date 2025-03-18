@@ -1,9 +1,11 @@
 
 <script setup>
-import { onMounted, reactive, ref } from 'vue';
+import { computed, inject, onMounted, reactive, ref } from 'vue';
 const { dioceses, callback, detail } = defineProps([ 'dioceses', 'callback', 'detail' ]);
 import {useToast} from 'vue-toast-notification';
 import ButtonLoader from '../ButtonLoader.vue';
+
+const user = computed(()=>inject('user'))
 
 const link = reactive({
     username:"",
@@ -14,6 +16,7 @@ const link = reactive({
 
 const selectedDiocese=ref()
 const isLoading =ref(false);
+const pass = ref(false);
 
 const errrMessage =ref('')
 
@@ -22,7 +25,6 @@ const createLink =async (data) => {
     isLoading.value = true
     await axios.post('/register-links/create',data)
         .then(async response => {
-
             if (callback) {
                 await callback()
             }
@@ -65,7 +67,7 @@ onMounted(() => {
                 </div>
                 <form action="" @submit.prevent="createLink(link)">
                 <div class=" my-2">
-                    <div class="w-full  mb-3" v-if="!link?.id" >
+                    <div class="w-full  mb-3" v-if="user?.role ==='super_admin'" >
                         <label for="diocese" class="block text-[13px] font-medium text-gray-700 mb-2">
                             Assingner à une diocèse
                         </label>
@@ -83,10 +85,9 @@ onMounted(() => {
                             <option value="Inactive" class="cursor-pointer"> Inactive</option>
                         </select>
                     </div>
-                    <div class="w-full  mb-3">
+                    <div class="w-full  mb-3"  v-if="user?.role ==='super_admin'" >
                         <label for="diocese" class="block text-[13px] font-medium text-gray-700 mb-2">
                             Utilisateur
-                        <!-- {{ link?.id ? 'Modifier le mot de passe temporaire (falcutatif)' : 'Définir un mot de passe temporaire' }} -->
                         </label>
                         <input
                             v-model="link.username"
@@ -105,12 +106,16 @@ onMounted(() => {
                         </label>
                         <input
                             v-model="link.password"
-                            type="text"
+                            :type="pass ? 'text': 'password'"
                             id="diocese"
                             :required="link?.id ? false : true"
                             placeholder="mot de passe temporaire"
                             class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2 text-[13px] shadow-sm focus:outline-none focus:ring-1 focus:ring-primary "
                         />
+                    </div>
+                    <div class="flex items-center gap-1 cursor-pointer">
+                        <input type="checkbox" v-model="pass" name="pass" id="pass">
+                        <label for="pass" class="cursor-pointer text-[13px]"> afficher le mot de passe</label>
                     </div>
                 </div>
                 <button class="mt-6 bg-primary w-full flex items-center justify-center text-white py-2 px-4 rounded-md ">

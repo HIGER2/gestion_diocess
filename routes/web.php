@@ -18,7 +18,7 @@ Route::middleware(['web', 'auth'])->group(function () {
 
     Route::prefix('/')->group(function () {
 
-        Route::middleware(['role:super_admin'])->group(function () {
+        Route::middleware(['role:super_admin,admin'])->group(function () {
             Route::get('prete-manager', function () {
                 $dioceses = Diocese::orderBy('created_at', 'desc')->get();
                 return view('prete-manager', ['dioceses' => $dioceses]);
@@ -72,7 +72,7 @@ Route::middleware(['web', 'auth'])->group(function () {
 
 
     Route::prefix('pretres')->group(function () {
-        Route::middleware(['role:super_admin'])->group(function () {
+        Route::middleware(['role:super_admin,admin'])->group(function () {
             Route::get('/all', [PretreController::class, 'listPretres']);
             Route::post('/parcourt', [PretreController::class, 'parcourt']);
             Route::get('/{id}', [PretreController::class, 'show']);
@@ -99,7 +99,7 @@ Route::middleware(['web', 'auth'])->group(function () {
     });
 
     Route::prefix('register-links')->group(function () {
-        Route::middleware(['role:super_admin'])->group(function () {
+        Route::middleware(['role:super_admin,admin'])->group(function () {
             Route::post('/create', [RegisterLinkController::class, 'create'])->name('register.link.create');
             Route::delete('/delete/{id}', [RegisterLinkController::class, 'delete'])->name('register.link.delete');
         });

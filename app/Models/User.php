@@ -6,6 +6,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Auth;
 
 class User extends Authenticatable
 {
@@ -36,7 +37,31 @@ class User extends Authenticatable
         'password',
         'remember_token',
     ];
+    static function loadForDiocese()
+    {
+        $user = Auth::user();
+        if ($user->role == 'admin' && $user->diocese) {
+            return self::where('diocese_id', $user->diocese->id);
+        }
+        return self::query();
+    }
+    public function diocese()
+    {
+        return $this->belongsTo(Diocese::class, 'diocese_id', 'id'); // Assure-toi que la clé étrangère est bien 'dioceses_id' dans la table 'pretres'
+    }
 
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($model) {
+            $user = Auth::user();
+            if ($user && $user->diocese && $user->role == 'admin') {
+                $model->diocese_id = $user->diocese->id;
+                $model->role = "admin";
+            }
+        });
+    }
     /**
      * Get the attributes that should be cast.
      *

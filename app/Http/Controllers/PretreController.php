@@ -10,6 +10,7 @@ use App\Models\Pretre;
 use Carbon\Carbon;
 use GuzzleHttp\Promise\Create;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 
 class PretreController extends Controller
@@ -22,7 +23,7 @@ class PretreController extends Controller
         $rules = [
             'nom' => 'required|string|max:255',
             'prenoms' => 'required|string|max:255',
-            'dioceses_id' => 'nullable|exists:dioceses,id',
+            // 'dioceses_id' => 'nullable|exists:dioceses,id',
             'lieu_affectation' => 'nullable',
             'date_naissance' => 'required|date',
             'lieu_naissance' => 'required|string|max:255',
@@ -59,9 +60,14 @@ class PretreController extends Controller
             'adresse_electronique.unique' => 'L’adresse électronique saisie est déjà utilisée.',
         ]);
 
-        $diocese = Diocese::findOrFail($request['dioceses_id']);
-        $abbreviation = $diocese->abreviation;
+        $diocese = null;
+        if (Auth::user() && Auth::user()->diocese) {
+            $diocese = Auth::user()->diocese;
+        } else {
+            $diocese = Diocese::findOrFail($request['dioceses_id']);
+        }
 
+        $abbreviation = $diocese->abreviation;
         // load image
         $filePath = "";
         if ($request->hasFile('selectedFile')) {
@@ -105,7 +111,10 @@ class PretreController extends Controller
                     ['pretre_id' => $pretre->id],
                     [
                         'nom' => $request->lieu_affectation->nom,
-                        'date' => $request->lieu_affectation->date
+                        'fonction' => $request->lieu_affectation->fonction,
+                        'date' => $request->lieu_affectation->date,
+                        'date_fin' => $request->lieu_affectation->date_fin,
+                        'dioceses_id' => $request->lieu_affectation->dioceses_id,
                     ]
                 );
             }
@@ -153,7 +162,10 @@ class PretreController extends Controller
                 $request->lieu_affectation->pretre_id = $pretre->id;
                 $pretre->lieuAffectation()->create([
                     'nom' => $request->lieu_affectation->nom,
-                    'date' => $request->lieu_affectation->date
+                    'fonction' => $request->lieu_affectation->fonction,
+                    'date' => $request->lieu_affectation->date,
+                    'date_fin' => $request->lieu_affectation->date_fin,
+                    'dioceses_id' => $request->lieu_affectation->dioceses_id,
                 ]);  // Créer la relation 'lieuAffectation' avec les données
             }
 
@@ -185,7 +197,6 @@ class PretreController extends Controller
                 }
             }
         }
-
 
         return response()->json([
             'message' => $request->id ? 'Prêtre mis à jour avec succès.' : 'Prêtre créé avec succès.',
@@ -269,16 +280,15 @@ class PretreController extends Controller
 
     public function listPretres(Request $request)
     {
-
-        $query = Pretre::with(['diocese', 'lieuAffectation'])
-            ->with("diplome_academique")
-            ->with("diplome_ecclesiastique")
-            ->orderBy('created_at', 'desc')
-            ->where('status', 'active');
+        $query = Pretre::loadForDiocese()
+            ->where('status', 'active')
+            ->with(['diocese', 'lieuAffectation', 'diplome_academique', 'diplome_ecclesiastique'])
+            ->orderBy('created_at', 'desc');
 
         // Recherche par nom, numéro ou email
-        if ($request->has('search')) {
+        if ($request->filled('search')) {
             $search = $request->input('search');
+
             $query->where(function ($q) use ($search) {
                 $q->where('nom', 'like', '%' . $search . '%')
                     ->orWhere('prenoms', 'like', '%' . $search . '%')
@@ -286,30 +296,26 @@ class PretreController extends Controller
                     ->orWhere('adresse_electronique', 'like', '%' . $search . '%')
                     ->orWhere('matricule', 'like', '%' . $search . '%')
                     ->orWhere('date_naissance', 'like', '%' . $search . '%')
-                    ->orWhere('specialite', 'like', '%' . $search . '%');
+                    ->orWhere('specialite', 'like', '%' . $search . '%')
+                    ->orWhereHas('diplome_academique', function ($q) use ($search) {
+                        $q->where('intitule_diplome', 'like', '%' . $search . '%');
+                    })
+                    ->orWhereHas('diplome_ecclesiastique', function ($q) use ($search) {
+                        $q->where('intitule_diplome', 'like', '%' . $search . '%');
+                    });
+
+                // Si la recherche est un nombre, filtre par âge
+                if (is_numeric($search)) {
+                    $age = (int) $search;
+                    $dateDebut = Carbon::now()->subYears($age + 1)->addDay();
+                    $dateFin = Carbon::now()->subYears($age);
+                    $q->orWhereBetween('date_naissance', [$dateDebut, $dateFin]);
+                }
             });
-
-            $query->orWhereHas('diplome_academique', function ($q) use ($search) {
-                $q->where('intitule_diplome', 'like', '%' . $search . '%'); // Champ du diplôme à modifier selon ta base
-            });
-            $query->orWhereHas('diplome_ecclesiastique', function ($q) use ($search) {
-                $q->where('intitule_diplome', 'like', '%' . $search . '%'); // Champ du diplôme à modifier selon ta base
-            });
-
-            if (is_numeric($search)) {
-                $age = (int) $search; // Convertir en entier
-
-                // Calculer les bornes de la date de naissance pour cet âge
-                $dateDebut = Carbon::now()->subYears($age + 1)->addDay(); // Date de naissance max (âge révolu)
-                $dateFin = Carbon::now()->subYears($age); // Date de naissance min
-
-                // Filtrer par âge
-                $query->orWhereBetween('date_naissance', [$dateDebut, $dateFin]);
-            }
         }
 
         // Pagination
-        $pretres = $query->paginate(25);
+        $pretres = $query->paginate(1000);
 
         return response()->json([
             'pretres' => $pretres,
