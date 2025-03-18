@@ -6,8 +6,8 @@ import ButtonLoader from './components/ButtonLoader.vue';
 const { token } = defineProps([ 'token' ])
 
 const login = reactive({
-    username: 'DIO-6',
-    password: 'password'
+    username: '',
+    password: ''
 });
 const pass = ref(false);
 
