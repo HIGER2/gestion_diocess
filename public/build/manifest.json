@@ -1,16 +1,19 @@
 {
   "resources/css/app.css": {
-    "file": "assets/app-B4DjhElb.css",
+    "file": "assets/app-De7z53Fj.css",
     "src": "resources/css/app.css",
     "isEntry": true
   },
   "resources/js/app.js": {
-    "file": "assets/app-4Hqajc2Y.js",
+    "file": "assets/app-Dg-tdvdc.js",
     "name": "app",
     "src": "resources/js/app.js",
     "isEntry": true,
     "css": [
-      "assets/app-CqTmEcvY.css"
+      "assets/app-Boi9dgMG.css"
+    ],
+    "assets": [
+      "assets/logo-BhD1oODk.jpg"
     ]
   },
   "resources/scss/__variable.scss": {
@@ -23,5 +26,9 @@
     "file": "assets/app-CEojn8nF.css",
     "src": "resources/scss/app.scss",
     "isEntry": true
+  },
+  "resources/vue/image/logo.jpg": {
+    "file": "assets/logo-BhD1oODk.jpg",
+    "src": "resources/vue/image/logo.jpg"
   }
 }

@@ -114,10 +114,11 @@ onMounted(() => {
 
 <template>
     <div class=" min-h-screen  bg-gray-50">
-        <div class="w-[250px] h-screen bg-secondary fixed top-0  ">
+        <div class="w-[250px] h-screen bg-white fixed top-0  ">
+
             <a href="/user" class="flex w-full items-center gap-1 h-[60px] px-4 border-b border-b-gray-100 cursor-pointer relative " @click="setOpen(isOpen)">
-                <div  class="w-[50px] h-[50px] cursor-pointer rounded-[50%] bg-primary flex align-middleflex items-center justify-center">
-                    <i class="uil uil-user text-[20px] text-white"></i>
+                <div class=" flex items-center rounded-md overflow-hidden justify-center  ">
+                    <img src="@/image/logo.jpg" alt="" class="max-w-12 rounded-full">
                 </div>
                 <div class="capitalize text-primary font-[600]">{{ user?.nom }}</div>
             </a>
