@@ -155,11 +155,11 @@ class RegisterLinkController extends Controller
     {
         $link = RegsiterLink::where('token', $token)
             ->where('status', 'active')
-            ->where('expires_at', '>', now())
+            // ->where('expires_at', '>', now())
             ->first();
 
         if (!$link) {
-            return response()->json(['message' => 'Invalid or expired link'], 403);
+            return response()->json(['message' => 'lien invalide'], 403);
         }
 
         $request->validate([
