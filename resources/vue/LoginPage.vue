@@ -5,9 +5,10 @@ import { reactive, ref } from 'vue';
 import ButtonLoader from './components/ButtonLoader.vue';
 
 const login = reactive({
-    login: 'doumaarmand@gmail.com',
+    login: '',
+    // login: 'doumaarmand@gmail.com',
     // login: 'admin@gmail.com',
-    password: 'Douma@123'
+    password: ''
 });
 
 const pass = ref(false);
