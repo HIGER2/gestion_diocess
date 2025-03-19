@@ -114,7 +114,7 @@ class RegisterLinkController extends Controller
     {
         $link = RegsiterLink::where('token', $token)
             ->where('status', 'active')
-            ->where('expires_at', '>', now())
+            // ->where('expires_at', '>', now())
             ->first();
 
         if (!$link) {

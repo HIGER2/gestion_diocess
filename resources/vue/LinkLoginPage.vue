@@ -43,7 +43,7 @@ const authLogin = async () => {
                 </div>
                     <form action="" @submit.prevent="authLogin">
                         <div class="groupeForm">
-                            <label for=""  class="block text-[13px] font-medium text-gray-700 mb-2">Téléphone ou Email</label>
+                            <label for=""  class="block text-[13px] font-medium text-gray-700 mb-2">Nom utilisateur</label>
                             <div class="forminput">
                                 <input type="text"
                                 placeholder="Téléphone ou Email"

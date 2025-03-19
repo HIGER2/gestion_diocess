@@ -48,13 +48,13 @@ const authLogin = async () => {
                         <div class="groupeForm">
                             <label for=""  class="block text-[13px] font-medium text-gray-700">Téléphone ou Email</label>
                             <div class="forminput">
-                                <input type="text" v-model="login.login"  class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-3 text-[13px] shadow-sm focus:outline-none focus:ring-1 focus:ring-primary " required>
+                                <input type="text" placeholder="Téléphone ou Email" v-model="login.login"  class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-3 text-[13px] shadow-sm focus:outline-none focus:ring-1 focus:ring-primary " required>
                             </div>
                         </div>
                         <div class="groupeForm">
                             <label for=""  class="block text-[13px] font-medium text-gray-700 ">Mot de passe</label>
                             <div class="forminput">
-                                <input :type="pass ? 'text': 'password'" v-model="login.password" cl class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-3 text-[13px] shadow-sm focus:outline-none focus:ring-1 focus:ring-primary " required>
+                                <input placeholder="Mot de passe" :type="pass ? 'text': 'password'" v-model="login.password" cl class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-3 text-[13px] shadow-sm focus:outline-none focus:ring-1 focus:ring-primary " required>
                             </div>
                         </div>
                         <div class="flex items-center gap-1">
