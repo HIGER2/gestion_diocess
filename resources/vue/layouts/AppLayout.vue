@@ -9,6 +9,7 @@ const setOpen = (state) => {
     isOpen.value = !state
 };
     provide('user',user)
+    provide('diocese',diocese)
 
 const routeActive = (path = "") => {
 
@@ -64,7 +65,7 @@ const routes = {
             icon:'uil-link-alt'
         },
         {
-            name: "Utilisateurs",
+            name: "Adminitrateurs Diocésain",
             path: "/utilisateur-manager",
             icon: "uil-users-alt",
             pathActive: "utilisateur-manager",
@@ -96,7 +97,7 @@ const routes = {
             icon:'uil-link-alt'
         },
         {
-            name: "Utilisateurs",
+            name: "Adminitrateurs Diocésain",
             path: "/utilisateur-manager",
             icon: "uil-users-alt",
             pathActive: "utilisateur-manager",
