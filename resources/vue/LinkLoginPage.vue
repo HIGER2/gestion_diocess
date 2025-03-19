@@ -46,7 +46,7 @@ const authLogin = async () => {
                             <label for=""  class="block text-[13px] font-medium text-gray-700 mb-2">Nom utilisateur</label>
                             <div class="forminput">
                                 <input type="text"
-                                placeholder="Téléphone ou Email"
+                                placeholder="Nom utilisateur"
                                 v-model="login.username"  class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-3 text-[13px] shadow-sm focus:outline-none focus:ring-1 focus:ring-primary " required>
                             </div>
                         </div>
