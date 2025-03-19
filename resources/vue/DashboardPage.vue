@@ -64,7 +64,8 @@ onMounted(() => {
             <!-- {{ analytic_data?.prete_inactive }} -->
             <div class="w-full items-center justify-center flex">
                 <div class="w-full">
-                    <h1 v-if="user?.role  != 'admin'" class="uppercase text-[16px] font-[800]  mb-2 ">Tableau de bord</h1>
+                    <h1  class="uppercase text-[16px] font-[800]  mb-2 ">Tableau de bord</h1>
+                    <!-- <h1 v-if="user?.role  != 'admin'" class="uppercase text-[16px] font-[800]  mb-2 ">Tableau de bord</h1> -->
                     <div  class="p-4 flex-wrap  flex items-center justify-center bg-custom rounded-md my-auto ">
                         <div v-if="user?.role  != 'admin'" style="width: calc(100% / 5 - 10px);" href="/diocese-manager" class=" shadow-slate-900 h-auto flex flex-row items-center  gap-3 p-2 cursor-pointer min-h-[115px] justify-center rounded-md m-[5px]">
                             <!-- <div class=" w-[70px] h-[70px] bg-yellow-100 items-center justify-center flex rounded-[50%]">

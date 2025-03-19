@@ -9,6 +9,7 @@ const login = reactive({
     // login: 'doumaarmand@gmail.com',
     // login: 'admin@gmail.com',
     password: ''
+    // password: 'Douma@123'
 });
 
 const pass = ref(false);
@@ -27,7 +28,15 @@ const authLogin = async () => {
         }
     })
         .catch(error => {
-            errrMessage.value= error.response?.data?.message+ ""
+            let mismatch = "CSRF token mismatch"
+            if (errrMessage.value && errrMessage.value.trim() == mismatch.trim()) {
+
+                alert('votre session à expiré ')
+
+            } else {
+            errrMessage.value = error.response?.data?.message + ""
+
+            }
         // console.error('Error fetching user data:', error.response?.data?.message);
         });
     isLoading.value= false
