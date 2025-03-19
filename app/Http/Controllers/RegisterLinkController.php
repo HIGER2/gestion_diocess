@@ -121,8 +121,9 @@ class RegisterLinkController extends Controller
             abort(403, 'This link is invalid or has expired.');
         }
         $diocese = Diocese::findOrFail($link->dioceses_id);
+        $dioceses = Diocese::get();
 
-        return view('inscription', ['token' => $token, 'diocese' => $diocese]);
+        return view('inscription', ['token' => $token, 'diocese' => $diocese, 'dioceses' => $dioceses]);
     }
 
 

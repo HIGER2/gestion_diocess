@@ -143,6 +143,7 @@ onMounted(() => {
 
 <template>
         <div class="bg-white p-4 rounded-lg  max-w-lg w-[460px]" @click.stop>
+
                 <h2 class="text-xl font-semibold mb-3 text-center">Ajouter un prêtre</h2>
                 <div v-if="errrMessage" class="p-4 w-full bg-red-100 text-[12px] rounded-md text-red-800">
                         {{ errrMessage }}
@@ -412,7 +413,6 @@ onMounted(() => {
                             Fonction
                             </label>
                             <select  v-model="formData.lieu_affectation.fonction" name="" id=""  class="cursor-pointer text-[12px] block w-full rounded-lg border border-gray-300 bg-gray-50 p-2  shadow-sm focus:outline-none focus:ring-1 focus:ring-primary ">
-                                <option value="" class="cursor-pointer" disabled>Selectionner une diocèse</option>
                                 <option value="curé" >Curé</option>
                                 <option value="servicaire" >Servicaire</option>
                                 <option value="autre" >Autre</option>
