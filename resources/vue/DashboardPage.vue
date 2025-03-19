@@ -65,10 +65,10 @@ onMounted(() => {
             <div class="w-full items-center justify-center flex">
                 <div class="w-full">
                     <h1  v-if="user?.role  != 'admin'" class="uppercase text-[16px] font-[800]  mb-2 ">
-                        Tableau de bord super administrateur
+                        Tableau de bord
                     </h1>
                     <h1 v-else class="uppercase text-[16px] font-[800]  mb-2 ">
-                        Tableau de bord adminitrateurs du Diocésain ({{ diocese?.diocese }})
+                        Tableau de bord  ({{ diocese?.diocese }})
                     </h1>
                     <div  class="p-4 flex-wrap  flex items-center justify-center bg-custom rounded-md my-10 ">
                         <div v-if="user?.role  != 'admin'" style="width: calc(100% / 5 - 10px);" href="/diocese-manager" class=" shadow-slate-900 h-auto flex flex-row items-center  gap-3 p-2 cursor-pointer min-h-[115px] justify-center rounded-md m-[5px]">
