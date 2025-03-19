@@ -15,7 +15,7 @@
         @vite(['resources/scss/app.scss','resources/js/app.js','resources/css/app.css'])
     </head>
     <body id="app">
-        <app-layout :user="{{ json_encode(Auth::user()) }}">
+        <app-layout :user='@json(Auth::user())' :diocese='@json(Auth::user()->diocese)'>
             @yield('content')
         </app-layout>
 

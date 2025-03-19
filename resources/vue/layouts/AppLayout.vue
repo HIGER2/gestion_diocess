@@ -2,7 +2,7 @@
 <script setup>
 import { onMounted, provide, ref } from 'vue';
 
-const {user}=defineProps(['user'])
+const {user,diocese}=defineProps(['user','diocese'])
 const isOpen = ref(false)
 const route = ref()
 const setOpen = (state) => {
@@ -109,6 +109,10 @@ const  goBack =()=> {
 }
 
 onMounted(() => {
+
+    console.log('====================================');
+    console.log(user);
+    console.log('====================================');
 });
 </script>
 
@@ -116,11 +120,16 @@ onMounted(() => {
     <div class=" min-h-screen  bg-gray-50">
         <div class="w-[250px] h-screen bg-white fixed top-0  ">
 
-            <a href="/user" class="flex w-full items-center gap-1 h-[60px] px-4 border-b border-b-gray-100 cursor-pointer relative " @click="setOpen(isOpen)">
-                <div class=" flex items-center rounded-md overflow-hidden justify-center  ">
-                    <img src="@/image/logo.jpg" alt="" class="max-w-12 rounded-full">
+            <a href="/user" class="flex w-full items-center gap-2 h-[60px] px-4 border-b border-b-gray-100 cursor-pointer relative " @click="setOpen(isOpen)">
+                <div class=" flex items-center rounded-md w-[60px] overflow-hidden justify-center  ">
+                    <img src="@/image/logo.jpg" alt="" class="w-[50px] rounded-full">
                 </div>
-                <div class="capitalize text-primary font-[600]">{{ user?.nom }}</div>
+                <div class="capitalize text-primary font-[600] flex flex-col  overflow-hidden">
+                    <span>{{ user?.nom }}</span>
+                    <span class="text-[13px] lowercase text-gray-600  font-mono text-nowrap  overflow-hidden text-ellipsis">
+                        {{ diocese?.diocese}}
+                    </span>
+                </div>
             </a>
             <ul class="w-full px-4">
             <li v-for="(item, index) in routes[user?.role]" :key="index" class="mb-0  ">

@@ -29,7 +29,7 @@ class RegsiterLink extends Authenticatable
     static function loadForDiocese()
     {
         $user = Auth::user();
-        if ($user->role == 'admin') {
+        if ($user && $user->role == 'admin' && $user->diocese) {
             return self::where('dioceses_id', $user->diocese->id);
         }
         return self::query();
