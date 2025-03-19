@@ -126,7 +126,7 @@ onMounted(() => {
                 </div>
                 <div class="capitalize text-primary font-[600] flex flex-col  overflow-hidden">
                     <span>{{ user?.nom }}</span>
-                    <span class="text-[13px] lowercase text-gray-600  font-mono text-nowrap  overflow-hidden text-ellipsis">
+                    <span v-if="diocese" class="text-[13px] lowercase text-gray-600  font-mono text-nowrap  overflow-hidden text-ellipsis">
                         {{ diocese?.diocese}}
                     </span>
                 </div>
