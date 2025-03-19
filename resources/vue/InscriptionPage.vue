@@ -1,7 +1,7 @@
 
 <script setup>
 import { inject, onMounted, reactive, ref } from 'vue';
-const { diocese, callback, dioceseId, detail } = defineProps([ 'diocese', 'callback', 'dioceseId', 'detail' ]);
+const { diocese, callback, dioceseId,dioceses, detail } = defineProps(['dioceses', 'diocese', 'callback', 'dioceseId', 'detail' ]);
 
 
 import {useToast} from 'vue-toast-notification';
@@ -31,7 +31,10 @@ const formData = reactive({
     lieu_affectation: {
         nom: '',
         adresse:'',
-        date:''
+        date: '',
+        fonction: '',
+        dioceses_id:'' ,
+        date_fin:'' ,
     }
 });
 
@@ -393,36 +396,47 @@ onMounted(() => {
                         <button type="button" @click="AddDiplomeAcademique" class=" block text-[12px] shadow border mx-auto my-3 p-2 rounded-md">Ajouter un diplome profane</button>
                     </div>
                     <h1 class="my-4 text-center text-xl">Lieu d’affectation</h1>
-                    <div class="flex items-center justify-between gap-2">
+                   <div class="flex items-center justify-between gap-2">
                         <div class="w-full max-w-sm mb-2">
                             <label for="diocese" class="block text-[12px] font-medium text-gray-700 mb-2">
-                            Nom du lieu
+                            Nom de la paroise
                             </label>
                             <input
                                 v-model="formData.lieu_affectation.nom"
                                 type="text"
                                 id="diocese"
                                 required
-                                placeholder=" Nom du lieu"
+                                placeholder="Nom de la paroise"
                                 class="block w-full text-[12px] rounded-lg border border-gray-300 bg-gray-50 p-2  shadow-sm focus:outline-none focus:ring-1 focus:ring-primary "
                             />
                         </div>
-                        <!-- <div class="w-full max-w-sm mb-2">
-                            <label for="diocese" class="block  font-medium text-gray-700 mb-2">
-                                Adresse
-                            </label>
-                            <input
-                                v-model="formData.lieu_affectation.adresse"
-                                type="text"
-                                id="diocese"
-                                required
-                                placeholder="Adresse"
-                                class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2  shadow-sm focus:outline-none focus:ring-1 focus:ring-primary "
-                            />
-                        </div> -->
                         <div class="w-full max-w-sm mb-2">
                             <label for="diocese" class="block text-[12px] font-medium text-gray-700 mb-2">
-                                Date
+                            Fonction
+                            </label>
+                            <select  v-model="formData.lieu_affectation.fonction" name="" id=""  class="cursor-pointer text-[12px] block w-full rounded-lg border border-gray-300 bg-gray-50 p-2  shadow-sm focus:outline-none focus:ring-1 focus:ring-primary ">
+                                <option value="curé" >Curé</option>
+                                <option value="servicaire" >Servicaire</option>
+                                <option value="autre" >Autre</option>
+                            </select>
+                        </div>
+
+                    </div>
+                    <div class="flex items-center justify-between gap-2">
+                        <div class="w-full  mb-2">
+                            <label for="diocese" class="block text-[12px] font-medium text-gray-700 mb-2">
+                                Diocèse
+                            </label>
+                            <select  v-model="formData.lieu_affectation.dioceses_id" name="" id=""  class="cursor-pointer text-[12px] block w-full rounded-lg border border-gray-300 bg-gray-50 p-2  shadow-sm focus:outline-none focus:ring-1 focus:ring-primary ">
+                                <option value="" class="cursor-pointer" disabled>Selectionner une diocèse</option>
+                                <option :value="item?.id" v-for="(item, index) in dioceses" :key="index">{{ item?.diocese }}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="w-full flex items-center justify-between gap-2">
+                        <div class="w-full max-w-sm mb-2">
+                            <label for="diocese" class="block text-[12px] font-medium text-gray-700 mb-2">
+                                Date début
                             </label>
                             <input
                                 v-model="formData.lieu_affectation.date"
@@ -432,6 +446,19 @@ onMounted(() => {
                                 placeholder="date"
                                 class="block w-full text-[12px] rounded-lg border border-gray-300 bg-gray-50 p-2  shadow-sm focus:outline-none focus:ring-1 focus:ring-primary "
                             />
+                        </div>
+                        <div class="w-full max-w-sm mb-2">
+                                <label for="diocese" class="block text-[12px] font-medium text-gray-700 mb-2">
+                                    Date fin
+                                </label>
+                                <input
+                                    v-model="formData.lieu_affectation.date_fin"
+                                    type="date"
+                                    id="diocese"
+                                    required
+                                    placeholder="date"
+                                    class="block w-full text-[12px] rounded-lg border border-gray-300 bg-gray-50 p-2  shadow-sm focus:outline-none focus:ring-1 focus:ring-primary "
+                                />
                         </div>
                     </div>
                     <button class="mt-6 bg-primary w-full flex items-center justify-center text-white py-2 px-4 rounded-md ">
