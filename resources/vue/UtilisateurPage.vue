@@ -77,7 +77,7 @@ onMounted(async() => {
     <div>
             <div class="w-full">
                 <div class="flex justify-between items-center">
-                    <h1 class="uppercase text-[16px] font-[800]">Liste des utilisateurs</h1>
+                    <h1 class="uppercase text-[16px] font-[800]">listes des adminitrateurs Diocésain</h1>
                     <button type="button" @click="openModal(true)" class="bg-primary text-white p-2 rounded-md text-[14px] cursor-pointer">Ajouter un utilsateur</button>
                 </div>
                 <ContentLoading v-if="isLoading"/>
