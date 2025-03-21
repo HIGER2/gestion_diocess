@@ -61,7 +61,7 @@ onMounted(() => {
 
 <template>
         <div class="bg-white p-6 rounded-lg shadow-lg max-w-lg w-[400px]" @click.stop>
-                <h2 class="text-xl font-semibold text-zinc-900 mb-3">{{link?.id ? 'Modifier un utilisateur' : 'Créer un lien'}}</h2>
+                <h2 class="text-xl font-semibold text-zinc-900 mb-3">{{link?.id ? 'Modifier le lien' : 'Créer un lien'}}</h2>
                 <div v-if="errrMessage" class="p-4 w-full bg-red-100 text-[12px] rounded-md text-red-800">
                         {{ errrMessage }}
                 </div>
@@ -87,7 +87,7 @@ onMounted(() => {
                     </div>
                     <div class="w-full  mb-3"  v-if="user?.role ==='super_admin'" >
                         <label for="diocese" class="block text-[13px] font-medium text-gray-700 mb-2">
-                            Utilisateur
+                            Nom utilisateur
                         </label>
                         <input
                             v-model="link.username"
@@ -109,7 +109,7 @@ onMounted(() => {
                             :type="pass ? 'text': 'password'"
                             id="diocese"
                             :required="link?.id ? false : true"
-                            placeholder="mot de passe temporaire"
+                            placeholder="mot de passe"
                             class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2 text-[13px] shadow-sm focus:outline-none focus:ring-1 focus:ring-primary "
                         />
                     </div>

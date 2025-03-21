@@ -123,7 +123,9 @@ onMounted(() => {
                     <!-- {{ pretres }} -->
                     <div class="flex items-center justify-between">
                         <h6>Liste des prêtres du diocèse ({{ count }})</h6>
-                        <button type="button" @click="openModal(true)" class="bg-primary text-white p-2 rounded-md text-[14px] cursor-pointer">Ajouter un prêtres</button>
+                        <button type="button" @click="openModal(true)" class="bg-primary text-white p-2 rounded-md text-[14px] cursor-pointer">
+                            Ajouter un prêtre
+                        </button>
                     </div>
                     <div class="overflow-x-auto mt-4 border rounded-md">
                      <template v-if="pretres?.length > 0">

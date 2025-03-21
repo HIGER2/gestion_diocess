@@ -101,7 +101,7 @@ onMounted(() => {
                         </div>
                         <div class="w-full max-w-sm mb-2">
                             <label for="diocese" class="block text-[13px] font-medium text-gray-700 mb-2">
-                                Abreviation de la diocèse
+                                Abreviation du diocèse
                             </label>
                             <input
                                 type="text"

@@ -356,7 +356,9 @@ onMounted(() => {
                                 </div>
                             </div>
                         </div>
-                        <button type="button" @click="AddDiplomeEcclesiastique" class=" block text-[12px] shadow border mx-auto my-3 p-2 rounded-md">Ajouter un diplome ecclesiastique</button>
+                        <button type="button" @click="AddDiplomeEcclesiastique" class=" block text-[12px] shadow border mx-auto my-3 p-2 rounded-md">
+                            Ajouter un diplôme ecclesiastique
+                        </button>
 
                         <div v-if="formData?.diplome_academique?.length > 0" class="flex items-center justify-between gap-2">
                             <div class="w-full mb-2">
@@ -391,7 +393,9 @@ onMounted(() => {
                                 </div>
                             </div>
                         </div>
-                        <button type="button" @click="AddDiplomeAcademique" class=" block text-[12px] shadow border mx-auto my-3 p-2 rounded-md">Ajouter un diplome profane</button>
+                        <button type="button" @click="AddDiplomeAcademique" class=" block text-[12px] shadow border mx-auto my-3 p-2 rounded-md">
+                            Ajouter un diplôme académique
+                        </button>
                     </div>
                     <h1 class="my-4 text-center text-xl">Lieu d’affectation</h1>
                     <div class="flex items-center justify-between gap-2">
@@ -414,7 +418,7 @@ onMounted(() => {
                             </label>
                             <select  v-model="formData.lieu_affectation.fonction" name="" id=""  class="cursor-pointer text-[12px] block w-full rounded-lg border border-gray-300 bg-gray-50 p-2  shadow-sm focus:outline-none focus:ring-1 focus:ring-primary ">
                                 <option value="curé" >Curé</option>
-                                <option value="servicaire" >Servicaire</option>
+                                <option value="vicaire" >Vicaire</option>
                                 <option value="autre" >Autre</option>
                             </select>
                         </div>
