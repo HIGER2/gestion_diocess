@@ -84,7 +84,7 @@ onMounted(() => {
                     </div>
                     <div class="w-full max-w-sm mb-3">
                         <label for="" class="block text-[13px] font-medium text-gray-700 mb-2">
-                            Prenoms
+                            Prénoms
                         </label>
                         <input
                             v-model="user.prenoms"
@@ -122,7 +122,7 @@ onMounted(() => {
                 </div>
                 <div class="w-full  mb-3"  v-if="auth.role =='super_admin'">
                     <label for="" class="block text-[13px] font-medium text-gray-700 mb-2">
-                        Selectionner le role
+                        Selectionner le rôle
                     </label>
                     <select required v-model="user.role" name="" id=""  class="cursor-pointer block w-full rounded-lg border border-gray-300 bg-gray-50 p-2 text-[13px] shadow-sm focus:outline-none focus:ring-1 focus:ring-primary ">
                         <option value="super_admin" class="cursor-pointer">Super administratreur</option>
@@ -131,7 +131,7 @@ onMounted(() => {
                 </div>
                 <div class="w-full  mb-3" v-if="user.role =='admin'">
                     <label for="" class="block text-[13px] font-medium text-gray-700 mb-2">
-                        Assingner à une diocèse
+                        Assingner à un diocèse
                     </label>
                     <select required v-model="user.diocese_id" name="" id=""  class="cursor-pointer block w-full rounded-lg border border-gray-300 bg-gray-50 p-2 text-[13px] shadow-sm focus:outline-none focus:ring-1 focus:ring-primary  ">
                         <option value="" class="cursor-pointer" disabled>Selectionner une diocèse</option>

@@ -107,7 +107,7 @@ onMounted(async () => {
                             type="search"
                             id="diocese"
                             v-model="searchQuery"
-                            placeholder="Rechercher ici par nom ,numéro ,email"
+                            placeholder="Rechercher ici par nom,numéro,email,age,etc..."
                             class="w-[300px] rounded-lg  border border-gray-300 bg-gray-50 p-2 text-[13px] shadow-sm focus:outline-none "
                         />
                     <button type="button" @click="openModal(true)" class="bg-primary text-white p-2 rounded-md text-[14px] cursor-pointer w-max">Ajouter un prêtre</button>
