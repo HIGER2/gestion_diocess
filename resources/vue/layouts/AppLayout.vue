@@ -102,6 +102,38 @@ const routes = {
             icon: "uil-users-alt",
             pathActive: "utilisateur-manager",
         }
+    ],
+    "modérateur": [
+       {
+                name: "Tableau de bord",
+                path: "/",
+                pathActive: " ",
+                icon:'uil-create-dashboard'
+        },
+        // {
+        //     name: "Gestion des Diocèses",
+        //     path: "/diocese-manager",
+        //     pathActive: "diocese-manager",
+        //     icon:"uil-home"
+        // },
+        {
+            name: "Gestion des Prêtres",
+            path: "/prete-manager",
+            pathActive: "prete-manager",
+            icon: "uil-users-alt",
+        },
+        {
+            name: "Gestion des liens",
+            path: "/link-manager",
+            pathActive: "link-manager",
+            icon:'uil-link-alt'
+        },
+        // {
+        //     name: "Administrateurs Diocésains",
+        //     path: "/utilisateur-manager",
+        //     icon: "uil-users-alt",
+        //     pathActive: "utilisateur-manager",
+        // }
     ]
 }
 

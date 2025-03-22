@@ -40,7 +40,7 @@ class User extends Authenticatable
     static function loadForDiocese()
     {
         $user = Auth::user();
-        if ($user->role == 'admin' && $user->diocese) {
+        if (($user->role == 'admin' || $user->role == 'modérateur') && $user->diocese) {
             return self::where('diocese_id', $user->diocese->id);
         }
         return self::query();
@@ -58,7 +58,7 @@ class User extends Authenticatable
             $user = Auth::user();
             if ($user && $user->diocese && $user->role == 'admin') {
                 $model->diocese_id = $user->diocese->id;
-                $model->role = "admin";
+                $model->role = "modérateur";
             }
         });
     }

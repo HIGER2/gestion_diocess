@@ -22,7 +22,7 @@ class RoleMiddleware
         }
 
         if (!in_array($user->role, $roles)) {
-            return redirect()->route('diocese-detail', ['diocese_id' => $user->diocese_id]);
+            // return redirect()->route('diocese-detail', ['diocese_id' => $user->diocese_id]);
             // return abort(403, 'Accès interdit');
         }
 

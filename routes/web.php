@@ -64,6 +64,7 @@ Route::middleware(['web', 'auth'])->group(function () {
         Route::get('/analytic', [homeController::class, 'analytic']);
         Route::prefix('user')->group(function () {
             Route::post('/', [UserController::class, 'store']);
+            Route::post('/me', [UserController::class, 'updateMe']);
             Route::get('/all', [UserController::class, 'listUser']);
             Route::get('/{id}', [UserController::class, 'show']);
             Route::put('/{id}', [UserController::class, 'update']);
