@@ -97,7 +97,7 @@ const routes = {
             icon:'uil-link-alt'
         },
         {
-            name: "Adminitrateurs Diocésain",
+            name: "Administrateurs Diocésains",
             path: "/utilisateur-manager",
             icon: "uil-users-alt",
             pathActive: "utilisateur-manager",

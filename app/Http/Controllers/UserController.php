@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
@@ -118,15 +119,18 @@ class UserController extends Controller
 
         try {
 
-
+            $authUser = Auth::user();
 
             if ($request->id) {
                 $user = User::where('id', $request->id)->first();
-                if (!Hash::check($request->old_password, $user->password)) {
-                    return response()->json([
-                        'success' => false,
-                        'message' => 'L\'ancien mot de passe est incorrect.',
-                    ], 400);
+
+                if ($authUser->role == $user->role &&  $authUser->id == $user->id) {
+                    if (!Hash::check($request->old_password, $user->password)) {
+                        return response()->json([
+                            'success' => false,
+                            'message' => 'L\'ancien mot de passe est incorrect.',
+                        ], 400);
+                    }
                 }
                 $data = [
                     'nom' => $request->nom,
