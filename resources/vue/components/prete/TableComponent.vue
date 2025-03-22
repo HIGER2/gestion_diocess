@@ -1,5 +1,6 @@
 
 <script setup>
+import { computed, inject } from 'vue';
 import DetailPreteComponent from './DetailPreteComponent.vue';
 import EditPreteComponent from './EditPreteComponent.vue';
 import PreteDeleteComponent from './PreteDeleteComponent.vue';
@@ -37,6 +38,7 @@ function verifierRetraite(dateNaissance) {
     }
     return message
 }
+const auth = computed(()=>inject('user'))
 
 // Exemple d'utilisation
 const commandes = [
@@ -113,7 +115,9 @@ const imprimerLigne = (commande) => {
                     <!-- <button @click="imprimerLigne(commande)">🖨 Imprimer</button> -->
                     <EditPreteComponent :item="item" :dioceses="dioceses"/>
                     <DetailPreteComponent :item="item"  />
+                    <template v-if="auth.role !=='modérateur'">
                     <PreteDeleteComponent :item="item"/>
+                    </template>
                 </td>
             </tr>
         </tbody>

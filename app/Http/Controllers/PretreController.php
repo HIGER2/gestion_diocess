@@ -64,7 +64,7 @@ class PretreController extends Controller
         try {
             DB::beginTransaction();
             $diocese = null;
-            if (Auth::user() && Auth::user()->role == "admin") {
+            if (Auth::user() && Auth::user()->role !== "super_admin") {
                 $diocese = Auth::user()->diocese;
             } else {
                 $diocese = Diocese::findOrFail($request['dioceses_id']);

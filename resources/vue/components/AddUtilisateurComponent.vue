@@ -9,7 +9,7 @@ const auth = computed(()=>inject('user'))
 const user = reactive({
     nom:"",
     prenoms:"",
-    role:"super_admin",
+    role:"",
     phone:"",
     email:"",
     password:"",
@@ -120,24 +120,30 @@ onMounted(() => {
                         />
                     </div>
                 </div>
-                <div class="w-full  mb-3"  v-if="auth.role =='super_admin'">
-                    <label for="" class="block text-[13px] font-medium text-gray-700 mb-2">
-                        Selectionner le rôle
-                    </label>
-                    <select required v-model="user.role" name="" id=""  class="cursor-pointer block w-full rounded-lg border border-gray-300 bg-gray-50 p-2 text-[13px] shadow-sm focus:outline-none focus:ring-1 focus:ring-primary ">
-                        <option value="super_admin" class="cursor-pointer">Super administratreur</option>
-                        <option value="admin" class="cursor-pointer"> Administratreur</option>
-                    </select>
-                </div>
-                <div class="w-full  mb-3" v-if="user.role =='admin'">
-                    <label for="" class="block text-[13px] font-medium text-gray-700 mb-2">
-                        Assingner à un diocèse
-                    </label>
-                    <select required v-model="user.diocese_id" name="" id=""  class="cursor-pointer block w-full rounded-lg border border-gray-300 bg-gray-50 p-2 text-[13px] shadow-sm focus:outline-none focus:ring-1 focus:ring-primary  ">
-                        <option value="" class="cursor-pointer" disabled>Selectionner une diocèse</option>
-                        <option :value="item?.id" v-for="(item, index) in dioceses" :key="index">{{ item?.diocese }}</option>
-                    </select>
-                </div>
+
+                <template v-if="auth.role =='super_admin'">
+                    <div class="w-full  mb-3"  >
+                        <label for="" class="block text-[13px] font-medium text-gray-700 mb-2">
+                            Selectionner le rôle
+                        </label>
+                        <select required v-model="user.role" name="" id=""  class="cursor-pointer block w-full rounded-lg border border-gray-300 bg-gray-50 p-2 text-[13px] shadow-sm focus:outline-none focus:ring-1 focus:ring-primary ">
+                            <option value="" class="cursor-pointer" disabled>Selectionner le rôle</option>
+                            <option  value="super_admin"  class="cursor-pointer">Super administratreur</option>
+                            <option  value="admin" class="cursor-pointer"> Administratreur</option>
+                            <option value="modérateur" class="cursor-pointer"> Modérateur</option>
+                        </select>
+                    </div>
+                      <div class="w-full  mb-3" >
+                        <label for="" class="block text-[13px] font-medium text-gray-700 mb-2">
+                            Assingner à un diocèse
+                        </label>
+                        <select required v-model="user.diocese_id" name="" id=""  class="cursor-pointer block w-full rounded-lg border border-gray-300 bg-gray-50 p-2 text-[13px] shadow-sm focus:outline-none focus:ring-1 focus:ring-primary  ">
+                            <option value="" class="cursor-pointer" disabled>Selectionner une diocèse</option>
+                            <option :value="item?.id" v-for="(item, index) in dioceses" :key="index">{{ item?.diocese }}</option>
+                        </select>
+                    </div>
+                </template>
+
                 <div class="" v-if="auth?.id!=user?.id">
                 <div class="w-full  mb-3">
                     <label for="" class="block text-[13px] font-medium text-gray-700 mb-2">

@@ -10,6 +10,7 @@ import ContentLoading from './components/ContentLoading.vue';
 const {dioceses}=defineProps(['dioceses'])
 const pretes = ref([])
 const isModalOpen = ref(false)
+
 // const dioceses =ref()
 const searchQuery =ref("")
 const isLoading=ref(true)

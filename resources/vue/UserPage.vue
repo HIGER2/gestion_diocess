@@ -26,7 +26,7 @@ const errrMessage =ref('')
 const createUser =async (data) => {
     errrMessage.value = ""
     isLoading.value = true
-    await axios.post('/user',data)
+    await axios.post('/user/me',data)
         .then(async response => {
         const $toast = useToast();
         $toast.success('Opération effectuée avec succès');
@@ -132,7 +132,7 @@ const createUser =async (data) => {
                             <option :value="item?.id" v-for="(item, index) in dioceses" :key="index">{{ item?.diocese }}</option>
                         </select>
                     </div> -->
-                    <div class="w-full  mb-3">
+                    <div class="w-full  mb-3" v-if="props.user?.role !=='super_admin'">
                         <label for="diocese" class="block text-[13px] font-medium text-gray-700 mb-2">
                           Ancien mot de passe
                         </label>

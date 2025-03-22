@@ -1,6 +1,6 @@
 
 <script setup>
-import { inject, onMounted, provide, ref } from 'vue';
+import { computed, inject, onMounted, provide, ref } from 'vue';
 import AppLayout from './layouts/AppLayout.vue';
 import Modal from './components/Modal.vue';
 import AddLinkComponent from './components/link/AddLinkComponent.vue';
@@ -12,7 +12,9 @@ import Empty from './components/Empty.vue';
 const { dioceses } = defineProps([ 'dioceses' ]);
 const links = ref()
 const isModalOpen = ref(false)
-const isLoading=ref(false)
+const isLoading = ref(false)
+const auth = computed(()=>inject('user',ref()))
+
 const openModal = (state) => {
     isModalOpen.value = state
 };
@@ -77,7 +79,10 @@ onMounted(async () => {
                                     <td class="p-3 ">{{ item?.email }}</td> -->
                                     <td class="p-3  flex gap-2">
                                         <EditLinkComponent :hanldeliste="hanldeliste"  :item="item" :dioceses="JSON.parse(dioceses)"/>
-                                        <DeleteLinkComponent :item="item"/>
+                                        <template v-if="auth.role !=='modérateur'">
+                                            <DeleteLinkComponent :item="item"/>
+                                        </template>
+
                                         <!-- <a :href="`/prete-manager/${item?.id}`" class="bg-gray-100 px-3 rounded-md py-2"><i class="uil uil-ellipsis-h"></i></a> -->
                                     </td>
                                 </tr>
