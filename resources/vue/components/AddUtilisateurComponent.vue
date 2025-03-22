@@ -138,6 +138,7 @@ onMounted(() => {
                         <option :value="item?.id" v-for="(item, index) in dioceses" :key="index">{{ item?.diocese }}</option>
                     </select>
                 </div>
+                <div class="" v-if="auth?.id!=user?.id">
                 <div class="w-full  mb-3">
                     <label for="" class="block text-[13px] font-medium text-gray-700 mb-2">
                     {{ user?.id ? 'Modifier le mot de passe temporaire (falcutatif)' : 'Définir un mot de passe temporaire' }}
@@ -153,6 +154,7 @@ onMounted(() => {
                 <div class="flex items-center gap-1">
                     <input type="checkbox" v-model="pass"  id="show">
                     <label for="show"> afficher le mot de passe</label>
+                </div>
                 </div>
             </div>
             <button class="mt-6 bg-primary w-full flex items-center justify-center text-white py-2 px-4 rounded-md ">
