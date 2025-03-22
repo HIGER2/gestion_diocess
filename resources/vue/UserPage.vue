@@ -17,6 +17,7 @@ const props = defineProps(['user'])
 //     diocese_id:"",
 // });
 
+const pass = ref(false);
 
 const isLoading =ref(false);
 
@@ -41,7 +42,7 @@ const createUser =async (data) => {
         });
 
     isLoading.value = false
-
+    window.scrollTo(0, 0);
 };
 
 </script>
@@ -133,16 +134,32 @@ const createUser =async (data) => {
                     </div> -->
                     <div class="w-full  mb-3">
                         <label for="diocese" class="block text-[13px] font-medium text-gray-700 mb-2">
+                          Ancien mot de passe
+                        </label>
+                        <input
+                            v-model="props.user.old_password"
+                            :type="pass ? 'text': 'password'"
+                            id="diocese"
+                            placeholder="Ancien mot de passe"
+                            class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2 text-[13px] shadow-sm focus:outline-none focus:ring-1 focus:ring-primary "
+                        />
+                    </div>
+                    <div class="w-full  mb-3">
+                        <label for="diocese" class="block text-[13px] font-medium text-gray-700 mb-2">
                             Modifier mon mot de passe (falcutatif)
                         </label>
                         <input
                             v-model="props.user.password"
-                            type="password"
+                            :type="pass ? 'text': 'password'"
                             id="diocese"
-                            placeholder="mot de passe temporaire"
+                            placeholder="Nouveau mot de passe"
                             class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2 text-[13px] shadow-sm focus:outline-none focus:ring-1 focus:ring-primary "
                         />
                     </div>
+                <div class="flex items-center cursor-pointer gap-1">
+                    <input type="checkbox" v-model="pass"  id="show">
+                    <label for="show"> afficher le mot de passe</label>
+                </div>
             </div>
             <button class="mt-6 bg-primary w-full flex items-center justify-center text-white py-2 px-4 rounded-md ">
                 <ButtonLoader title="Enregistrer" :isLoading="isLoading" />

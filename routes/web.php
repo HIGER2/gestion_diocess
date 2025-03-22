@@ -37,6 +37,7 @@ Route::middleware(['web', 'auth'])->group(function () {
 
         Route::middleware(['role:super_admin,admin'])->group(function () {
             Route::get('prete-manager/{prete_id}', [ViewController::class, 'findprete'])->name('prete');
+            Route::get('prete/add', [ViewController::class, 'add'])->name('prete.add');
             Route::get('user', [ViewController::class, 'userAuth'])->name('user.auth');
 
             Route::get('', function () {

@@ -17,10 +17,12 @@ import LinkPage from '../vue/LinkPage.vue';
 import AppLayout from '../vue/layouts/AppLayout.vue';
 import LinkLoginPage from '../vue/LinkLoginPage.vue';
 import UserPage from '../vue/UserPage.vue';
+import AddPretePage from '../vue/AddPretePage.vue';
 // Créez et montez l'application Vue
 createApp({})
     .component('HomePage', HomePage)
     .component('LoginPage', LoginPage)
+    .component('PreteAdd', AddPretePage)
     .component('PreteManager', PreteManager)
     .component('DiocesseDetailPage', DiocesseDetailPage)
     .component('PreteDetailPage', PreteDetailPage)

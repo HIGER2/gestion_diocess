@@ -22,7 +22,7 @@ const openModal = (state) => {
 
         <Modal :isActive="isModalOpen" :onClose="openModal">
             <div class=" mb-2 p-5 max-h-full">
-                <add-prete-component :callback="hanldeliste" :detail="item" :dioceses="dioceses"/>
+                <add-prete-component :callback="hanldeliste" :onClose="openModal" :detail="item" :dioceses="dioceses"/>
             </div>
         </Modal>
     </div>

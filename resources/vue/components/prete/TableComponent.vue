@@ -112,7 +112,7 @@ const imprimerLigne = (commande) => {
                 <td class="p-3 py-4  flex gap-2 text-zinc-900">
                     <!-- <button @click="imprimerLigne(commande)">🖨 Imprimer</button> -->
                     <EditPreteComponent :item="item" :dioceses="dioceses"/>
-                    <DetailPreteComponent :item="item" />
+                    <DetailPreteComponent :item="item"  />
                     <PreteDeleteComponent :item="item"/>
                 </td>
             </tr>
