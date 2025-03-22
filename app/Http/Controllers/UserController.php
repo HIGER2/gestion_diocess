@@ -50,7 +50,7 @@ class UserController extends Controller
                 "max:255",
                 Rule::unique('users', 'email')->ignore($user->id),
             ];
-        } else if ($request->id && $request->password) {
+        } else if ($request->id && $request->password && $request->old_password) {
             $user = User::findOrFail($request->id);
             $rules["phone"] = [
                 "required",
@@ -66,6 +66,16 @@ class UserController extends Controller
                 Rule::unique('users', 'email')->ignore($user->id),
             ];
             $rules['password'] =  [
+                "required",
+                "string",
+                "min:8",
+                "regex:/[A-Z]/",
+                "regex:/[a-z]/",
+                "regex:/[0-9]/",
+                "regex:/[@$!%*?&]/",
+                // "confirmed",
+            ];
+            $rules['old_password'] =  [
                 "required",
                 "string",
                 "min:8",
@@ -96,14 +106,28 @@ class UserController extends Controller
             'password.string' => 'Le champ "Mot de passe" doit être une chaîne de caractères.',
             'password.min' => 'Le champ "Mot de passe" doit contenir au moins 8 caractères.',
             'password.regex' => 'Le champ "Mot de passe" doit contenir au moins une majuscule, une minuscule, un chiffre et un caractère spécial (@$!%*?&).',
+            'old_password.required' => 'Le champ "Ancien mot de passe" est obligatoire.',
+            'old_password.string' => 'Le champ "Ancien mot de passe" doit être une chaîne de caractères.',
+            'old_password.min' => 'Le champ "Ancien mot de passe" doit contenir au moins 8 caractères.',
+            'old_password.regex' => 'Le champ "Ancien mot de passe" doit contenir au moins une majuscule, une minuscule, un chiffre et un caractère spécial (@$!%*?&).',
             // 'password.confirmed' => 'Les mots de passe ne correspondent pas.',
         ];
 
         $validator = $request->validate($rules, $messages);
         // Étape 2 : Créer l'utilisateur
+
         try {
 
+
+
             if ($request->id) {
+                $user = User::where('id', $request->id)->first();
+                if (!Hash::check($request->old_password, $user->password)) {
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'L\'ancien mot de passe est incorrect.',
+                    ], 400);
+                }
                 $data = [
                     'nom' => $request->nom,
                     'prenoms' => $request->prenoms,
@@ -117,7 +141,9 @@ class UserController extends Controller
                     $data['password'] = Hash::make($request->password);
                 }
 
-                $user = User::where('id', $request->id)->update($data);
+
+
+                $user->update($data);
             } else {
                 $user = User::create([
                     'nom' => $request->nom,

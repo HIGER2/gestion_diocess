@@ -1,7 +1,7 @@
 
 <script setup>
 import { computed, inject, onMounted, reactive, ref } from 'vue';
-const { dioceses, callback, dioceseId, detail } = defineProps([ 'dioceses', 'callback', 'dioceseId', 'detail' ]);
+const { dioceses,onClose, callback, dioceseId, detail } = defineProps(['onClose', 'dioceses', 'callback', 'dioceseId', 'detail' ]);
 
 
 import {useToast} from 'vue-toast-notification';
@@ -29,22 +29,33 @@ const formData = reactive({
     adresse_electronique: "",
     specialite:'',
     communautaire: '',
-    lieu_affectation: {
+    parcours:[]
+});
+
+// const listeprete = inject('listeprete')
+
+
+const AddDiplomeEcclesiastique = () => {
+    formData.diplome_ecclesiastique.push({intitule_diplome:"",date:''})
+}
+
+const Addparcours = () => {
+    formData.parcours.push( {
         nom: '',
         adresse:'',
         date: '',
         fonction: '',
         dioceses_id:'' ,
         date_fin:'' ,
-
-    }
-});
-
-const listeprete = inject('listeprete')
-
-const AddDiplomeEcclesiastique = () => {
-    formData.diplome_ecclesiastique.push({intitule_diplome:"",date:''})
+    })
 }
+
+const DeleteParcours = (index) => {
+   if (index >= 0 && index < formData.parcours.length) {
+        formData.parcours.splice(index, 1);
+    }
+}
+
 
 const DeleteiplomeEcclesiastique = (index) => {
    if (index >= 0 && index < formData.diplome_ecclesiastique.length) {
@@ -80,7 +91,6 @@ const handleSave = async (data) => {
     formData.append("adresse_electronique", data.adresse_electronique);
     formData.append("specialite", data.specialite);
     formData.append("communautaire", data.communautaire);
-    formData.append("lieu_affectation", JSON.stringify(data.lieu_affectation));
     if (dioceseId) {
         formData.append('dioceses_id',dioceseId)
     }
@@ -89,10 +99,15 @@ const handleSave = async (data) => {
         formData.append("selectedFile", data.selectedFile);
     }
 
-   data.diplome_ecclesiastique.forEach((value, index) => {
-    // Convertir l'objet en chaîne JSON
-    formData.append(`diplome_ecclesiastique[${index}]`, JSON.stringify(value));
-});
+    data.parcours.forEach((value, index) => {
+        // Convertir l'objet en chaîne JSON
+        formData.append(`parcours[${index}]`, JSON.stringify(value));
+    });
+
+    data.diplome_ecclesiastique.forEach((value, index) => {
+        // Convertir l'objet en chaîne JSON
+        formData.append(`diplome_ecclesiastique[${index}]`, JSON.stringify(value));
+    });
 
     data.diplome_academique.forEach((value, index) => {
         formData.append(`diplome_academique[${index}]`, JSON.stringify(value));
@@ -103,9 +118,6 @@ const handleSave = async (data) => {
             },
         })
         .then(async response => {
-            if (listeprete) {
-            await listeprete()
-            }
             const $toast = useToast();
             $toast.success('Opération effectuée avec succès');
     })
@@ -142,13 +154,18 @@ onMounted(() => {
 </script>
 
 <template>
-        <div class="bg-white p-4 rounded-lg  max-w-lg w-[460px]" @click.stop>
-
-                <h2 class="text-xl font-semibold mb-3 text-center">Ajouter un prêtre</h2>
+    <div class="w-full flex items-center justify-center">
+        <!-- {{ dioceses }} -->
+        <div class="w-[600px] bg-white p-4 rounded-md" @click.stop>
+                <h2 class="text-xl font-semibold mb-3 text-center">Modifier un prêtre</h2>
                 <div v-if="errrMessage" class="p-4 w-full bg-red-100 text-[12px] rounded-md text-red-800">
                         {{ errrMessage }}
                 </div>
                 <form action="" @submit.prevent="handleSave(formData)">
+                    <div class="">
+                    <div class="w-full border-r bg-white border p-4 mb-3 rounded-lg">
+                    <h1 class="my-4 text-center text-xl">Informations personnelles</h1>
+
                     <div class="w-[120px] flex items-center justify-center overflow-hidden h-[120px] mx-auto mb-4 border rounded-[50%]">
                     <input
                         type="file"
@@ -164,9 +181,7 @@ onMounted(() => {
                     <button type="button" @click="openFileDialog" class="shadow-sm flex text-[12px] mb-2 p-3 rounded-md border mx-auto">
                         Choisir une photo de profile
                     </button>
-                    <div class=" my-2 w-full">
-                        <!-- {{ detail }} -->
-                        <div class="flex items-center justify-between gap-2">
+                    <div class=" flex items-center justify-between gap-2">
                             <div class="w-full max-w-sm mb-2">
                                 <label for="diocese" class="block text-[12px] font-medium text-gray-700 mb-2">
                                     Nom
@@ -193,105 +208,102 @@ onMounted(() => {
                                     class="block w-full text-[12px] rounded-lg border border-gray-300 bg-gray-50 p-2  shadow-sm focus:outline-none focus:ring-1 focus:ring-primary "
                                 />
                             </div>
-                        </div>
+                    </div>
+                    <div class="w-full  mb-2" v-if="dioceses && user?.role ==='super_admin'">
+                        <label for="diocese" class="block text-[12px] font-medium text-gray-700 mb-2">
+                            Selectionner une diocèse
+                        </label>
 
-                        <div class="w-full  mb-2" v-if="dioceses && user?.role ==='super_admin'">
+                        <select  v-model="formData.dioceses_id" name="" id=""  class="cursor-pointer text-[12px] block w-full rounded-lg border border-gray-300 bg-gray-50 p-2  shadow-sm focus:outline-none focus:ring-1 focus:ring-primary ">
+                            <option value="" class="cursor-pointer" disabled>Selectionner une diocèse</option>
+                            <option :value="item?.id" v-for="(item, index) in dioceses" :key="index">{{ item?.diocese }}</option>
+                        </select>
+                    </div>
+
+                    <div class=" flex items-center justify-between gap-2">
+                        <div class="w-full max-w-sm mb-2">
                             <label for="diocese" class="block text-[12px] font-medium text-gray-700 mb-2">
-                                Selectionner une diocèse
+                                Téléphone
                             </label>
-
-                            <select  v-model="formData.dioceses_id" name="" id=""  class="cursor-pointer text-[12px] block w-full rounded-lg border border-gray-300 bg-gray-50 p-2  shadow-sm focus:outline-none focus:ring-1 focus:ring-primary ">
-                                <option value="" class="cursor-pointer" disabled>Selectionner une diocèse</option>
-                                <option :value="item?.id" v-for="(item, index) in dioceses" :key="index">{{ item?.diocese }}</option>
-                            </select>
+                            <input
+                            v-model="formData.numero_telephone"
+                                type="text"
+                                required
+                                id="diocese"
+                                placeholder="Téléphone"
+                                class="block w-full text-[12px] rounded-lg border border-gray-300 bg-gray-50 p-2  shadow-sm focus:outline-none focus:ring-1 focus:ring-primary "
+                            />
                         </div>
-
-                        <div class="flex items-center justify-between gap-2">
-                            <div class="w-full max-w-sm mb-2">
-                                <label for="diocese" class="block text-[12px] font-medium text-gray-700 mb-2">
-                                    Téléphone
-                                </label>
-                                <input
-                                v-model="formData.numero_telephone"
-                                    type="text"
-                                    required
-                                    id="diocese"
-                                    placeholder="Téléphone"
-                                    class="block w-full text-[12px] rounded-lg border border-gray-300 bg-gray-50 p-2  shadow-sm focus:outline-none focus:ring-1 focus:ring-primary "
-                                />
-                            </div>
-                            <div class="w-full max-w-sm mb-2">
-                                <label for="diocese" class="block text-[12px] font-medium text-gray-700 mb-2">
-                                Email
-                                </label>
-                                <input
-                                    v-model="formData.adresse_electronique"
-                                    type="text"
-                                    id="diocese"
-                                    placeholder="Email"
-                                    class="block w-full text-[12px] rounded-lg border border-gray-300 bg-gray-50 p-2  shadow-sm focus:outline-none focus:ring-1 focus:ring-primary "
-                                />
-                            </div>
+                        <div class="w-full max-w-sm mb-2">
+                            <label for="diocese" class="block text-[12px] font-medium text-gray-700 mb-2">
+                            Email
+                            </label>
+                            <input
+                                v-model="formData.adresse_electronique"
+                                type="text"
+                                id="diocese"
+                                placeholder="Email"
+                                class="block w-full text-[12px] rounded-lg border border-gray-300 bg-gray-50 p-2  shadow-sm focus:outline-none focus:ring-1 focus:ring-primary "
+                            />
                         </div>
-                        <div class="flex items-center justify-between gap-2">
-                            <div class="w-full max-w-sm mb-2">
-                                <label for="diocese" class="block text-[12px]  font-medium text-gray-700 mb-2">
-                                    Lieu de naissance
-                                </label>
-                                <input
-                                    v-model="formData.lieu_naissance"
-                                    type="text"
-                                    required
-                                    id="diocese"
-                                    placeholder="Lieu de naissance"
-                                    class="block w-full text-[12px] rounded-lg border border-gray-300 bg-gray-50 p-2  shadow-sm focus:outline-none focus:ring-1 focus:ring-primary "
-                                />
-                            </div>
-                            <div class="w-full max-w-sm mb-2">
-                                <label for="diocese" class="block text-[12px]  font-medium text-gray-700 mb-2">
-                                    Date de Naissance
-                                </label>
-                                <input
-                                    type="date"
-                                    v-model="formData.date_naissance"
-                                    id="diocese"
-                                    required
-                                    placeholder=" Date de Naissance"
-                                    class="block w-full text-[12px] rounded-lg border border-gray-300 bg-gray-50 p-2  shadow-sm focus:outline-none focus:ring-1 focus:ring-primary "
-                                />
-                            </div>
+                    </div>
+                    <div class=" flex items-center justify-between gap-2">
+                        <div class="w-full max-w-sm mb-2">
+                            <label for="diocese" class="block text-[12px]  font-medium text-gray-700 mb-2">
+                                Lieu de naissance
+                            </label>
+                            <input
+                                v-model="formData.lieu_naissance"
+                                type="text"
+                                required
+                                id="diocese"
+                                placeholder="Lieu de naissance"
+                                class="block w-full text-[12px] rounded-lg border border-gray-300 bg-gray-50 p-2  shadow-sm focus:outline-none focus:ring-1 focus:ring-primary "
+                            />
                         </div>
-
-                        <div class="flex items-center justify-between gap-2">
-                            <div class="w-full max-w-sm mb-2">
-                                <label for="diocese" class="block text-[12px]  font-medium text-gray-700 mb-2">
-                                    Date ordination sacerdotale
-                                </label>
-                                <input
-                                    v-model="formData.date_ordination_sacerdotale"
-                                    type="date"
-                                    id="diocese"
-                                    required
-                                    placeholder="Date ordination sacerdotale"
-                                    class="block w-full text-[12px] rounded-lg border border-gray-300 bg-gray-50 p-2  shadow-sm focus:outline-none focus:ring-1 focus:ring-primary "
-                                />
-                            </div>
-                            <div class="w-full max-w-sm mb-2">
-                                <label for="diocese" class="block  text-[12px] font-medium text-gray-700 mb-2">
-                                    Lieu ordination sacerdotale
-                                </label>
-                                <input
-                                    v-model="formData.lieu_ordination_sacerdotale"
-                                    type="text"
-                                    id="diocese"
-                                    required
-                                    placeholder="Lieu ordination sacerdotale"
-                                    class="block w-full text-[12px] rounded-lg border border-gray-300 bg-gray-50 p-2  shadow-sm focus:outline-none focus:ring-1 focus:ring-primary "
-                                />
-                            </div>
+                        <div class="w-full max-w-sm mb-2">
+                            <label for="diocese" class="block text-[12px]  font-medium text-gray-700 mb-2">
+                                Date de Naissance
+                            </label>
+                            <input
+                                type="date"
+                                v-model="formData.date_naissance"
+                                id="diocese"
+                                required
+                                placeholder=" Date de Naissance"
+                                class="block w-full text-[12px] rounded-lg border border-gray-300 bg-gray-50 p-2  shadow-sm focus:outline-none focus:ring-1 focus:ring-primary "
+                            />
                         </div>
-
-                        <div class="flex items-center justify-between gap-2">
+                    </div>
+                    <div class=" flex items-center justify-between gap-2">
+                        <div class="w-full max-w-sm mb-2">
+                            <label for="diocese" class="block text-[12px]  font-medium text-gray-700 mb-2">
+                                Date ordination sacerdotale
+                            </label>
+                            <input
+                                v-model="formData.date_ordination_sacerdotale"
+                                type="date"
+                                id="diocese"
+                                required
+                                placeholder="Date ordination sacerdotale"
+                                class="block w-full text-[12px] rounded-lg border border-gray-300 bg-gray-50 p-2  shadow-sm focus:outline-none focus:ring-1 focus:ring-primary "
+                            />
+                        </div>
+                        <div class="w-full max-w-sm mb-2">
+                            <label for="diocese" class="block  text-[12px] font-medium text-gray-700 mb-2">
+                                Lieu ordination sacerdotale
+                            </label>
+                            <input
+                                v-model="formData.lieu_ordination_sacerdotale"
+                                type="text"
+                                id="diocese"
+                                required
+                                placeholder="Lieu ordination sacerdotale"
+                                class="block w-full text-[12px] rounded-lg border border-gray-300 bg-gray-50 p-2  shadow-sm focus:outline-none focus:ring-1 focus:ring-primary "
+                            />
+                        </div>
+                    </div>
+                    <div class=" flex items-center justify-between gap-2">
                             <div class="w-full max-w-sm mb-2">
                                 <label for="diocese" class="block text-[12px] font-medium text-gray-700 mb-2">
                                     Spécialité
@@ -319,155 +331,184 @@ onMounted(() => {
                                 />
                             </div>
                         </div>
-                        <h1 class="my-4 text-center text-xl">Diplôme</h1>
+                    </div>
+                    <div class="w-full">
+                        <div class="w-full bg-white border p-4 mb-3 rounded-lg">
 
-                        <div  v-if="formData?.diplome_ecclesiastique?.length > 0" class="flex items-center justify-between gap-2">
-                            <div class="w-full  mb-2">
-                                <div class="flex mb-2 items-end justify-between gap-2" v-for="(item, index) in formData.diplome_ecclesiastique" :key="index">
-                                <div class="w-full max-w-sm">
-                                        <label for="diocese" class="block text-[12px]  font-medium text-gray-700 mb-2">
-                                            Diplôme etude ecclesiastique
-                                        </label>
-                                        <input
-                                        v-model="item.intitule_diplome"
+
+                            <h1 class="my-4 text-center text-xl">Diplôme</h1>
+
+                            <div  v-if="formData?.diplome_ecclesiastique?.length > 0" class="flex items-center justify-between gap-2">
+                                <div class="w-full  mb-2">
+                                    <div class="flex mb-2 items-end justify-between gap-2" v-for="(item, index) in formData.diplome_ecclesiastique" :key="index">
+                                    <div class="w-full max-w-sm">
+                                            <label for="diocese" class="block text-[12px]  font-medium text-gray-700 mb-2">
+                                                Diplôme etude ecclesiastique
+                                            </label>
+                                            <input
+                                            v-model="item.intitule_diplome"
+                                            type="text"
+                                            id="diocese"
+                                            required
+                                            placeholder="Diplome etude ecclesiastique"
+                                            class="block w-full text-[12px] rounded-lg border border-gray-300 bg-gray-50 p-2  shadow-sm focus:outline-none focus:ring-1 focus:ring-primary "
+                                        />
+                                    </div>
+                                    <div class="w-full max-w-sm">
+                                            <label for="diocese" class="block text-[12px]  font-medium text-gray-700 mb-2">
+                                                Date
+                                            </label>
+                                            <input
+                                            v-model="item.date"
+                                            type="date"
+                                            id="diocese"
+                                            required
+                                            placeholder="Date"
+                                            class="block w-full text-[12px] rounded-lg border border-gray-300 bg-gray-50 p-2  shadow-sm focus:outline-none focus:ring-1 focus:ring-primary "
+                                        />
+
+                                    </div>
+                                    <span class="block text-[12px] shadow border  cursor-pointer p-2 rounded-md" @click="DeleteiplomeEcclesiastique(index)">
+                                    <i class="uil uil-minus-circle"></i>
+                                    </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="button" @click="AddDiplomeEcclesiastique" class=" block text-[12px] shadow border mx-auto my-3 p-2 rounded-md">
+                                Ajouter un diplôme ecclesiastique
+                            </button>
+
+                            <div v-if="formData?.diplome_academique?.length > 0" class="flex items-center justify-between gap-2">
+                                <div class="w-full mb-2">
+                                    <div class="w-full flex mb-2 items-end justify-between gap-2" v-for="(item, index) in formData.diplome_academique" :key="index">
+                                        <div class="w-full max-w-sm">
+                                            <label for="diocese" class="block text-[12px]  font-medium text-gray-700 mb-2">
+                                                Diplôme etude profane
+                                            </label>
+                                            <input
+                                            v-model="item.intitule_diplome"
+                                            type="text"
+                                            id="diocese"
+                                            required
+                                            placeholder="Diplome etude ecclesiastique"
+                                            class="block w-full text-[12px] rounded-lg border border-gray-300 bg-gray-50 p-2  shadow-sm focus:outline-none focus:ring-1 focus:ring-primary "
+                                        />
+                                        </div>
+                                        <div class="w-full max-w-sm">
+                                            <label for="diocese" class="block  text-[12px] font-medium text-gray-700 mb-2">
+                                                Date
+                                            </label>
+                                            <input
+                                            v-model="item.date"
+                                            type="date"
+                                            id="diocese"
+                                            required
+                                            placeholder="Diplome etude ecclesiastique"
+                                            class="block w-full text-[12px] rounded-lg border border-gray-300 bg-gray-50 p-2  shadow-sm focus:outline-none focus:ring-1 focus:ring-primary "
+                                        />
+                                        </div>
+                                        <span class=" block text-[12px] shadow border  cursor-pointer p-2 rounded-md" @click="DeleteiplomeAcademique(index)">
+                                            <i class="uil uil-minus-circle"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="button" @click="AddDiplomeAcademique" class=" block text-[12px] shadow border mx-auto my-3 p-2 rounded-md">
+                                Ajouter un diplôme académique
+                            </button>
+                        </div>
+                        <div class="w-full bg-white border p-4 rounded-lg mb-3">
+                            <h1 class="my-4 text-center text-xl"> Parcours pastoral</h1>
+                            <div class="border-b border-b-gray-300 mb-1 py-2" v-for="(item, index) in formData?.parcours" :key="index">
+                                <button type="button" @click="DeleteParcours(index)" class=" block text-[12px] shadow border my-3 p-2 rounded-md">
+                                    <i class="uil uil-minus-circle"></i>
+                                    Retirer
+                                </button>
+                                <div class="flex items-center justify-between gap-2">
+                                <div class="w-full max-w-sm mb-2">
+                                    <label for="diocese" class="block text-[12px] font-medium text-gray-700 mb-2">
+                                    Nom de la paroise
+                                    </label>
+                                    <input
+                                        v-model="item.nom"
                                         type="text"
                                         id="diocese"
                                         required
-                                        placeholder="Diplome etude ecclesiastique"
+                                        placeholder="Nom de la paroise"
                                         class="block w-full text-[12px] rounded-lg border border-gray-300 bg-gray-50 p-2  shadow-sm focus:outline-none focus:ring-1 focus:ring-primary "
                                     />
+                                </div>
+                                <div class="w-full max-w-sm mb-2">
+                                    <label for="diocese" class="block text-[12px] font-medium text-gray-700 mb-2">
+                                    Fonction
+                                    </label>
+                                    <select  v-model="item.fonction" name="" id=""  class="cursor-pointer text-[12px] block w-full rounded-lg border border-gray-300 bg-gray-50 p-2  shadow-sm focus:outline-none focus:ring-1 focus:ring-primary ">
+                                        <option value="curé" >Curé</option>
+                                        <option value="vicaire" >Vicaire</option>
+                                        <option value="autre" >Autre</option>
+                                    </select>
+                                </div>
 
                                 </div>
-                                <div class="w-full max-w-sm">
-                                        <label for="diocese" class="block text-[12px]  font-medium text-gray-700 mb-2">
-                                            Date
+                                <div class="flex items-center justify-between gap-2">
+                                    <div class="w-full  mb-2">
+                                        <label for="diocese" class="block text-[12px] font-medium text-gray-700 mb-2">
+                                            Diocèse
+                                        </label>
+                                        <select  v-model="item.dioceses_id" name="" id=""  class="cursor-pointer text-[12px] block w-full rounded-lg border border-gray-300 bg-gray-50 p-2  shadow-sm focus:outline-none focus:ring-1 focus:ring-primary ">
+                                            <option value="" class="cursor-pointer" disabled>Selectionner une diocèse</option>
+                                            <option :value="item?.id" v-for="(item, index) in dioceses" :key="index">{{ item?.diocese }}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="w-full flex items-center justify-between gap-2">
+                                    <div class="w-full max-w-sm mb-2">
+                                        <label for="diocese" class="block text-[12px] font-medium text-gray-700 mb-2">
+                                            Date début
                                         </label>
                                         <input
-                                        v-model="item.date"
-                                        type="date"
-                                        id="diocese"
-                                        required
-                                        placeholder="Date"
-                                        class="block w-full text-[12px] rounded-lg border border-gray-300 bg-gray-50 p-2  shadow-sm focus:outline-none focus:ring-1 focus:ring-primary "
-                                    />
-
-                                </div>
-                                <span class="p-2" @click="DeleteiplomeEcclesiastique(index)"><i class="uil uil-times"></i></span>
+                                            v-model="item.date"
+                                            type="date"
+                                            id="diocese"
+                                            required
+                                            placeholder="date"
+                                            class="block w-full text-[12px] rounded-lg border border-gray-300 bg-gray-50 p-2  shadow-sm focus:outline-none focus:ring-1 focus:ring-primary "
+                                        />
+                                    </div>
+                                    <div class="w-full max-w-sm mb-2">
+                                            <label for="diocese" class="block text-[12px] font-medium text-gray-700 mb-2">
+                                                Date fin
+                                            </label>
+                                            <input
+                                                v-model="item.date_fin"
+                                                type="date"
+                                                id="diocese"
+                                                required
+                                                placeholder="date"
+                                                class="block w-full text-[12px] rounded-lg border border-gray-300 bg-gray-50 p-2  shadow-sm focus:outline-none focus:ring-1 focus:ring-primary "
+                                            />
+                                    </div>
                                 </div>
                             </div>
+                            <button type="button" @click="Addparcours" class=" block text-[12px] shadow border mx-auto my-3 p-2 rounded-md">
+                                Ajouter un parcours
+                            </button>
                         </div>
-                        <button type="button" @click="AddDiplomeEcclesiastique" class=" block text-[12px] shadow border mx-auto my-3 p-2 rounded-md">
-                            Ajouter un diplôme ecclesiastique
-                        </button>
+                    </div>
+                    </div>
 
-                        <div v-if="formData?.diplome_academique?.length > 0" class="flex items-center justify-between gap-2">
-                            <div class="w-full mb-2">
-                                <div class="w-full flex mb-2 items-end justify-between gap-2" v-for="(item, index) in formData.diplome_academique" :key="index">
-                                    <div class="w-full max-w-sm">
-                                        <label for="diocese" class="block text-[12px]  font-medium text-gray-700 mb-2">
-                                            Diplôme etude profane
-                                        </label>
-                                        <input
-                                        v-model="item.intitule_diplome"
-                                        type="text"
-                                        id="diocese"
-                                        required
-                                        placeholder="Diplome etude ecclesiastique"
-                                        class="block w-full text-[12px] rounded-lg border border-gray-300 bg-gray-50 p-2  shadow-sm focus:outline-none focus:ring-1 focus:ring-primary "
-                                    />
-                                    </div>
-                                    <div class="w-full max-w-sm">
-                                        <label for="diocese" class="block  text-[12px] font-medium text-gray-700 mb-2">
-                                            Date
-                                        </label>
-                                        <input
-                                        v-model="item.date"
-                                        type="date"
-                                        id="diocese"
-                                        required
-                                        placeholder="Diplome etude ecclesiastique"
-                                        class="block w-full text-[12px] rounded-lg border border-gray-300 bg-gray-50 p-2  shadow-sm focus:outline-none focus:ring-1 focus:ring-primary "
-                                    />
-                                    </div>
-                                    <span class="p-2" @click="DeleteiplomeAcademique(index)"><i class="uil uil-times"></i></span>
-                                </div>
-                            </div>
-                        </div>
-                        <button type="button" @click="AddDiplomeAcademique" class=" block text-[12px] shadow border mx-auto my-3 p-2 rounded-md">
-                            Ajouter un diplôme académique
-                        </button>
-                    </div>
-                    <h1 class="my-4 text-center text-xl">Lieu d’affectation</h1>
-                    <div class="flex items-center justify-between gap-2">
-                        <div class="w-full max-w-sm mb-2">
-                            <label for="diocese" class="block text-[12px] font-medium text-gray-700 mb-2">
-                            Nom de la paroise
-                            </label>
-                            <input
-                                v-model="formData.lieu_affectation.nom"
-                                type="text"
-                                id="diocese"
-                                required
-                                placeholder="Nom de la paroise"
-                                class="block w-full text-[12px] rounded-lg border border-gray-300 bg-gray-50 p-2  shadow-sm focus:outline-none focus:ring-1 focus:ring-primary "
-                            />
-                        </div>
-                        <div class="w-full max-w-sm mb-2">
-                            <label for="diocese" class="block text-[12px] font-medium text-gray-700 mb-2">
-                            Fonction
-                            </label>
-                            <select  v-model="formData.lieu_affectation.fonction" name="" id=""  class="cursor-pointer text-[12px] block w-full rounded-lg border border-gray-300 bg-gray-50 p-2  shadow-sm focus:outline-none focus:ring-1 focus:ring-primary ">
-                                <option value="curé" >Curé</option>
-                                <option value="vicaire" >Vicaire</option>
-                                <option value="autre" >Autre</option>
-                            </select>
-                        </div>
 
-                    </div>
-                    <div class="flex items-center justify-between gap-2">
-                        <div class="w-full  mb-2">
-                            <label for="diocese" class="block text-[12px] font-medium text-gray-700 mb-2">
-                                Diocèse
-                            </label>
-                            <select  v-model="formData.lieu_affectation.dioceses_id" name="" id=""  class="cursor-pointer text-[12px] block w-full rounded-lg border border-gray-300 bg-gray-50 p-2  shadow-sm focus:outline-none focus:ring-1 focus:ring-primary ">
-                                <option value="" class="cursor-pointer" disabled>Selectionner une diocèse</option>
-                                <option :value="item?.id" v-for="(item, index) in dioceses" :key="index">{{ item?.diocese }}</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="w-full flex items-center justify-between gap-2">
-                        <div class="w-full max-w-sm mb-2">
-                            <label for="diocese" class="block text-[12px] font-medium text-gray-700 mb-2">
-                                Date début
-                            </label>
-                            <input
-                                v-model="formData.lieu_affectation.date"
-                                type="date"
-                                id="diocese"
-                                required
-                                placeholder="date"
-                                class="block w-full text-[12px] rounded-lg border border-gray-300 bg-gray-50 p-2  shadow-sm focus:outline-none focus:ring-1 focus:ring-primary "
-                            />
-                        </div>
-                        <div class="w-full max-w-sm mb-2">
-                                <label for="diocese" class="block text-[12px] font-medium text-gray-700 mb-2">
-                                    Date fin
-                                </label>
-                                <input
-                                    v-model="formData.lieu_affectation.date_fin"
-                                    type="date"
-                                    id="diocese"
-                                    required
-                                    placeholder="date"
-                                    class="block w-full text-[12px] rounded-lg border border-gray-300 bg-gray-50 p-2  shadow-sm focus:outline-none focus:ring-1 focus:ring-primary "
-                                />
-                        </div>
-                    </div>
-                    <button class="mt-6 bg-primary w-full flex items-center justify-center text-white py-2 px-4 rounded-md ">
-                        <ButtonLoader title="Enregistrer" :isLoading="isLoading" />
+                <div class="flex items-center gap-4 ms-auto justify-end">
+                    <button @click="onClose(false)"  type="button" class="mt-6 bg-white shadow border text-black w-max  flex items-center justify-center  py-2 px-10 rounded-md ">
+                        Annuler
                     </button>
+                    <button class="mt-6 bg-primary w-max  flex items-center justify-center text-white py-2 px-10 rounded-md ">
+                        <ButtonLoader title="Modifier" :isLoading="isLoading" />
+                    </button>
+                </div>
                 </form>
         </div>
+    </div>
 </template>
 
 

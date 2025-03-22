@@ -19,7 +19,7 @@ const openModal = (state) => {
 };
 
 class Pretre {
-    constructor({ id, nom, diplome_academique, lieu_affectation,communautaire,specialite,profile_path, prenoms,status, matricule, diocese, date_naissance, lieu_naissance, date_ordination_sacerdotale, lieu_ordination_sacerdotale, diplome_ecclesiastique, numero_telephone, adresse_electronique}) {
+    constructor({ id, nom, diplome_academique, parcours,communautaire,specialite,profile_path, prenoms,status, matricule, diocese, date_naissance, lieu_naissance, date_ordination_sacerdotale, lieu_ordination_sacerdotale, diplome_ecclesiastique, numero_telephone, adresse_electronique}) {
     this.id = id;
     this.nom = nom;
     this.prenoms = prenoms;
@@ -37,11 +37,7 @@ class Pretre {
     this.profile_path =profile_path
     this.communautaire =communautaire
     this.specialite =specialite
-    this.lieu_affectation = lieu_affectation ?  lieu_affectation :  {
-        nom: '',
-        adresse:'',
-        date:''
-    }
+    this.parcours = parcours ?  parcours : []
   }
 }
 
@@ -110,7 +106,9 @@ onMounted(async () => {
                             placeholder="Rechercher ici par nom,numéro,email,age,etc..."
                             class="w-[300px] rounded-lg  border border-gray-300 bg-gray-50 p-2 text-[13px] shadow-sm focus:outline-none "
                         />
-                    <button type="button" @click="openModal(true)" class="bg-primary text-white p-2 rounded-md text-[14px] cursor-pointer w-max">Ajouter un prêtre</button>
+
+                    <a href="/prete/add" type="button" class="bg-primary text-white p-2 rounded-md text-[14px] cursor-pointer w-max">Ajouter un prêtre</a>
+                    <!-- <button type="button" @click="openModal(true)" class="bg-primary text-white p-2 rounded-md text-[14px] cursor-pointer w-max">Ajouter un prêtre</button> -->
                 </div>
             </div>
             <ContentLoading v-if="isLoading"/>

@@ -1,7 +1,7 @@
 
 <script setup>
 import { computed, inject, onMounted, reactive, ref } from 'vue';
-const { dioceses, callback,diocese, dioceseId, detail } = defineProps([ 'dioceses','diocese' ,'callback', 'dioceseId', 'detail' ]);
+const { dioceses, callback, dioceseId, detail } = defineProps([ 'dioceses', 'callback', 'dioceseId', 'detail' ]);
 
 
 import {useToast} from 'vue-toast-notification';
@@ -19,7 +19,7 @@ const formData = reactive({
     prenoms: "",
     matricule: "",
     date_naissance: "",
-    dioceses_id:''  ,
+    dioceses_id:'' ,
     lieu_naissance: "",
     date_ordination_sacerdotale: "",
     lieu_ordination_sacerdotale: "",
@@ -77,9 +77,6 @@ const DeleteiplomeAcademique = (index) => {
 
 const handleSave = async (data) => {
 
-    if (!confirm('Voulez-vous effectuer cette opération ?')) {
-        return;
-    }
     console.log('====================================');
     console.log(data);
     console.log('====================================');
@@ -91,8 +88,7 @@ const handleSave = async (data) => {
     formData.append("prenoms", data.prenoms);
     formData.append("matricule", data.matricule);
     formData.append("date_naissance", data.date_naissance);
-    formData.append("dioceses_id", diocese.id);
-     formData.append("status","inactive");
+    formData.append("dioceses_id", data.dioceses_id);
     formData.append("lieu_naissance", data.lieu_naissance);
     formData.append("date_ordination_sacerdotale", data.date_ordination_sacerdotale);
     formData.append("lieu_ordination_sacerdotale", data.lieu_ordination_sacerdotale);
@@ -122,7 +118,7 @@ const handleSave = async (data) => {
     data.diplome_academique.forEach((value, index) => {
         formData.append(`diplome_academique[${index}]`, JSON.stringify(value));
     });
-    await axios.post('/auth/inscription',formData, {
+    await axios.post('/pretres',formData, {
             headers: {
                 "Content-Type": "multipart/form-data",
             },
@@ -164,15 +160,15 @@ onMounted(() => {
 </script>
 
 <template>
-    <div class="w-full flex items-center justify-center bg-gray-50 p-4">
-        <!-- {{ diocese }} -->
-        <div class="  max-w-lg w-[500px]" @click.stop>
-                <h2 class="text-xl font-semibold mb-3 text-center">Fiche d'insciption</h2>
+    <div class="w-full flex items-center justify-center">
+        <!-- {{ dioceses }} -->
+        <div class="  max-w-lg w-[460px]" @click.stop>
+                <h2 class="text-xl font-semibold mb-3 text-center">Ajouter un prêtre</h2>
                 <div v-if="errrMessage" class="p-4 w-full bg-red-100 text-[12px] rounded-md text-red-800">
                         {{ errrMessage }}
                 </div>
                 <form action="" @submit.prevent="handleSave(formData)">
-                    <div class="w-full bg-white border p-4 mb-3 rounded-lg">
+                    <div class="w-full bg-white p-4 mb-3 rounded-lg border">
                     <h1 class="my-4 text-center text-xl">Informations personnelles</h1>
                     <div class="w-[120px] flex items-center justify-center overflow-hidden h-[120px] mx-auto mb-4 border rounded-[50%]">
                     <input
@@ -343,7 +339,7 @@ onMounted(() => {
                     </div>
 
                     </div>
-                    <div class="w-full bg-white border p-4 mb-3 rounded-lg">
+                    <div class="w-full bg-white p-4 rounded-lg border mb-3">
                          <h1 class="my-4 text-center text-xl">Diplôme</h1>
 
                         <div  v-if="formData?.diplome_ecclesiastique?.length > 0" class="flex items-center justify-between gap-2">
@@ -426,7 +422,7 @@ onMounted(() => {
                             Ajouter un diplôme académique
                         </button>
                     </div>
-                    <div class="w-full bg-white border  p-4 rounded-lg mb-3">
+                    <div class="w-full bg-white  p-4 rounded-lg mb-3 border">
                         <h1 class="my-4 text-center text-xl"> Parcours pastoral</h1>
                         <div class="border-b border-b-gray-300 mb-1 py-2" v-for="(item, index) in formData?.parcours" :key="index">
                             <button type="button" @click="DeleteParcours(index)" class=" block text-[12px] shadow border my-3 p-2 rounded-md">

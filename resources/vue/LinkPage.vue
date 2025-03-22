@@ -56,7 +56,7 @@ onMounted(async () => {
                             <thead>
                                 <tr class="bg-custom text-gray-600 capitalize text-[11px] leading-normal">
                                     <th class="p-3 text-left">Lien</th>
-                                    <th class="p-3 text-left">Utilisateur</th>
+                                    <th class="p-3 text-left">Nom utilisateur</th>
                                     <th class="p-3 text-left">diocèse</th>
                                     <th class="p-3 text-left">Statut</th>
                                     <th class="p-3 text-left">Action</th>

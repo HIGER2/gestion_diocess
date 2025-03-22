@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Diocese;
 use App\Models\Pretre;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -12,8 +13,14 @@ class ViewController extends Controller
 
     public function findprete($id)
     {
-        $prete = Pretre::with(['diocese', 'diplome_academique', 'lieuAffectation', 'parcourt', 'diplome_ecclesiastique'])->find($id);
+        $prete = Pretre::with(['diocese', 'diplome_academique', 'parcours', 'parcourt', 'diplome_ecclesiastique'])->find($id);
         return view('prete-detail', ['prete' => $prete]);
+    }
+
+    public function add()
+    {
+        $dioceses = Diocese::orderBy('created_at', 'desc')->get();
+        return view('prete-add', ['dioceses' => $dioceses]);
     }
 
     public function userAuth()

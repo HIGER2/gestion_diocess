@@ -163,6 +163,38 @@ onMounted(() => {
                             </li>
                             </div>
                         </ul>
+                        <ul class="w-full">
+                            <div class="flex justify-between">
+                                <li class="flex flex-col  p-4 text-[14px] font-[500]">
+                                    <span>Parcours pastoral</span>
+                                    <!-- {{ item }} -->
+                                    <template v-if="item?.diplome_ecclesiastique">
+                                        <li  v-for="(item, index) in item?.parcours" :key="index"  class=" border-b  gap-3 items-center py-1 text-[14px] font-[400]">
+                                        <div class="flex mb-1 items-center gap-2 text-sm">
+                                            <span class="text-zinc-600">Nom de la paroise :</span>
+                                            <span class="text-zinc-600"> {{ item?.nom }}</span>
+                                        </div>
+                                         <div class="flex mb-1 items-center gap-2 text-sm">
+                                            <span class="text-zinc-600">Fonction :</span>
+                                            <span class="text-zinc-600"> {{ item?.nom }}</span>
+                                        </div>
+                                         <div class="flex mb-1 items-center gap-2 text-sm">
+                                            <span class="text-zinc-600">Diocèse :</span>
+                                            <span class="text-zinc-600"> {{ item?.date }}</span>
+                                        </div>
+                                         <div class="flex mb-1 items-center gap-2 text-sm">
+                                            <span class="text-zinc-600">Date début :</span>
+                                            <span class="text-zinc-600"> {{ item?.date }}</span>
+                                        </div>
+                                         <div class="flex mb-1 items-center gap-2 text-sm">
+                                            <span class="text-zinc-600">Date fin :</span>
+                                            <span class="text-zinc-600"> {{ item?.date_fin }}</span>
+                                        </div>
+                                    </li>
+                                    </template>
+                                </li>
+                            </div>
+                        </ul>
                     </div>
                 </div>
                 <div class="flex justify-end items-center text-sm p-3 gap-2">

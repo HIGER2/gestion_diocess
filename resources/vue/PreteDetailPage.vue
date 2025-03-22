@@ -33,14 +33,14 @@ onMounted(() => {
         <div class="w-full">
             <div class="w-[500px] m-auto">
                 <div class="flex  w-full m-auto items-center mb-5 justify-between">
-                <h1 class="uppercase text-[16px] font-[800]">Information prête</h1>
-                <button type="button" @click="openModal(true)" class="bg-primary text-white p-2 rounded-md text-[14px] cursor-pointer">
+                <h1 class="uppercase text-[16px] font-[800]">Informations prête</h1>
+                <!-- <button type="button" @click="openModal(true)" class="bg-primary text-white p-2 rounded-md text-[14px] cursor-pointer">
                     Ajouter un Parcours
-                </button>
+                </button> -->
                 </div>
                 <di class="flex gap-3 w-full m-auto ">
                     <div class="flex w-full items-center justify-center m-auto flex-col">
-                        <div class="bg-secondary w-full min-h-[100px]  rounded-md mb-3 p-2 flex flex-col items-center justify-center gap-3">
+                        <div class="border bg-secondary w-full min-h-[100px]  rounded-md mb-3 p-2 flex flex-col items-center justify-center gap-3">
                             <div class="w-[100px] h-[100px] aspect-[1/1] overflow-hidden  bg-primary rounded-[50%] flex items-center justify-center">
                                 <img v-if="prete?.profile_path" :src="'/storage/'+prete?.profile_path" class="     w-full h-full" alt="">
                                 <i v-else class="uil uil-user text-[50px] text-white"></i>
@@ -49,11 +49,11 @@ onMounted(() => {
                                 <h1 class="text-[20px] font-[600]">{{ prete?.nom+ " "+ prete?.prenoms }}</h1>
                                 <h2 class="text-zinc-600 font-[600] text-[15px]">{{ prete?.matricule }}</h2>
                             </div>
-                            <button type="button" @click="openIsModal(true)" class="shadow-sm flex mb-2 px-6 p-1 rounded-md border mx-auto">
+                            <!-- <button type="button" @click="openIsModal(true)" class="shadow-sm flex mb-2 px-6 p-1 rounded-md border mx-auto">
                                 Parcours pastoral
-                            </button>
+                            </button> -->
                         </div>
-                        <div class="w-full min-h-[100px] bg-secondary rounded-md mb-3">
+                        <div class="border w-full min-h-[100px] bg-secondary rounded-md mb-3">
                             <ul class="w-full">
                                 <li class="flex justify-between items-center p-4 text-[14px] font-[500]">
                                     <span>Diocesse</span>
@@ -87,7 +87,7 @@ onMounted(() => {
                                     <span>Lieu ordination sacerdotale</span>
                                     <span class="text-zinc-600">{{ prete?.lieu_ordination_sacerdotale }}</span>
                                 </li>
-                                <li class="flex justify-between items-center p-4 text-[14px] font-[500]">
+                                <!-- <li class="flex justify-between items-center p-4 text-[14px] font-[500]">
                                     <span>Lieu d'affectation</span>
                                     <span class="text-zinc-600">{{ prete?.lieu_affectation?.nom }}</span>
                                 </li>
@@ -98,10 +98,10 @@ onMounted(() => {
                                 <li class="flex justify-between items-center p-4 text-[14px] font-[500]">
                                     <span>Date d'affectation</span>
                                     <span class="text-zinc-600">{{ prete?.lieu_affectation?.date +' - '+ prete?.lieu_affectation?.date_fin }}</span>
-                                </li>
+                                </li> -->
                             </ul>
                         </div>
-                        <div class="w-full min-h-[100px] bg-secondary rounded-md mb-3 p-4">
+                        <div class="border w-full min-h-[100px] bg-secondary rounded-md mb-3 p-4">
                             <div class="w-full mb-3">
                                 <h4 class="font-[500]">Diplome étude ecclesiastique</h4>
                                 <ul class="w-full">
@@ -123,6 +123,38 @@ onMounted(() => {
                                     </li>
                                     </template>
 
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="border w-full min-h-[100px] bg-secondary rounded-md mb-3 p-4">
+                            <div class="w-full mb-3">
+                                <!-- {{ prete?.parcours }} -->
+                                <h4 class="font-[500]">Parcours pastoral</h4>
+                                <ul class="w-full">
+                                    <template v-if="prete?.parcours">
+                                    <li  v-for="(item, index) in prete?.parcours" :key="index"  class=" border-b  gap-3 items-center py-1 text-[14px] font-[400]">
+                                        <div class="flex mb-1 items-center gap-2 text-sm">
+                                            <span class="text-zinc-600">Nom de la paroise :</span>
+                                            <span class="text-zinc-600"> {{ item?.nom }}</span>
+                                        </div>
+                                         <div class="flex mb-1 items-center gap-2 text-sm">
+                                            <span class="text-zinc-600">Fonction :</span>
+                                            <span class="text-zinc-600"> {{ item?.nom }}</span>
+                                        </div>
+                                         <div class="flex mb-1 items-center gap-2 text-sm">
+                                            <span class="text-zinc-600">Diocèse :</span>
+                                            <span class="text-zinc-600"> {{ item?.date }}</span>
+                                        </div>
+                                         <div class="flex mb-1 items-center gap-2 text-sm">
+                                            <span class="text-zinc-600">Date début :</span>
+                                            <span class="text-zinc-600"> {{ item?.date }}</span>
+                                        </div>
+                                         <div class="flex mb-1 items-center gap-2 text-sm">
+                                            <span class="text-zinc-600">Date fin :</span>
+                                            <span class="text-zinc-600"> {{ item?.date_fin }}</span>
+                                        </div>
+                                    </li>
+                                    </template>
                                 </ul>
                             </div>
                         </div>
