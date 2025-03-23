@@ -133,7 +133,8 @@ onMounted(() => {
                             <option value="modérateur" class="cursor-pointer"> Modérateur</option>
                         </select>
                     </div>
-                      <div class="w-full  mb-3" >
+                    <template v-if="user.role && user.role !='super_admin'">
+                        <div class="w-full  mb-3" >
                         <label for="" class="block text-[13px] font-medium text-gray-700 mb-2">
                             Assingner à un diocèse
                         </label>
@@ -142,6 +143,7 @@ onMounted(() => {
                             <option :value="item?.id" v-for="(item, index) in dioceses" :key="index">{{ item?.diocese }}</option>
                         </select>
                     </div>
+                    </template>
                 </template>
 
                 <div class="" v-if="auth?.id!=user?.id">
