@@ -176,7 +176,7 @@ onMounted(() => {
                                         </div>
                                          <div class="flex mb-1 items-center gap-2 text-sm">
                                             <span class="text-zinc-600">Fonction :</span>
-                                            <span class="text-zinc-600"> {{ item?.nom }}</span>
+                                            <span class="text-zinc-600"> {{ item?.fonction }}</span>
                                         </div>
                                          <div class="flex mb-1 items-center gap-2 text-sm">
                                             <span class="text-zinc-600">Diocèse :</span>
