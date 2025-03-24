@@ -13,7 +13,11 @@ class ViewController extends Controller
 
     public function findprete($id)
     {
-        $prete = Pretre::with(['diocese', 'diplome_academique', 'parcours', 'parcourt', 'diplome_ecclesiastique'])->find($id);
+        $prete = Pretre::with(['diocese', 'diplome_academique', 'parcours' => function ($query) {
+            $query->with(['diocese' => function ($query) {
+                $query->select('id', 'diocese');
+            }]);
+        }, 'diplome_ecclesiastique'])->find($id);
         return view('prete-detail', ['prete' => $prete]);
     }
 
