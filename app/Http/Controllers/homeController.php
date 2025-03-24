@@ -29,7 +29,11 @@ class homeController extends Controller
         $prete_inactive_query = Pretre::loadForDiocese()->with('diocese')
             ->with("diplome_academique")
             ->with("diplome_ecclesiastique")
-            ->with("parcours")
+            ->with(["parcours" => function ($query) {
+                $query->with(['diocese' => function ($query) {
+                    $query->select('id', 'diocese');
+                }]);
+            }])
             ->where('status', 'inactive');
 
         // // Filtrage spécifique pour les admins
