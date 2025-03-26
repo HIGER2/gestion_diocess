@@ -465,7 +465,7 @@ onMounted(() => {
                                         Diocèse
                                     </label>
                                     <select  v-model="item.dioceses_id" name="" id=""  class="cursor-pointer text-[12px] block w-full rounded-lg border border-gray-300 bg-gray-50 p-2  shadow-sm focus:outline-none focus:ring-1 focus:ring-primary ">
-                                        <option value="" class="cursor-pointer" disabled>Selectionner une diocèse</option>
+                                        <option value="" class="cursor-pointer" disabled>Selectionner un diocèse</option>
                                         <option :value="item?.id" v-for="(item, index) in dioceses" :key="index">{{ item?.diocese }}</option>
                                     </select>
                                 </div>
