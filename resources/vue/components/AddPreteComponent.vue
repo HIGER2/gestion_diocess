@@ -211,11 +211,11 @@ onMounted(() => {
                     </div>
                     <div class="w-full  mb-2" v-if="dioceses && user?.role ==='super_admin'">
                         <label for="diocese" class="block text-[12px] font-medium text-gray-700 mb-2">
-                            Selectionner une diocèse
+                            Selectionner un diocèse
                         </label>
 
                         <select  v-model="formData.dioceses_id" name="" id=""  class="cursor-pointer text-[12px] block w-full rounded-lg border border-gray-300 bg-gray-50 p-2  shadow-sm focus:outline-none focus:ring-1 focus:ring-primary ">
-                            <option value="" class="cursor-pointer" disabled>Selectionner une diocèse</option>
+                            <option value="" class="cursor-pointer" disabled>Selectionner un diocèse</option>
                             <option :value="item?.id" v-for="(item, index) in dioceses" :key="index">{{ item?.diocese }}</option>
                         </select>
                     </div>
