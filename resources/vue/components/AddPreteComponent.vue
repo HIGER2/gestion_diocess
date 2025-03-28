@@ -445,7 +445,13 @@ onMounted(() => {
                                     <select  v-model="item.fonction" name="" id=""  class="cursor-pointer text-[12px] block w-full rounded-lg border border-gray-300 bg-gray-50 p-2  shadow-sm focus:outline-none focus:ring-1 focus:ring-primary ">
                                         <option value="curé" >Curé</option>
                                         <option value="vicaire" >Vicaire</option>
-                                        <option value="autre" >Autre</option>
+                                        <option value="vicaire général" >Vicaire général</option>
+                                        <option value="chancelier" >Chancelier</option>
+                                        <option value="secrétaire général" >Secrétaire général</option>
+                                        <option value="notaire" >Notaire</option>
+                                        <option value="économe diocésain" >Économe diocésain</option>
+                                        <option value="formateur au Grand Séminaire" >Formateur au Grand Séminaire</option>
+                                        <option value="formateur au Petit séminaire" >Formateur au Petit séminaire</option>
                                     </select>
                                 </div>
 
