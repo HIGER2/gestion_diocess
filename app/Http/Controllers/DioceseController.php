@@ -65,7 +65,6 @@ class DioceseController extends Controller
             'diocese' => $diocese,
         ], 201);
     }
-
     /**
      * Modifie un diocèse existant.
      */

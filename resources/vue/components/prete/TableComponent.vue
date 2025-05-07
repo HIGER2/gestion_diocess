@@ -116,7 +116,7 @@ const imprimerLigne = (commande) => {
                     <EditPreteComponent :item="item" :dioceses="dioceses"/>
                     <DetailPreteComponent :item="item"  />
                     <template v-if="auth.role !=='modérateur'">
-                    <PreteDeleteComponent :item="item"/>
+                      <PreteDeleteComponent :item="item"/>
                     </template>
                 </td>
             </tr>

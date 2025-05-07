@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('lieu_affectations', function (Blueprint $table) {
             $table->id();
             $table->string('nom');
+            $table->string('institut')->nullable();
             $table->date('date_fin')->nullable();
             $table->string('fonction')->nullable();
             $table->string('adresse')->nullable();

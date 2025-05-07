@@ -174,6 +174,10 @@ onMounted(() => {
                                             <span class="text-zinc-600">Nom de la paroise :</span>
                                             <span class="text-zinc-600"> {{ item?.nom }}</span>
                                         </div>
+                                        <div class="flex mb-1 items-center gap-2 text-sm">
+                                            <span class="text-zinc-600">Institut diocésaine :</span>
+                                            <span class="text-zinc-600"> {{ item?.institut }}</span>
+                                        </div>
                                          <div class="flex mb-1 items-center gap-2 text-sm">
                                             <span class="text-zinc-600">Fonction :</span>
                                             <span class="text-zinc-600"> {{ item?.fonction }}</span>
