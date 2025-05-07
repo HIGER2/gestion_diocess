@@ -48,6 +48,7 @@ const Addparcours = () => {
         fonction: '',
         dioceses_id:'' ,
         date_fin:'' ,
+        institut:''
     })
 }
 
@@ -322,7 +323,6 @@ onMounted(() => {
                                 v-model="formData.specialite"
                                 type="text"
                                 id="diocese"
-                                required
                                 placeholder="Spécialité"
                                 class="block w-full text-[12px] rounded-lg border border-gray-300 bg-gray-50 p-2  shadow-sm focus:outline-none focus:ring-1 focus:ring-primary "
                             />
@@ -434,48 +434,73 @@ onMounted(() => {
                                 Retirer
                             </button>
                             <div class="flex items-center justify-between gap-2">
-                            <div class="w-full max-w-sm mb-2">
-                                <label for="diocese" class="block text-[12px] font-medium text-gray-700 mb-2">
-                                Nom de la paroise
-                                </label>
-                                <input
-                                    v-model="item.nom"
-                                    type="text"
-                                    id="diocese"
-                                    required
-                                    placeholder="Nom de la paroise"
-                                    class="block w-full text-[12px] rounded-lg border border-gray-300 bg-gray-50 p-2  shadow-sm focus:outline-none focus:ring-1 focus:ring-primary "
-                                />
-                            </div>
-                            <div class="w-full max-w-sm mb-2">
-                                <label for="diocese" class="block text-[12px] font-medium text-gray-700 mb-2">
-                                Fonction
-                                </label>
-                                <select  v-model="item.fonction" name="" id=""  class="cursor-pointer text-[12px] block w-full rounded-lg border border-gray-300 bg-gray-50 p-2  shadow-sm focus:outline-none focus:ring-1 focus:ring-primary ">
-                                    <option value="curé" >Curé</option>
-                                    <option value="vicaire" >Vicaire</option>
-                                    <option value="vicaire général" >Vicaire général</option>
-                                    <option value="chancelier" >Chancelier</option>
-                                    <option value="secrétaire général" >Secrétaire général</option>
-                                    <option value="notaire" >Notaire</option>
-                                    <option value="économe diocésain" >Économe diocésain</option>
-                                    <option value="formateur au Grand Séminaire" >Formateur au Grand Séminaire</option>
-                                    <option value="formateur au Petit séminaire" >Formateur au Petit séminaire</option>
-                                </select>
-                            </div>
-
-                            </div>
-                            <div class="flex items-center justify-between gap-2">
-                                <div class="w-full  mb-2">
+                                    <div class="w-full max-w-sm mb-2">
+                                        <label for="diocese" class="block text-[12px] font-medium text-gray-700 mb-2">
+                                            Nom de la paroise
+                                        </label>
+                                        <input
+                                            v-model="item.nom"
+                                            type="text"
+                                            id="diocese"
+                                            required
+                                            placeholder="Nom de la paroise"
+                                            class="block w-full text-[12px] rounded-lg border border-gray-300 bg-gray-50 p-2  shadow-sm focus:outline-none focus:ring-1 focus:ring-primary "
+                                        />
+                                    </div>
+                                    <div class="w-full max-w-sm mb-2">
                                     <label for="diocese" class="block text-[12px] font-medium text-gray-700 mb-2">
-                                        Diocèse
+                                        Institut diocésaine
                                     </label>
-                                    <select  v-model="item.dioceses_id" name="" id=""  class="cursor-pointer text-[12px] block w-full rounded-lg border border-gray-300 bg-gray-50 p-2  shadow-sm focus:outline-none focus:ring-1 focus:ring-primary ">
-                                        <option value="" class="cursor-pointer" disabled>Selectionner un diocèse</option>
-                                        <option :value="item?.id" v-for="(item, index) in dioceses" :key="index">{{ item?.diocese }}</option>
+                                    <input
+                                        v-model="item.institut"
+                                        type="text"
+                                        id="diocese"
+                                        required
+                                        placeholder="Institut diocésaine"
+                                        class="block w-full text-[12px] rounded-lg border border-gray-300 bg-gray-50 p-2  shadow-sm focus:outline-none focus:ring-1 focus:ring-primary "
+                                    />
+                                    </div>
+                                </div>
+                                <div class="flex items-center justify-between gap-2">
+                                    <div class="w-full  mb-2">
+                                        <label for="diocese" class="block text-[12px] font-medium text-gray-700 mb-2">
+                                            Diocèse
+                                        </label>
+                                        <select  v-model="item.dioceses_id" name="" id=""  class="cursor-pointer text-[12px] block w-full rounded-lg border border-gray-300 bg-gray-50 p-2  shadow-sm focus:outline-none focus:ring-1 focus:ring-primary ">
+                                            <option value="" class="cursor-pointer" disabled>Selectionner un diocèse</option>
+                                            <option :value="item?.id" v-for="(item, index) in dioceses" :key="index">{{ item?.diocese }}</option>
+                                        </select>
+                                    </div>
+                                    <div class="w-full max-w-sm mb-2">
+                                    <label for="diocese" class="block text-[12px] font-medium text-gray-700 mb-2">
+                                    Fonction
+                                    </label>
+                                    <select  v-model="item.fonction" name="" id=""  class="cursor-pointer text-[12px] block w-full rounded-lg border border-gray-300 bg-gray-50 p-2  shadow-sm focus:outline-none focus:ring-1 focus:ring-primary ">
+                                        <option value="curé" >Curé</option>
+                                        <option value="vicaire" >Vicaire</option>
+                                        <option value="vicaire général" >Vicaire général</option>
+                                        <option value="chancelier" >Chancelier</option>
+                                        <option value="secrétaire général" >Secrétaire général</option>
+                                        <option value="notaire" >Notaire</option>
+                                        <option value="économe diocésain" >Économe diocésain</option>
+                                        <option value="formateur au Grand Séminaire" >Formateur au Grand Séminaire</option>
+                                        <option value="formateur au Petit séminaire" >Formateur au Petit séminaire</option>
+                                        <option value="secretaire general adjoint">Secrétaire général adjoint</option>
+                                        <option value="responsable caritas">Responsable Caritas</option>
+                                        <option value="responsable caritas adjoint">Responsable Caritas adjoint</option>
+                                        <option value="econome adjoint">Économe adjoint</option>
+                                        <option value="responsable opm">Responsable des OPM</option>
+                                        <option value="responsable opm adjoint">Responsable des OPM adjoint</option>
+                                        <option value="directeur centre diocesain">Directeur de centre diocésain</option>
+                                        <option value="directeur centre diocesain adjoint">Directeur de centre diocésain adjoint</option>
+                                        <option value="recteur grand seminaire">Recteur de grand séminaire</option>
+                                        <option value="recteur grand seminaire adjoint">Recteur adjoint de grand séminaire</option>
+                                        <option value="recteur petit seminaire">Recteur de petit séminaire</option>
+                                        <option value="recteur petit seminaire adjoint">Recteur de petit séminaire adjoint</option>
+                                        <option value="notaire adjoint">Notaire adjoint</option>
                                     </select>
                                 </div>
-                            </div>
+                                </div>
                             <div class="w-full flex items-center justify-between gap-2">
                                 <div class="w-full max-w-sm mb-2">
                                     <label for="diocese" class="block text-[12px] font-medium text-gray-700 mb-2">

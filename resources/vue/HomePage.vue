@@ -61,8 +61,7 @@ onMounted(() => {
                                     <a :href="`/diocese-manager/${item?.id}`" class="max-w-max bg-zinc-200 text-center text-blue-950 p-1 px-2 rounded-md fw-medium text-[16px]">voir plus <i class="uil uil-angle-right"></i></a>
                                 </div>
                             </div> -->
-                          </template>
-
+                            </template>
                             <Empty v-else/>
                     </div>
                     <Modal :isActive="isModalOpen" :onClose="openModal">

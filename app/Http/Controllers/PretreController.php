@@ -109,6 +109,7 @@ class PretreController extends Controller
                             'nom' => $value['nom'] ?? null,
                             'fonction' => $value['fonction'] ?? null,
                             'date' => $value['date'] ?? null,
+                            'institut' => $value['institut'] ?? null,
                             'date_fin' => $value['date_fin'] ?? null,
                             'dioceses_id' => $value['dioceses_id'] ?? null,
                         ]

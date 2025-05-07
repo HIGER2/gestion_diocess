@@ -13,7 +13,8 @@ class LieuAffectation extends Model
         'fonction',
         'date_fin',
         'dioceses_id',
-        'pretre_id'
+        'pretre_id',
+        'institut',
     ];
 
     public function pretre()
