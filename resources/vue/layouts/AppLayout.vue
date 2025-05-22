@@ -21,7 +21,7 @@ const routeActive = (path = "") => {
     let basePath = pathName.split("/")[ 1 ] || " ";
 
   if (path === basePath) {
-    return 'text-primary font-semibold';
+    return 'text-primary font-semibold bg-gray-100  ';
   }
   return '';
 };
@@ -164,13 +164,15 @@ onMounted(() => {
                     </span>
                 </div>
             </a>
-            <ul class="w-full px-4">
+            <ul class="w-full px-4 mt-3">
             <li v-for="(item, index) in routes[user?.role]" :key="index" class="mb-0  ">
                 <!-- Your HTML file -->
                 <a
                     :href="item?.path"
                     :class="routeActive(item?.pathActive)"
-                    class="max-w-max capitalize text-[14px] p-4 leading-normal  gap-2 items-center  text-gray-600  flex px-2 rounded-md">
+                    class="w-full 
+                    hover:bg-gray-100 hover:text-primary transition-all duration-300
+                    capitalize text-[14px] p-4 leading-normal  gap-2 items-center  text-gray-600  flex px-2 rounded-md">
                     <i class="uil" :class="item?.icon"></i>
                     <span> {{ item?.name }}</span>
 
