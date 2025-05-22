@@ -33,7 +33,7 @@ onMounted(() => {
         <div class="w-full">
             <div class="w-[500px] m-auto">
                 <div class="flex  w-full m-auto items-center mb-5 justify-between">
-                <h1 class="uppercase text-[16px] font-[800]">Informations prête</h1>
+                <h1 class="uppercase text-[16px] font-[800]">Informations prêtre</h1>
                 <!-- <button type="button" @click="openModal(true)" class="bg-primary text-white p-2 rounded-md text-[14px] cursor-pointer">
                     Ajouter un Parcours
                 </button> -->
@@ -56,7 +56,7 @@ onMounted(() => {
                         <div class="border w-full min-h-[100px] bg-secondary rounded-md mb-3">
                             <ul class="w-full">
                                 <li class="flex justify-between items-center p-4 text-[14px] font-[500]">
-                                    <span>Diocesse</span>
+                                    <span>Diocèse</span>
                                     <span class="text-zinc-600">{{ prete?.diocese?.diocese }}</span>
                                 </li>
                                     <li class="flex justify-between items-center p-4 text-[14px] font-[500]">
@@ -68,19 +68,19 @@ onMounted(() => {
                                     <span class="text-zinc-600">{{ prete?.adresse_electronique }}</span>
                                 </li>
                                 <li class="flex justify-between items-center p-4 text-[14px] font-[500]">
-                                    <span>Spécialité</span>
+                                    <span>Formation profane</span>
                                     <span class="text-zinc-600">{{ prete?.specialite }}</span>
                                 </li>
                                  <li class="flex justify-between items-center p-4 text-[14px] font-[500]">
-                                    <span>Qualité Diocésain</span>
+                                    <span>Qualité diocésaine</span>
                                     <span class="text-zinc-600">{{ prete?.communautaire }}</span>
                                 </li>
                                 <li class="flex justify-between items-center p-4 text-[14px] font-[500]">
-                                    <span>Date naissance</span>
+                                    <span>Date de naissance</span>
                                     <span class="text-zinc-600">{{formatDate(prete?.date_naissance) }}</span>
                                 </li>
                                 <li class="flex justify-between items-center p-4 text-[14px] font-[500]">
-                                    <span>Lieu naissance</span>
+                                    <span>Lieu de naissance</span>
                                     <span class="text-zinc-600">{{ prete?.lieu_naissance }}</span>
                                 </li>
                                 <li class="flex justify-between items-center p-4 text-[14px] font-[500]">
@@ -103,7 +103,7 @@ onMounted(() => {
                         </div>
                         <div class="border w-full min-h-[100px] bg-secondary rounded-md mb-3 p-4">
                             <div class="w-full mb-3">
-                                <h4 class="font-[500]">Diplome étude ecclesiastique</h4>
+                                <h4 class="font-[500]">Diplôme d’études ecclésiastiques</h4>
                                 <ul class="w-full">
                                     <template v-if="prete?.diplome_ecclesiastique">
                                     <li  v-for="(item, index) in prete?.diplome_ecclesiastique" :key="index"  class="flex  gap-3 items-center py-1 text-[14px] font-[400]">
@@ -114,7 +114,7 @@ onMounted(() => {
                                 </ul>
                             </div>
                             <div class="w-full">
-                                <h4 class="font-[500]">Diplome étude academique</h4>
+                                <h4 class="font-[500]">Diplôme d’études académiques</h4>
                                 <ul class="w-full mt-2">
                                     <template v-if="prete?.diplome_academique">
                                     <li  v-for="(item, index) in prete?.diplome_academique" :key="index"  class="flex  gap-3 items-center py-1 text-[14px] font-[500]">
@@ -134,7 +134,7 @@ onMounted(() => {
                                     <template v-if="prete?.parcours">
                                     <li  v-for="(item, index) in prete?.parcours" :key="index"  class=" border-b  gap-3 items-center py-1 text-[14px] font-[400]">
                                         <div class="flex mb-1 items-center gap-2 text-sm">
-                                            <span class="text-zinc-600">Nom de la paroise :</span>
+                                            <span class="text-zinc-600">Nom de la paroisse :</span>
                                             <span class="text-zinc-600"> {{ item?.nom }}</span>
                                         </div>
                                         <div class="flex mb-1 items-center gap-2 text-sm">

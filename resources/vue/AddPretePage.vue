@@ -145,6 +145,39 @@ const openFileDialog = () => {
   fileInput.value.click(); // Simule un clic sur l'input file caché
 };
 
+
+const postes = [
+  { value: "curé", label: "Curé" },
+  { value: "vicaire", label: "Vicaire" },
+  { value: "vicaire général", label: "Vicaire général" },
+  { value: "chancelier", label: "Chancelier" },
+  { value: "secrétaire général", label: "Secrétaire général" },
+  { value: "notaire", label: "Notaire" },
+  { value: "économe diocésain", label: "Économe diocésain" },
+  { value: "formateur au Grand Séminaire", label: "Formateur au Grand Séminaire" },
+  { value: "formateur au Petit séminaire", label: "Formateur au Petit séminaire" },
+
+  { value: "secretaire general adjoint", label: "Administrateur paroissial" },
+  { value: "secretaire general adjoint", label: "Secrétaire général adjoint" },
+  { value: "responsable caritas", label: "Responsable Caritas" },
+  { value: "responsable caritas adjoint", label: "Responsable Caritas adjoint" },
+  { value: "econome adjoint", label: "Économe adjoint" },
+  { value: "responsable opm", label: "Responsable des OPM" },
+  { value: "responsable opm adjoint", label: "Responsable des OPM adjoint" },
+  { value: "directeur centre diocesain", label: "Directeur de centre diocésain" },
+  { value: "directeur centre diocesain adjoint", label: "Directeur de centre diocésain adjoint" },
+  { value: "recteur grand seminaire", label: "Recteur de grand séminaire" },
+  { value: "recteur grand seminaire adjoint", label: "Recteur adjoint de grand séminaire" },
+  { value: "recteur petit seminaire", label: "Recteur de petit séminaire" },
+  { value: "recteur petit seminaire adjoint", label: "Recteur de petit séminaire adjoint" },
+  { value: "notaire adjoint", label: "Notaire adjoint" },
+
+  { value: "directeur de college", label: "Directeur De College" },
+  { value: "directeur des etudes", label: "Directeur Des Etudes" },
+  { value: "aumoneries diocesaines", label: "Les Aumoneries Diocesaines" },
+  { value: "aumoneries nationales", label: "Les Aumoneries Nationales" },
+  { value: "etudes en cours", label: "Les Etudes En Cours" }
+];
 onMounted(() => {
     if (detail) {
         Object.assign(formData, detail)
@@ -159,7 +192,7 @@ onMounted(() => {
 <template>
     <div class="w-full flex items-center justify-center">
         <!-- {{ dioceses }} -->
-        <div class="  max-w-lg w-[460px]" @click.stop>
+        <div class="  max-w-lg w-[470px]" @click.stop>
                 <h2 class="text-xl font-semibold mb-3 text-center">Ajouter un prêtre</h2>
                 <div v-if="errrMessage" class="p-4 w-full bg-red-100 text-[12px] rounded-md text-red-800">
                         {{ errrMessage }}
@@ -306,22 +339,22 @@ onMounted(() => {
                         </div>
                     </div>
 
-                    <div class="flex items-center justify-between gap-2">
+                    <div class="flex items-end justify-between gap-2">
                         <div class="w-full max-w-sm mb-2">
                             <label for="diocese" class="block text-[12px] font-medium text-gray-700 mb-2">
-                                Spécialité
+                                Formation profane
                             </label>
                             <input
                                 v-model="formData.specialite"
                                 type="text"
                                 id="diocese"
-                                placeholder="Spécialité"
+                                placeholder="Formation profane"
                                 class="block w-full text-[12px] rounded-lg border border-gray-300 bg-gray-50 p-2  shadow-sm focus:outline-none focus:ring-1 focus:ring-primary "
                             />
                         </div>
                         <div class="w-full max-w-sm mb-2">
                             <label for="diocese" class="block text-[12px]  font-medium text-gray-700 mb-2">
-                                Qualité communautaire
+                                Diocésain/Religieux (Préciser la communauté)
                             </label>
                             <input
                                 v-model="formData.communautaire"
@@ -462,29 +495,10 @@ onMounted(() => {
                                 Fonction
                                 </label>
                                 <select  v-model="item.fonction" name="" id=""  class="cursor-pointer text-[12px] block w-full rounded-lg border border-gray-300 bg-gray-50 p-2  shadow-sm focus:outline-none focus:ring-1 focus:ring-primary ">
-                                    <option value="curé" >Curé</option>
-                                    <option value="vicaire" >Vicaire</option>
-                                    <option value="vicaire général" >Vicaire général</option>
-                                    <option value="chancelier" >Chancelier</option>
-                                    <option value="secrétaire général" >Secrétaire général</option>
-                                    <option value="notaire" >Notaire</option>
-                                    <option value="économe diocésain" >Économe diocésain</option>
-                                    <option value="formateur au Grand Séminaire" >Formateur au Grand Séminaire</option>
-                                    <option value="formateur au Petit séminaire" >Formateur au Petit séminaire</option>
-                                    
-                                    <option value="secretaire general adjoint">Secrétaire général adjoint</option>
-                                    <option value="responsable caritas">Responsable Caritas</option>
-                                    <option value="responsable caritas adjoint">Responsable Caritas adjoint</option>
-                                    <option value="econome adjoint">Économe adjoint</option>
-                                    <option value="responsable opm">Responsable des OPM</option>
-                                    <option value="responsable opm adjoint">Responsable des OPM adjoint</option>
-                                    <option value="directeur centre diocesain">Directeur de centre diocésain</option>
-                                    <option value="directeur centre diocesain adjoint">Directeur de centre diocésain adjoint</option>
-                                    <option value="recteur grand seminaire">Recteur de grand séminaire</option>
-                                    <option value="recteur grand seminaire adjoint">Recteur adjoint de grand séminaire</option>
-                                    <option value="recteur petit seminaire">Recteur de petit séminaire</option>
-                                    <option value="recteur petit seminaire adjoint">Recteur de petit séminaire adjoint</option>
-                                    <option value="notaire adjoint">Notaire adjoint</option>
+                                        <option 
+                                        v-for="(item, index) in postes" :key="index"
+                                        :value="item.value" >{{ item.label }}</option>
+                                       
                                 </select>
                             </div>
                                 <div class="w-full  mb-2">
@@ -494,6 +508,7 @@ onMounted(() => {
                                     <select  v-model="item.dioceses_id" name="" id=""  class="cursor-pointer text-[12px] block w-full rounded-lg border border-gray-300 bg-gray-50 p-2  shadow-sm focus:outline-none focus:ring-1 focus:ring-primary ">
                                         <option value="" class="cursor-pointer" disabled>Selectionner un diocèse</option>
                                         <option :value="item?.id" v-for="(item, index) in dioceses" :key="index">{{ item?.diocese }}</option>
+                                        <option value="autre diocèse" class="cursor-pointer">autre diocèse</option>
                                     </select>
                                 </div>
                                 
