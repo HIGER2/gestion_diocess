@@ -171,8 +171,8 @@ onMounted(() => {
                     :href="item?.path"
                     :class="routeActive(item?.pathActive)"
                     class="w-full 
-                    hover:bg-gray-100 hover:text-primary transition-all duration-300
-                    capitalize text-[14px] p-4 leading-normal  gap-2 items-center  text-gray-600  flex px-2 rounded-md">
+                    hover:bg-gray-100 mb-3 hover:text-primary transition-all duration-300
+                    capitalize text-[13px] font-medium p-2 leading-normal  gap-2 items-center  text-gray-600  flex px-2 rounded-md">
                     <i class="uil" :class="item?.icon"></i>
                     <span> {{ item?.name }}</span>
 

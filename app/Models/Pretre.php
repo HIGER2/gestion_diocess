@@ -49,6 +49,8 @@ class Pretre extends Model
         return $this->belongsTo(Diocese::class, 'dioceses_id', 'id'); // Assure-toi que la clé étrangère est bien 'dioceses_id' dans la table 'pretres'
     }
 
+
+
     public function parcours()
     {
         return $this->hasMany(LieuAffectation::class, 'pretre_id', 'id'); // Assure-toi que la clé étrangère est bien 'dioceses_id' dans la table 'pretres'

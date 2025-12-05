@@ -22,8 +22,12 @@ Route::middleware(['web', 'auth'])->group(function () {
             Route::get('prete-manager', function () {
                 $dioceses = Diocese::orderBy('created_at', 'desc')->get();
                 return view('prete-manager', ['dioceses' => $dioceses]);
-            })->name('prete');
+            })->name('prete-manager');
 
+            Route::get('prete-retraite', function () {
+                $dioceses = Diocese::orderBy('created_at', 'desc')->get();
+                return view('prete-retraite', ['dioceses' => $dioceses]);
+            })->name('prete-retrait');
 
             Route::get('utilisateur-manager', function () {
                 $dioceses = Diocese::orderBy('created_at', 'desc')->get();
@@ -76,7 +80,9 @@ Route::middleware(['web', 'auth'])->group(function () {
     Route::prefix('pretres')->group(function () {
         Route::middleware(['role:super_admin,admin'])->group(function () {
             Route::get('/all', [PretreController::class, 'listPretres']);
+            Route::get('/retraite', [PretreController::class, 'retraite']);
             Route::post('/parcourt', [PretreController::class, 'parcourt']);
+            Route::post('/retraite', [PretreController::class, 'retraite']);
             Route::get('/{id}', [PretreController::class, 'show']);
             Route::delete('/{id}', [PretreController::class, 'destroy']);
         });

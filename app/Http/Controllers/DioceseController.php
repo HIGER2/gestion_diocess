@@ -105,7 +105,7 @@ class DioceseController extends Controller
     public function show($id)
     {
         $diocese = Diocese::with(['pretres' => function ($q) {
-            $q->with(['diocese', 'diplome_academique', 'diplome_ecclesiastique', 'lieuAffectation'])
+            $q->with(['diocese', 'diplome_academique', 'diplome_ecclesiastique', 'parcours'])
                 ->where('status', 'active')
                 ->orderBy('created_at', 'desc');
         }])->findOrFail($id);
@@ -123,7 +123,18 @@ class DioceseController extends Controller
 
     public function listDiocese(Request $request)
     {
-        $query = Diocese::orderBy('created_at', 'desc');
+        $query = Diocese::withCount([
+            'pretres',
+            'pretres as pretres_active_count' => function ($q) {
+                $q->where('status', 'active');
+            },
+            'pretres as pretres_inactive_count' => function ($q) {
+                $q->where('status', 'inactive');
+            }
+        ])
+            ->orderBy('created_at', 'desc');
+
+
 
         // Recherche par nom ou d'autres champs
         if ($request->has('search')) {
@@ -131,9 +142,10 @@ class DioceseController extends Controller
             $query->where('nom', 'like', '%' . $search . '%');
         }
 
-        $count =  $query->count();
+        // $count =  $query->count();
         // Pagination
-        $dioceses = $query->paginate(25);
+        // $dioceses = $query->get();
+        $dioceses = $query->paginate(1000);
         return response()->json([
             'data' => $dioceses,
         ]);

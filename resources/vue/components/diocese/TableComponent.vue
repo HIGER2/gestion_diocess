@@ -10,6 +10,8 @@ const {dioceses } = defineProps(['dioceses' ]);
             <tr class="bg-custom text-gray-600 capitalize text-[11px] leading-normal">
                 <th class="p-3 py-4 text-left">Image</th>
                 <th class="p-3 py-4 text-left">Nom</th>
+                <th class="p-3 py-4 text-left">Nombre inscrit</th>
+                <th class="p-3 py-4 text-left">En attente</th>
                 <th class="p-3 py-4 text-left">Emplecement</th>
                 <th class="p-3 text-left">Abreviation </th>
                 <th class="p-3 text-left">Action </th>
@@ -23,6 +25,8 @@ const {dioceses } = defineProps(['dioceses' ]);
                     </div>
                 </td>
                 <td class="p-3 py-4 ">{{ item?.diocese }}</td>
+                <td class="p-3 py-4 ">{{ item?.pretres_active_count }}</td>
+                <td class="p-3 py-4 ">{{ item?.pretres_inactive_count }}</td>
                 <td class="p-3 py-4 ">{{ item?.emplacement }}</td>
                 <td class="p-3 py-4 ">{{ item?.abreviation || 'N/A' }}</td>
                 <td class="p-3 py-4   text-zinc-900">

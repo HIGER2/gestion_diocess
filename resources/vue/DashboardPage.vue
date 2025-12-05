@@ -70,8 +70,9 @@ onMounted(() => {
                     <h1 v-else class="uppercase text-[16px] font-[800]  mb-2 ">
                         Tableau de bord  ({{ diocese?.diocese }})
                     </h1>
-                    <div  class="p-4 flex-wrap  flex items-center justify-center bg-custom rounded-md my-10 ">
-                        <div v-if="user?.role  != 'admin'" style="width: calc(100% / 5 - 10px);" href="/diocese-manager" class=" shadow-slate-900 h-auto flex flex-row items-center  gap-3 p-2 cursor-pointer min-h-[115px] justify-center rounded-md m-[5px]">
+                    <div  class=" grid grid-cols-1 md:grid-cols-5 gap-2 items-center justify-center  rounded-md my-10 ">
+                        <a v-if="user?.role  != 'admin'"  href="/diocese-manager" 
+                        class=" shadow-slate-900 bg-white border border-gray-200 h-auto flex flex-row items-center  gap-3 p-2 cursor-pointer min-h-[115px] justify-center rounded-md m-[5px]">
                             <!-- <div class=" w-[70px] h-[70px] bg-yellow-100 items-center justify-center flex rounded-[50%]">
                                 <i class="fi fi-bs-church text-[20px] text-yellow-600"></i>
                             </div> -->
@@ -79,8 +80,8 @@ onMounted(() => {
                                 <h2 class="text-[12px]  font-[600]">Total des diocèses</h2>
                                 <h1 class="text-[20px] font-[600]">{{ analytic_data?.diocese_count }}</h1>
                             </div>
-                        </div>
-                        <div style="width: calc(100% / 5 - 10px);" href="/prete-manager" class=" h-auto flex flex-row items-center  gap-3 p-1 cursor-pointer min-h-[115px] justify-center rounded-md m-[5px]">
+                        </a>
+                        <a  href="/prete-manager" class=" h-auto bg-white border flex flex-row items-center  gap-3 p-1 cursor-pointer min-h-[115px] justify-center rounded-md m-[5px]">
                             <!-- <div class="w-[70px] h-[70px] bg-green-100 rounded-[50%] items-center justify-center flex">
                                 <i class="fi fi-rr-users-alt text-[20px] text-green-600"></i>
                             </div> -->
@@ -88,8 +89,8 @@ onMounted(() => {
                                 <h2 class="text-[12px]  font-[600]">Total prêtres</h2>
                                 <h1 class="text-[20px] font-[600]">{{ analytic_data?.prete_count }}</h1>
                             </div>
-                        </div>
-                         <div style="width: calc(100% / 5 - 10px);" href="/prete-manager" class=" h-auto flex flex-row items-center  gap-3 p-1 cursor-pointer min-h-[115px] justify-center rounded-md m-[5px]">
+                        </a>
+                        <a  href="/prete-retraite" class=" h-auto bg-white border flex flex-row items-center  gap-3 p-1 cursor-pointer min-h-[115px] justify-center rounded-md m-[5px]">
                             <!-- <div class="w-[70px] h-[70px] bg-green-100 rounded-[50%] items-center justify-center flex">
                                 <i class="fi fi-rr-users-alt text-[20px] text-green-600"></i>
                             </div> -->
@@ -97,8 +98,8 @@ onMounted(() => {
                                 <h2 class="text-[12px]  font-[600]">Retraite dans 5 ans</h2>
                                 <h1 class="text-[20px] font-[600]">{{ analytic_data?.prete_count_retraite }}</h1>
                             </div>
-                        </div>
-                        <div style="width: calc(100% / 5 - 10px);" href="/utilisateur-manager" class=" h-auto flex flex-row items-center  gap-3 p-1 cursor-pointer min-h-[115px] justify-center rounded-md m-[5px]">
+                        </a>
+                        <a  href="/utilisateur-manager" class=" h-auto bg-white border flex flex-row items-center  gap-3 p-1 cursor-pointer min-h-[115px] justify-center rounded-md m-[5px]">
                             <!-- <div class="w-[70px] h-[70px] bg-blue-100 rounded-[50%] items-center justify-center  flex">
                                 <i class="fi fi-rr-users-alt text-[20px] text-blue-600"></i>
                             </div> -->
@@ -106,9 +107,8 @@ onMounted(() => {
                                 <h2 class="text-[12px]  font-[600]">Total utilisateurs</h2>
                                 <h1 class="text-[20px] font-[600]">{{ analytic_data?.user_count }}</h1>
                             </div>
-                        </div>
-
-                        <div style="width: calc(100% / 5 - 10px);" href="/utilisateur-manager" class=" h-auto flex flex-row items-center  gap-3 p-1 cursor-pointer min-h-[115px] justify-center rounded-md m-[5px]">
+                        </a>
+                        <div  href="/" class=" h-auto bg-white border flex flex-row items-center  gap-3 p-1 cursor-pointer min-h-[115px] justify-center rounded-md m-[5px]">
                             <!-- <div class="w-[70px] h-[70px] bg-blue-100 rounded-[50%] items-center justify-center  flex">
                                 <i class="fi fi-rr-users-alt text-[20px] text-blue-600"></i>
                             </div> -->

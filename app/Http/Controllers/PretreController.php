@@ -286,7 +286,7 @@ class PretreController extends Controller
         }
 
         // Pagination
-        $pretres = $query->paginate(1000);
+        $pretres = $query->paginate(2000);
 
         return response()->json([
             'pretres' => $pretres,
@@ -306,6 +306,55 @@ class PretreController extends Controller
             'pretres' => $pretres,
         ]);
     }
+
+    public function retraite(Request $request)
+    {
+        // Récupère le diocèse avec son ID
+        $query = Pretre::loadForDiocese()->whereRaw('(YEAR(CURDATE()) - YEAR(date_naissance)) = 55');
+        // Recherche par nom, numéro ou email
+        if ($request->filled('search')) {
+            $search = $request->input('search');
+
+            $query->where(function ($q) use ($search) {
+                $q->where('nom', 'like', '%' . $search . '%')
+                    ->orWhere('prenoms', 'like', '%' . $search . '%')
+                    ->orWhere('numero_telephone', 'like', '%' . $search . '%')
+                    ->orWhere('adresse_electronique', 'like', '%' . $search . '%')
+                    ->orWhere('matricule', 'like', '%' . $search . '%')
+                    ->orWhere('date_naissance', 'like', '%' . $search . '%')
+                    ->orWhere('specialite', 'like', '%' . $search . '%')
+                    ->orWhereHas('diplome_academique', function ($q) use ($search) {
+                        $q->where('intitule_diplome', 'like', '%' . $search . '%');
+                    })
+                    ->orWhereHas('diplome_ecclesiastique', function ($q) use ($search) {
+                        $q->where('intitule_diplome', 'like', '%' . $search . '%');
+                    });
+
+                // Si la recherche est un nombre, filtre par âge
+                if (is_numeric($search)) {
+                    $age = (int) $search;
+                    $dateDebut = Carbon::now()->subYears($age + 1)->addDay();
+                    $dateFin = Carbon::now()->subYears($age);
+                    $q->orWhereBetween('date_naissance', [$dateDebut, $dateFin]);
+                }
+            });
+        }
+
+        $pretres = $query->paginate(2000);
+        return response()->json([
+            'pretres' => $pretres,
+        ]);
+    }
+
+    public function viewRetraite()
+    {
+        // Récupère le diocèse avec son ID
+        $preteRetraite = Pretre::loadForDiocese()->whereRaw('(YEAR(CURDATE()) - YEAR(date_naissance)) = 55')->get();
+        $dioceses = Diocese::orderBy('created_at', 'desc')->get();
+        return view('prete-retraite', ['pretes' => $preteRetraite]);
+    }
+
+
 
     public function parcourt(Request $request)
     {

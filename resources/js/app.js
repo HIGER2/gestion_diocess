@@ -18,6 +18,7 @@ import AppLayout from '../vue/layouts/AppLayout.vue';
 import LinkLoginPage from '../vue/LinkLoginPage.vue';
 import UserPage from '../vue/UserPage.vue';
 import AddPretePage from '../vue/AddPretePage.vue';
+import PreteRetraite from '../vue/PreteRetraite.vue';
 // Créez et montez l'application Vue
 createApp({})
     .component('HomePage', HomePage)
@@ -33,5 +34,6 @@ createApp({})
     .component('AppLayout', AppLayout)
     .component('LinkLoginPage', LinkLoginPage)
     .component('UserPage', UserPage)
+    .component('PreteRetraite', PreteRetraite)
     .use(ToastPlugin)
     .mount('#app');
